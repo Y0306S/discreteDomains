@@ -1,0 +1,70 @@
+{
+  "description": "Domain hybrid schedules. DL keeps H2 (LLM+TPE). Protein/query use H2_latent (LLM semantic + CMA-ES on z).",
+  "defaults": {
+    "n_initial_samples": 4,
+    "tpe_startup_trials": 3
+  },
+  "variants": [
+    {
+      "id": "H2",
+      "label": "mix70_tpe",
+      "llm_prob": 0.7,
+      "llm_phase_trials": 0,
+      "bo_arm": "tpe",
+      "hybrid_selector": "bernoulli",
+      "notes": "70% LLM / 30% TPE. Use for DL named ConfigSpace."
+    },
+    {
+      "id": "H2_latent",
+      "label": "mix70_cmaes",
+      "llm_prob": 0.7,
+      "llm_phase_trials": 0,
+      "bo_arm": "cmaes",
+      "hybrid_selector": "bernoulli",
+      "notes": "70% LLM semantic / 30% CMA-ES in z. Use for protein and query."
+    },
+    {
+      "id": "H0",
+      "label": "mix50_tpe",
+      "llm_prob": 0.5,
+      "llm_phase_trials": 0,
+      "bo_arm": "tpe",
+      "hybrid_selector": "bernoulli"
+    }
+  ]
+}
+{
+  "description": "Domain hybrid schedules. DL keeps H2 (LLM+TPE). Protein/query use H2_latent (LLM semantic + CMA-ES on z).",
+  "defaults": {
+    "n_initial_samples": 4,
+    "tpe_startup_trials": 3
+  },
+  "variants": [
+    {
+      "id": "H2",
+      "label": "mix70_tpe",
+      "llm_prob": 0.7,
+      "llm_phase_trials": 0,
+      "bo_arm": "tpe",
+      "hybrid_selector": "bernoulli",
+      "notes": "70% LLM / 30% TPE. Use for DL named ConfigSpace."
+    },
+    {
+      "id": "H2_latent",
+      "label": "mix70_cmaes",
+      "llm_prob": 0.7,
+      "llm_phase_trials": 0,
+      "bo_arm": "cmaes",
+      "hybrid_selector": "bernoulli",
+      "notes": "70% LLM semantic / 30% CMA-ES in z. Use for protein and query."
+    },
+    {
+      "id": "H0",
+      "label": "mix50_tpe",
+      "llm_prob": 0.5,
+      "llm_phase_trials": 0,
+      "bo_arm": "tpe",
+      "hybrid_selector": "bernoulli"
+    }
+  ]
+}

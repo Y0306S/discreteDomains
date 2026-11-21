@@ -1,0 +1,25 @@
+{
+  "status": "design_only",
+  "scope": "heldout_test200",
+  "dependency": "semanticopt_query_all200_complete_at40000_evaluations",
+  "warm_start_model": "/root/data/cys/baseline/campaigns/peptide_warmstart_full800_20261111/model/checkpoint-1500",
+  "initializations_per_task": 50,
+  "initialization_source": "new stochastic full warm-start model samples, first feasible unique samples in generation order",
+  "initialization_total": 10000,
+  "initialization_sampling_proposal": {
+    "temperature": 1.0,
+    "top_p": 0.9,
+    "top_k": 50,
+    "max_new_tokens": 128,
+    "maximum_attempts_per_task": 500,
+    "random_fallback": false
+  },
+  "optimizer_model": "/root/data/cys/baseline/campaigns/peptide_our_orpo_rl800_20261111/cycles/round1",
+  "optimizer_base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+  "optimizer": "our_method_ORPO_RL_plus_peptide_FSBO",
+  "optimization_attempts_per_task_proposed": 80,
+  "selection_schedule_attempts_proposed": 100,
+  "optimization_attempts_total_proposed": 16000,
+  "oracle": "APEX_bacteria_0",
+  "queue_armed": false
+}

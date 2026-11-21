@@ -1,0 +1,464 @@
+Recommend exactly one new discrete peptide amino-acid sequence to minimize the measured APEX bacteria_0 MIC. Lower MIC is better. Use the good, bad, and recent valid evaluated peptides as evidence; do not invent measured results. Return exactly one JSON object with the single key "sequence", for example {"sequence":"AKLR"}. Return no explanation, batch, latent vector, or 3D coordinates. The example is only a format example and must also meet the real task constraints before being proposed.
+
+{
+  "reference_sequence": "RRYYEQLEQASRKGNRGFRR",
+  "objective": "Minimize APEX bacteria_0 MIC; lower is better; all listed MIC values were measured.",
+  "current_best_mic": 53.03604889,
+  "rules": [
+    {
+      "rule": "Use only uppercase amino acids ACDEFGHIKLMNPQRSTVWY.",
+      "example": "AKLR passes the alphabet rule; AKXR fails because X is not allowed."
+    },
+    {
+      "rule": "Length must be between 1 and 30 amino acids inclusive.",
+      "example": "AKLR passes the length rule; an empty string or a sequence of 31 A residues fails."
+    },
+    {
+      "rule": "Use at most one cysteine (C).",
+      "example": "AKCR passes the cysteine rule; ACCR fails because it has two C residues."
+    },
+    {
+      "rule": "Similarity = 1 - Levenshtein_distance(candidate, reference) / length(reference); must be >= 0.75.",
+      "example": "For illustrative reference AKLRAKLR (length 8), GGLRAKLR has distance 2 and similarity 0.75 (passes); GGGRAKLR has distance 3 and similarity 0.625 (fails). Use the actual reference_sequence for this task."
+    },
+    {
+      "rule": "Recommend a sequence that has never previously been proposed/evaluated in this task, including retry proposals.",
+      "example": "If AKLRAKLR was already evaluated or proposed, proposing AKLRAKLR again fails novelty. The listed history is a summary; the caller also checks the full history."
+    },
+    {
+      "rule": "Output exactly one JSON object with only the sequence key, containing a single peptide string.",
+      "example": "{\"sequence\":\"AKLR\"} has the required shape; [\"AKLR\",\"AKCR\"] and a latent vector do not. This example is not a scored recommendation."
+    }
+  ],
+  "examples_notice": "Examples illustrate individual rules only. Every real proposal must satisfy ALL rules against the actual task reference.",
+  "valid_distinct_evaluations_so_far": 162,
+  "good": [
+    {
+      "sequence": "RRYYEKLEQASRKVMRGFFR",
+      "mic": 53.03604889,
+      "similarity": 0.8,
+      "observation_index": 72,
+      "source_phase": "initialization"
+    },
+    {
+      "sequence": "RRYMEQLKQLSRKGKRGFRR",
+      "mic": 69.79214478,
+      "similarity": 0.8,
+      "observation_index": 31,
+      "source_phase": "initialization"
+    },
+    {
+      "sequence": "RRYYQQLEQAFRKGNRGFRV",
+      "mic": 74.29533386,
+      "similarity": 0.85,
+      "observation_index": 60,
+      "source_phase": "initialization"
+    },
+    {
+      "sequence": "RRYYEQLFQATRKGNRGFRR",
+      "mic": 82.24047089,
+      "similarity": 0.9,
+      "observation_index": 84,
+      "source_phase": "initialization"
+    },
+    {
+      "sequence": "RRYYEQLFQATRKGNRGFRP",
+      "mic": 82.94624328613281,
+      "similarity": 0.85,
+      "observation_index": 653,
+      "source_phase": "recenter"
+    }
+  ],
+  "bad": [
+    {
+      "sequence": "NSYYEQEEQASREGNRGFRC",
+      "mic": 508.65057373046875,
+      "similarity": 0.75,
+      "observation_index": 899,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "NSYYEQETQASREGNRGFRR",
+      "mic": 507.27557373046875,
+      "similarity": 0.75,
+      "observation_index": 749,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "NSYYEQEEQASREGNRGFRR",
+      "mic": 506.56454468,
+      "similarity": 0.8,
+      "observation_index": 34,
+      "source_phase": "initialization"
+    },
+    {
+      "sequence": "MAYYEQPEQASRKQNRAFRR",
+      "mic": 504.33078003,
+      "similarity": 0.75,
+      "observation_index": 2,
+      "source_phase": "initialization"
+    },
+    {
+      "sequence": "DVYEQTFEQASRKGNRGFRR",
+      "mic": 499.4302978515625,
+      "similarity": 0.75,
+      "observation_index": 747,
+      "source_phase": "recenter"
+    }
+  ],
+  "recent50": [
+    {
+      "sequence": "VRQYTQLEQASRKGIRGFRA",
+      "mic": 247.81948852539062,
+      "similarity": 0.75,
+      "observation_index": 695,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQLEQASRKGNQSFRA",
+      "mic": 269.885498046875,
+      "similarity": 0.85,
+      "observation_index": 696,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RVYEQTLECASRKGWRGFRR",
+      "mic": 372.4259948730469,
+      "similarity": 0.75,
+      "observation_index": 701,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYGQQHQASRKGNRGFRA",
+      "mic": 292.0921936035156,
+      "similarity": 0.8,
+      "observation_index": 703,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEKLEQASRCVNRGFRQ",
+      "mic": 387.6136169433594,
+      "similarity": 0.8,
+      "observation_index": 707,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQLEQAVAKGNRCFRL",
+      "mic": 329.15374755859375,
+      "similarity": 0.8,
+      "observation_index": 711,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQPEQASRKGNRGFRG",
+      "mic": 322.7887268066406,
+      "similarity": 0.9,
+      "observation_index": 713,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQIEQAERKGNRGQAR",
+      "mic": 379.2760009765625,
+      "similarity": 0.8,
+      "observation_index": 722,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQLEQAQRSYNRGERN",
+      "mic": 407.3374328613281,
+      "similarity": 0.75,
+      "observation_index": 728,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQLEQASRKGACGFRD",
+      "mic": 488.0790710449219,
+      "similarity": 0.85,
+      "observation_index": 729,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQLEQAEKEGNRGFCR",
+      "mic": 439.095703125,
+      "similarity": 0.8,
+      "observation_index": 730,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYDEQHEQAARKGNHGFRN",
+      "mic": 453.383056640625,
+      "similarity": 0.75,
+      "observation_index": 735,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQLEQASRLGNRGQRR",
+      "mic": 357.01666259765625,
+      "similarity": 0.9,
+      "observation_index": 736,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQLETASLKGNDGFRH",
+      "mic": 446.5582275390625,
+      "similarity": 0.8,
+      "observation_index": 739,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "DVYEQTFEQASRKGNRGFRR",
+      "mic": 499.4302978515625,
+      "similarity": 0.75,
+      "observation_index": 747,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "NSYYEQETQASREGNRGFRR",
+      "mic": 507.27557373046875,
+      "similarity": 0.75,
+      "observation_index": 749,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYMEQLKQLSRKGKRGFRE",
+      "mic": 146.04310607910156,
+      "similarity": 0.75,
+      "observation_index": 801,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQLFQATRKGNRGFRN",
+      "mic": 112.58576965332031,
+      "similarity": 0.85,
+      "observation_index": 803,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYVILEQASRKGNRGFRH",
+      "mic": 132.70709228515625,
+      "similarity": 0.85,
+      "observation_index": 804,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYNEQLMQASRKGYRGFRA",
+      "mic": 117.74345397949219,
+      "similarity": 0.8,
+      "observation_index": 805,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYFQLEQAERKENRGFRG",
+      "mic": 118.79801940917969,
+      "similarity": 0.8,
+      "observation_index": 810,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQLETASRKGFRRFHR",
+      "mic": 132.50376892089844,
+      "similarity": 0.8,
+      "observation_index": 813,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQLNQARKRRNRGFRE",
+      "mic": 213.3839874267578,
+      "similarity": 0.75,
+      "observation_index": 815,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQLEQARRTNGRRFRR",
+      "mic": 163.79046630859375,
+      "similarity": 0.75,
+      "observation_index": 816,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQLEKASRGGRRGFRA",
+      "mic": 154.2272186279297,
+      "similarity": 0.8,
+      "observation_index": 819,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RLYYEQLEQASRKGNRGFRND",
+      "mic": 380.3981628417969,
+      "similarity": 0.85,
+      "observation_index": 820,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQLEQYSRKGNKGFRGH",
+      "mic": 265.9981994628906,
+      "similarity": 0.8,
+      "observation_index": 827,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQLEQASRKGNRGFRP",
+      "mic": 187.76754760742188,
+      "similarity": 0.95,
+      "observation_index": 830,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYDQLNQASRKGWRTFRT",
+      "mic": 228.94789123535156,
+      "similarity": 0.75,
+      "observation_index": 832,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYHQLEQASRKGSRGFRV",
+      "mic": 303.3457946777344,
+      "similarity": 0.85,
+      "observation_index": 836,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQLEQASRKNHRGFRA",
+      "mic": 243.7469482421875,
+      "similarity": 0.85,
+      "observation_index": 838,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQLEQASRKGNRGFREQ",
+      "mic": 329.7593078613281,
+      "similarity": 0.9,
+      "observation_index": 840,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEHLEQASRKGNRGFRH",
+      "mic": 296.28887939453125,
+      "similarity": 0.9,
+      "observation_index": 843,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQLEHASRKGGRGFRV",
+      "mic": 333.1653747558594,
+      "similarity": 0.85,
+      "observation_index": 844,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQLSQASRVGNRGFRA",
+      "mic": 272.5305480957031,
+      "similarity": 0.85,
+      "observation_index": 847,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQLEQASRQGNRGFRA",
+      "mic": 265.1009521484375,
+      "similarity": 0.9,
+      "observation_index": 848,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RVYYEQLECASRKGWRGFRNQ",
+      "mic": 367.5321044921875,
+      "similarity": 0.75,
+      "observation_index": 851,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQLVQASCKQNRGFRL",
+      "mic": 330.5722351074219,
+      "similarity": 0.8,
+      "observation_index": 860,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQPEQASRKGNRGFRV",
+      "mic": 373.82183837890625,
+      "similarity": 0.9,
+      "observation_index": 863,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQLEQASRKGNLGTRAP",
+      "mic": 343.47723388671875,
+      "similarity": 0.8,
+      "observation_index": 869,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "ERYYTQLEQASRKGNHGFRA",
+      "mic": 388.84246826171875,
+      "similarity": 0.8,
+      "observation_index": 876,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQLEQASRKGPRGERF",
+      "mic": 262.78509521484375,
+      "similarity": 0.85,
+      "observation_index": 877,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQLEGASRMGNRGFAD",
+      "mic": 472.5239562988281,
+      "similarity": 0.8,
+      "observation_index": 881,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYDEQHEQAARKGNHGFRA",
+      "mic": 432.9281311035156,
+      "similarity": 0.75,
+      "observation_index": 885,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQLEQASRLGNRGDRND",
+      "mic": 454.0619201660156,
+      "similarity": 0.8,
+      "observation_index": 886,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "GISEEQLEQASRKGNRGFRA",
+      "mic": 411.7728271484375,
+      "similarity": 0.75,
+      "observation_index": 888,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRSQEQLEQASRKGNRGFNR",
+      "mic": 406.2312316894531,
+      "similarity": 0.85,
+      "observation_index": 892,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQTEQASRKGNRGNRK",
+      "mic": 439.1496887207031,
+      "similarity": 0.85,
+      "observation_index": 893,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "RRYYEQTEQASRKGNRGQR",
+      "mic": 462.8851013183594,
+      "similarity": 0.85,
+      "observation_index": 896,
+      "source_phase": "recenter"
+    },
+    {
+      "sequence": "NSYYEQEEQASREGNRGFRC",
+      "mic": 508.65057373046875,
+      "similarity": 0.75,
+      "observation_index": 899,
+      "source_phase": "recenter"
+    }
+  ],
+  "recent50_definition": "The latest 50 distinct valid measured peptide sequences in chronological evaluation order. VAE-generated entries have a scored decoded sequence and pass the similarity constraint. Failed decodes, infeasible sequences, and cached repeats are excluded. Initialization sequences are imported measured peptides, not claimed VAE decodes.",
+  "rejected_retry_proposals": [],
+  "request": "Recommend one novel feasible peptide sequence that is likely to reduce the current_best_mic. Output only {\"sequence\":\"...\"}."
+}

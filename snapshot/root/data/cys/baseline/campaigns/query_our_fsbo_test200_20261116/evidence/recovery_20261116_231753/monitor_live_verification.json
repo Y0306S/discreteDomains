@@ -1,0 +1,1054 @@
+{
+  "state": "running",
+  "statuses": {
+    "status.json": {
+      "stages": {
+        "warm30": {
+          "complete_tasks": 70,
+          "started_tasks": 91,
+          "measurements": 2323,
+          "generation_attempts_or_optimization_attempts": 3866
+        },
+        "orpo_batch10": {
+          "complete_tasks": 0,
+          "started_tasks": 0,
+          "measurements": 0,
+          "generation_attempts_or_optimization_attempts": 0
+        }
+      },
+      "total_rounds": 80,
+      "batch_size": 10,
+      "evaluations_per_task": 800,
+      "total_tasks": 200,
+      "measurement_target": 160000,
+      "counted_measurements": 2323,
+      "paused": false,
+      "rl_enabled": false,
+      "at": 1794842757.3475404,
+      "status": "running",
+      "stage": "warm30",
+      "worker_launchers": [
+        10143,
+        10144,
+        10145,
+        10146,
+        10147,
+        10148,
+        10149,
+        10180,
+        10211,
+        10241,
+        10249,
+        10294,
+        10381,
+        10476,
+        10485,
+        10556,
+        10570,
+        10626,
+        10673,
+        10708,
+        10746
+      ],
+      "worker_count": 21,
+      "worker_hosts": {
+        "LLMOptimizer2": 6,
+        "LLMOptimizer4": 15
+      },
+      "resources_sha256": "0af21a6a3f9525101ef8de502b3af68abdf3da8139a9c886c72233f35385ef22"
+    }
+  },
+  "processes": {
+    "batch_worker0.process.json": {
+      "pid": 10143,
+      "alive": true,
+      "command": null
+    },
+    "replica1.process.json": {
+      "pid": 52436,
+      "alive": false,
+      "command": [
+        "/root/data/cys/baseline/envs/taskset_qwen35_fast_20261030/bin/python",
+        "-u",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/code/qwen_inference_server.py",
+        "replica",
+        "--config",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/replica1.json"
+      ]
+    },
+    "warm_start_resources_broker.process.json": {
+      "pid": 9394,
+      "alive": true,
+      "command": [
+        "/usr/bin/python3",
+        "-u",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/batch_code/qwen_inference_server.py",
+        "broker",
+        "--config",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/warm_start.resources.broker.json"
+      ]
+    },
+    "replica2.process.json": {
+      "pid": 52437,
+      "alive": false,
+      "command": [
+        "/root/data/cys/baseline/envs/taskset_qwen35_fast_20261030/bin/python",
+        "-u",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/code/qwen_inference_server.py",
+        "replica",
+        "--config",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/replica2.json"
+      ]
+    },
+    "batch_worker2.process.json": {
+      "pid": 10145,
+      "alive": true,
+      "command": null
+    },
+    "warm_start_broker.process.json": {
+      "pid": 53532,
+      "alive": false,
+      "command": [
+        "/usr/bin/python3",
+        "-u",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/code/qwen_inference_server.py",
+        "broker",
+        "--config",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/warm_start.broker.json"
+      ]
+    },
+    "batch_controller.process.json": {
+      "pid": 10079,
+      "alive": true,
+      "command": [
+        "/root/data/cys/envs/bolt_clean_venv/bin/python",
+        "-u",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/batch_code/run.py",
+        "controller"
+      ]
+    },
+    "batch_worker9.process.json": {
+      "pid": 22194,
+      "alive": true,
+      "command": null,
+      "host": "LLMOptimizer4"
+    },
+    "replica3.batch10.process.json": {
+      "pid": 10929,
+      "alive": false,
+      "command": [
+        "/root/data/cys/baseline/envs/taskset_qwen35_fast_20261030/bin/python",
+        "-u",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/batch_code/qwen_inference_server.py",
+        "replica",
+        "--config",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/replica3.batch10.json"
+      ]
+    },
+    "worker4.process.json": {
+      "pid": 55887,
+      "alive": false,
+      "command": null
+    },
+    "batch_worker17.process.json": {
+      "pid": 22291,
+      "alive": true,
+      "command": null,
+      "host": "LLMOptimizer4"
+    },
+    "batch_worker8.process.json": {
+      "pid": 22182,
+      "alive": true,
+      "command": null,
+      "host": "LLMOptimizer4"
+    },
+    "batch_worker11.process.json": {
+      "pid": 22218,
+      "alive": true,
+      "command": null,
+      "host": "LLMOptimizer4"
+    },
+    "bolt_resources.process.json": {
+      "pid": 28365,
+      "alive": false,
+      "command": [
+        "/root/data/cys/baseline/envs/taskset_qwen35_fast_20261030/bin/python",
+        "-u",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/batch_code/qwen_inference_server.py",
+        "replica",
+        "--config",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/bolt.resources.json"
+      ]
+    },
+    "batch_worker20.process.json": {
+      "pid": 22327,
+      "alive": true,
+      "command": null,
+      "host": "LLMOptimizer4"
+    },
+    "vae5_resources.process.json": {
+      "pid": 8277,
+      "alive": true,
+      "command": [
+        "/root/data/cys/envs/bolt_clean_venv/bin/python",
+        "-u",
+        "/root/data/cys/llmoptimizer_benchmark/tools/query_vae_service.py",
+        "--gpu",
+        "2",
+        "--cpu",
+        "31",
+        "--port",
+        "21825",
+        "--token-file",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/token",
+        "--native",
+        "/root/data/cys/logs/query_train800_author_fixed_20261004/native",
+        "--memory-fraction",
+        ".02"
+      ]
+    },
+    "llm1_resources.process.json": {
+      "pid": 8984,
+      "alive": true,
+      "command": [
+        "/root/data/cys/baseline/envs/taskset_qwen35_fast_20261030/bin/python",
+        "-u",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/batch_code/qwen_inference_server.py",
+        "replica",
+        "--config",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/warm_start.llm1.resources.json"
+      ]
+    },
+    "batch_worker6.process.json": {
+      "pid": 22156,
+      "alive": true,
+      "command": null,
+      "host": "LLMOptimizer4"
+    },
+    "orpo_resources.process.json": {
+      "pid": 28366,
+      "alive": false,
+      "command": [
+        "/root/data/cys/baseline/envs/taskset_qwen35_fast_20261030/bin/python",
+        "-u",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/batch_code/qwen_inference_server.py",
+        "replica",
+        "--config",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/orpo.resources.json"
+      ]
+    },
+    "vae4_resources.process.json": {
+      "pid": 8276,
+      "alive": true,
+      "command": [
+        "/root/data/cys/envs/bolt_clean_venv/bin/python",
+        "-u",
+        "/root/data/cys/llmoptimizer_benchmark/tools/query_vae_service.py",
+        "--gpu",
+        "1",
+        "--cpu",
+        "30",
+        "--port",
+        "21824",
+        "--token-file",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/token",
+        "--native",
+        "/root/data/cys/logs/query_train800_author_fixed_20261004/native",
+        "--memory-fraction",
+        ".02"
+      ]
+    },
+    "vae2_resources.process.json": {
+      "pid": 8274,
+      "alive": true,
+      "command": [
+        "/root/data/cys/envs/bolt_clean_venv/bin/python",
+        "-u",
+        "/root/data/cys/llmoptimizer_benchmark/tools/query_vae_service.py",
+        "--gpu",
+        "1",
+        "--cpu",
+        "28",
+        "--port",
+        "21822",
+        "--token-file",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/token",
+        "--native",
+        "/root/data/cys/logs/query_train800_author_fixed_20261004/native",
+        "--memory-fraction",
+        ".02"
+      ]
+    },
+    "batch_worker16.process.json": {
+      "pid": 22279,
+      "alive": true,
+      "command": null,
+      "host": "LLMOptimizer4"
+    },
+    "vae1_resources.process.json": {
+      "pid": 8273,
+      "alive": true,
+      "command": [
+        "/root/data/cys/envs/bolt_clean_venv/bin/python",
+        "-u",
+        "/root/data/cys/llmoptimizer_benchmark/tools/query_vae_service.py",
+        "--gpu",
+        "0",
+        "--cpu",
+        "27",
+        "--port",
+        "21821",
+        "--token-file",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/token",
+        "--native",
+        "/root/data/cys/logs/query_train800_author_fixed_20261004/native",
+        "--memory-fraction",
+        ".02"
+      ]
+    },
+    "batch_worker14.process.json": {
+      "pid": 22255,
+      "alive": true,
+      "command": null,
+      "host": "LLMOptimizer4"
+    },
+    "batch_worker4.process.json": {
+      "pid": 10147,
+      "alive": true,
+      "command": null
+    },
+    "batch_worker3.process.json": {
+      "pid": 10146,
+      "alive": true,
+      "command": null
+    },
+    "vae.process.json": {
+      "pid": 52439,
+      "alive": false,
+      "command": [
+        "/root/data/cys/envs/bolt_clean_venv/bin/python",
+        "-u",
+        "/root/data/cys/llmoptimizer_benchmark/tools/query_vae_service.py",
+        "--gpu",
+        "3",
+        "--cpu",
+        "36",
+        "--port",
+        "21820",
+        "--token-file",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/token",
+        "--native",
+        "/root/data/cys/logs/query_train800_author_fixed_20261004/native",
+        "--memory-fraction",
+        ".02"
+      ]
+    },
+    "worker5.process.json": {
+      "pid": 55888,
+      "alive": false,
+      "command": null
+    },
+    "batch_worker1.process.json": {
+      "pid": 10144,
+      "alive": true,
+      "command": null
+    },
+    "worker0.process.json": {
+      "pid": 55883,
+      "alive": false,
+      "command": null
+    },
+    "vae0_resources.process.json": {
+      "pid": 8272,
+      "alive": true,
+      "command": [
+        "/root/data/cys/envs/bolt_clean_venv/bin/python",
+        "-u",
+        "/root/data/cys/llmoptimizer_benchmark/tools/query_vae_service.py",
+        "--gpu",
+        "0",
+        "--cpu",
+        "26",
+        "--port",
+        "21820",
+        "--token-file",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/token",
+        "--native",
+        "/root/data/cys/logs/query_train800_author_fixed_20261004/native",
+        "--memory-fraction",
+        ".02"
+      ]
+    },
+    "vae6_resources.process.json": {
+      "pid": 8278,
+      "alive": true,
+      "command": [
+        "/root/data/cys/envs/bolt_clean_venv/bin/python",
+        "-u",
+        "/root/data/cys/llmoptimizer_benchmark/tools/query_vae_service.py",
+        "--gpu",
+        "2",
+        "--cpu",
+        "32",
+        "--port",
+        "21826",
+        "--token-file",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/token",
+        "--native",
+        "/root/data/cys/logs/query_train800_author_fixed_20261004/native",
+        "--memory-fraction",
+        ".02"
+      ]
+    },
+    "orpo_broker.process.json": {
+      "pid": 53533,
+      "alive": false,
+      "command": [
+        "/usr/bin/python3",
+        "-u",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/code/qwen_inference_server.py",
+        "broker",
+        "--config",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/orpo.broker.json"
+      ]
+    },
+    "worker1.process.json": {
+      "pid": 55884,
+      "alive": false,
+      "command": null
+    },
+    "vae8_resources.process.json": {
+      "pid": 8280,
+      "alive": true,
+      "command": [
+        "/root/data/cys/envs/bolt_clean_venv/bin/python",
+        "-u",
+        "/root/data/cys/llmoptimizer_benchmark/tools/query_vae_service.py",
+        "--gpu",
+        "3",
+        "--cpu",
+        "34",
+        "--port",
+        "21828",
+        "--token-file",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/token",
+        "--native",
+        "/root/data/cys/logs/query_train800_author_fixed_20261004/native",
+        "--memory-fraction",
+        ".02"
+      ]
+    },
+    "batch_worker19.process.json": {
+      "pid": 22315,
+      "alive": true,
+      "command": null,
+      "host": "LLMOptimizer4"
+    },
+    "batch_worker12.process.json": {
+      "pid": 22230,
+      "alive": true,
+      "command": null,
+      "host": "LLMOptimizer4"
+    },
+    "diagnostics.LLMOptimizer4.process.json": {
+      "pid": 22124,
+      "alive": true,
+      "command": null,
+      "host": "LLMOptimizer4"
+    },
+    "replica3.process.json": {
+      "pid": 52438,
+      "alive": false,
+      "command": [
+        "/root/data/cys/baseline/envs/taskset_qwen35_fast_20261030/bin/python",
+        "-u",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/code/qwen_inference_server.py",
+        "replica",
+        "--config",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/replica3.json"
+      ]
+    },
+    "vae9_resources.process.json": {
+      "pid": 8281,
+      "alive": true,
+      "command": [
+        "/root/data/cys/envs/bolt_clean_venv/bin/python",
+        "-u",
+        "/root/data/cys/llmoptimizer_benchmark/tools/query_vae_service.py",
+        "--gpu",
+        "3",
+        "--cpu",
+        "35",
+        "--port",
+        "21829",
+        "--token-file",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/token",
+        "--native",
+        "/root/data/cys/logs/query_train800_author_fixed_20261004/native",
+        "--memory-fraction",
+        ".02"
+      ]
+    },
+    "vae7_resources.process.json": {
+      "pid": 8279,
+      "alive": true,
+      "command": [
+        "/root/data/cys/envs/bolt_clean_venv/bin/python",
+        "-u",
+        "/root/data/cys/llmoptimizer_benchmark/tools/query_vae_service.py",
+        "--gpu",
+        "2",
+        "--cpu",
+        "33",
+        "--port",
+        "21827",
+        "--token-file",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/token",
+        "--native",
+        "/root/data/cys/logs/query_train800_author_fixed_20261004/native",
+        "--memory-fraction",
+        ".02"
+      ]
+    },
+    "llm0_resources.process.json": {
+      "pid": 8983,
+      "alive": true,
+      "command": [
+        "/root/data/cys/baseline/envs/taskset_qwen35_fast_20261030/bin/python",
+        "-u",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/batch_code/qwen_inference_server.py",
+        "replica",
+        "--config",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/warm_start.llm0.resources.json"
+      ]
+    },
+    "batch_worker7.process.json": {
+      "pid": 22170,
+      "alive": true,
+      "command": null,
+      "host": "LLMOptimizer4"
+    },
+    "batch_worker15.process.json": {
+      "pid": 22267,
+      "alive": true,
+      "command": null,
+      "host": "LLMOptimizer4"
+    },
+    "replica0.process.json": {
+      "pid": 52435,
+      "alive": false,
+      "command": [
+        "/root/data/cys/baseline/envs/taskset_qwen35_fast_20261030/bin/python",
+        "-u",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/code/qwen_inference_server.py",
+        "replica",
+        "--config",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/replica0.json"
+      ]
+    },
+    "orpo_resources_broker.process.json": {
+      "pid": 30164,
+      "alive": false,
+      "command": [
+        "/usr/bin/python3",
+        "-u",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/batch_code/qwen_inference_server.py",
+        "broker",
+        "--config",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/orpo.resources.broker.json"
+      ]
+    },
+    "worker6.process.json": {
+      "pid": 55889,
+      "alive": false,
+      "command": null
+    },
+    "worker3.process.json": {
+      "pid": 55886,
+      "alive": false,
+      "command": null
+    },
+    "vae3_resources.process.json": {
+      "pid": 8275,
+      "alive": true,
+      "command": [
+        "/root/data/cys/envs/bolt_clean_venv/bin/python",
+        "-u",
+        "/root/data/cys/llmoptimizer_benchmark/tools/query_vae_service.py",
+        "--gpu",
+        "1",
+        "--cpu",
+        "29",
+        "--port",
+        "21823",
+        "--token-file",
+        "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/token",
+        "--native",
+        "/root/data/cys/logs/query_train800_author_fixed_20261004/native",
+        "--memory-fraction",
+        ".02"
+      ]
+    },
+    "worker2.process.json": {
+      "pid": 55885,
+      "alive": false,
+      "command": null
+    },
+    "controller.process.json": {
+      "pid": 55854,
+      "alive": false,
+      "command": null
+    },
+    "batch_worker10.process.json": {
+      "pid": 22206,
+      "alive": true,
+      "command": null,
+      "host": "LLMOptimizer4"
+    },
+    "resources_tunnel.process.json": {
+      "pid": 8362,
+      "alive": true,
+      "command": [
+        "ssh",
+        "-NT",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ControlMaster=no",
+        "-o",
+        "ControlPath=none",
+        "-o",
+        "ExitOnForwardFailure=yes",
+        "-o",
+        "ServerAliveInterval=20",
+        "-o",
+        "ServerAliveCountMax=3",
+        "-R",
+        "127.0.0.1:21810:127.0.0.1:21810",
+        "-R",
+        "127.0.0.1:21811:127.0.0.1:21811",
+        "-R",
+        "127.0.0.1:21820:127.0.0.1:21820",
+        "-R",
+        "127.0.0.1:21821:127.0.0.1:21821",
+        "-R",
+        "127.0.0.1:21822:127.0.0.1:21822",
+        "-R",
+        "127.0.0.1:21823:127.0.0.1:21823",
+        "-R",
+        "127.0.0.1:21824:127.0.0.1:21824",
+        "-R",
+        "127.0.0.1:21825:127.0.0.1:21825",
+        "-R",
+        "127.0.0.1:21826:127.0.0.1:21826",
+        "-R",
+        "127.0.0.1:21827:127.0.0.1:21827",
+        "-R",
+        "127.0.0.1:21828:127.0.0.1:21828",
+        "-R",
+        "127.0.0.1:21829:127.0.0.1:21829",
+        "LLMOptimizer4"
+      ]
+    },
+    "worker7.process.json": {
+      "pid": 55890,
+      "alive": false,
+      "command": null
+    },
+    "batch_worker18.process.json": {
+      "pid": 22303,
+      "alive": true,
+      "command": null,
+      "host": "LLMOptimizer4"
+    },
+    "batch_worker5.process.json": {
+      "pid": 10148,
+      "alive": true,
+      "command": null
+    },
+    "diagnostics.LLMOptimizer2.process.json": {
+      "pid": 9482,
+      "alive": true,
+      "command": null
+    },
+    "batch_worker13.process.json": {
+      "pid": 22242,
+      "alive": true,
+      "command": null,
+      "host": "LLMOptimizer4"
+    }
+  },
+  "errors": {},
+  "completed_rollout_groups": 0,
+  "controller_alive": true,
+  "inference_health": {
+    "bolt": {
+      "ready": true,
+      "queued": 12,
+      "replicas": [
+        {
+          "name": "query_hybrid_warm_start_llm0",
+          "ready": true,
+          "busy": true,
+          "completed": 22,
+          "error": null,
+          "prompt_cache": {
+            "enabled": true,
+            "max_bytes": 1610612736,
+            "min_tokens": 128
+          }
+        },
+        {
+          "name": "query_hybrid_warm_start_llm1",
+          "ready": true,
+          "busy": true,
+          "completed": 23,
+          "error": null,
+          "prompt_cache": {
+            "enabled": true,
+            "max_bytes": 1610612736,
+            "min_tokens": 128
+          }
+        }
+      ]
+    },
+    "orpo": {
+      "state": "inactive_in_current_stage"
+    }
+  },
+  "resource_health": {
+    "passed": true,
+    "stage": "warm30",
+    "deep": false,
+    "vae": [],
+    "llm": [],
+    "service_processes_alive": 13,
+    "tunnel_alive": true,
+    "at": 1794842757.1680954
+  },
+  "worker_statuses": {
+    "0": {
+      "stage": "warm30",
+      "task": "CEB_2A645",
+      "pid": 10143,
+      "host": "LLMOptimizer2",
+      "status": "running",
+      "at": 1794842638.8358607,
+      "port": 20402,
+      "optimizer_cpu": 18,
+      "postgres_cpus": [
+        0,
+        1,
+        2
+      ]
+    },
+    "1": {
+      "stage": "warm30",
+      "task": "CEB_2A498",
+      "pid": 10144,
+      "host": "LLMOptimizer2",
+      "status": "running",
+      "at": 1794842638.829309,
+      "port": 20403,
+      "optimizer_cpu": 19,
+      "postgres_cpus": [
+        3,
+        4,
+        5
+      ]
+    },
+    "2": {
+      "stage": "warm30",
+      "task": "CEB_2A698",
+      "pid": 10145,
+      "host": "LLMOptimizer2",
+      "status": "running",
+      "at": 1794842638.8657103,
+      "port": 20404,
+      "optimizer_cpu": 20,
+      "postgres_cpus": [
+        6,
+        7,
+        8
+      ]
+    },
+    "3": {
+      "stage": "warm30",
+      "task": "CEB_2A677",
+      "pid": 10146,
+      "host": "LLMOptimizer2",
+      "status": "running",
+      "at": 1794842638.837437,
+      "port": 20405,
+      "optimizer_cpu": 21,
+      "postgres_cpus": [
+        9,
+        10,
+        11
+      ]
+    },
+    "4": {
+      "stage": "warm30",
+      "task": "CEB_2A860",
+      "pid": 10147,
+      "host": "LLMOptimizer2",
+      "status": "running",
+      "at": 1794842638.8666854,
+      "port": 20406,
+      "optimizer_cpu": 22,
+      "postgres_cpus": [
+        12,
+        13,
+        14
+      ]
+    },
+    "5": {
+      "stage": "warm30",
+      "task": "CEB_2A569",
+      "pid": 10148,
+      "host": "LLMOptimizer2",
+      "status": "running",
+      "at": 1794842638.8309424,
+      "port": 20407,
+      "optimizer_cpu": 23,
+      "postgres_cpus": [
+        15,
+        16,
+        17
+      ]
+    },
+    "6": {
+      "stage": "warm30",
+      "task": "CEB_2A862",
+      "pid": 22156,
+      "host": "LLMOptimizer4",
+      "status": "running",
+      "at": 1794842639.4999688,
+      "port": 19700,
+      "optimizer_cpu": 45,
+      "postgres_cpus": [
+        0,
+        1,
+        2
+      ]
+    },
+    "7": {
+      "stage": "warm30",
+      "task": "CEB_2A899",
+      "pid": 22170,
+      "host": "LLMOptimizer4",
+      "status": "running",
+      "at": 1794842641.9629226,
+      "port": 19705,
+      "optimizer_cpu": 46,
+      "postgres_cpus": [
+        3,
+        4,
+        5
+      ]
+    },
+    "8": {
+      "stage": "warm30",
+      "task": "CEB_2A96",
+      "pid": 22182,
+      "host": "LLMOptimizer4",
+      "status": "running",
+      "at": 1794842644.5678587,
+      "port": 19706,
+      "optimizer_cpu": 47,
+      "postgres_cpus": [
+        6,
+        7,
+        8
+      ]
+    },
+    "9": {
+      "stage": "warm30",
+      "task": "CEB_2B146",
+      "pid": 22194,
+      "host": "LLMOptimizer4",
+      "status": "running",
+      "at": 1794842647.302743,
+      "port": 19707,
+      "optimizer_cpu": 48,
+      "postgres_cpus": [
+        9,
+        10,
+        11
+      ]
+    },
+    "10": {
+      "stage": "warm30",
+      "task": "CEB_2B165",
+      "pid": 22206,
+      "host": "LLMOptimizer4",
+      "status": "running",
+      "at": 1794842649.764916,
+      "port": 19708,
+      "optimizer_cpu": 49,
+      "postgres_cpus": [
+        12,
+        13,
+        14
+      ]
+    },
+    "11": {
+      "stage": "warm30",
+      "task": "CEB_2B170",
+      "pid": 22218,
+      "host": "LLMOptimizer4",
+      "status": "running",
+      "at": 1794842652.3455474,
+      "port": 19709,
+      "optimizer_cpu": 50,
+      "postgres_cpus": [
+        15,
+        16,
+        17
+      ]
+    },
+    "12": {
+      "stage": "warm30",
+      "task": "CEB_2B185",
+      "pid": 22230,
+      "host": "LLMOptimizer4",
+      "status": "running",
+      "at": 1794842655.0730207,
+      "port": 19710,
+      "optimizer_cpu": 51,
+      "postgres_cpus": [
+        18,
+        19,
+        20
+      ]
+    },
+    "13": {
+      "stage": "warm30",
+      "task": "CEB_2B19",
+      "pid": 22242,
+      "host": "LLMOptimizer4",
+      "status": "running",
+      "at": 1794842657.645291,
+      "port": 19711,
+      "optimizer_cpu": 52,
+      "postgres_cpus": [
+        21,
+        22,
+        23
+      ]
+    },
+    "14": {
+      "stage": "warm30",
+      "task": "CEB_2B228",
+      "pid": 22255,
+      "host": "LLMOptimizer4",
+      "status": "running",
+      "at": 1794842660.3390346,
+      "port": 19712,
+      "optimizer_cpu": 53,
+      "postgres_cpus": [
+        24,
+        25,
+        26
+      ]
+    },
+    "15": {
+      "stage": "warm30",
+      "task": "CEB_2B241",
+      "pid": 22267,
+      "host": "LLMOptimizer4",
+      "status": "running",
+      "at": 1794842662.8850474,
+      "port": 19713,
+      "optimizer_cpu": 54,
+      "postgres_cpus": [
+        27,
+        28,
+        29
+      ]
+    },
+    "16": {
+      "stage": "warm30",
+      "task": "CEB_2B251",
+      "pid": 22279,
+      "host": "LLMOptimizer4",
+      "status": "running",
+      "at": 1794842665.4768193,
+      "port": 19714,
+      "optimizer_cpu": 55,
+      "postgres_cpus": [
+        30,
+        31,
+        32
+      ]
+    },
+    "17": {
+      "stage": "warm30",
+      "task": "CEB_2B253",
+      "pid": 22291,
+      "host": "LLMOptimizer4",
+      "status": "running",
+      "at": 1794842668.1229641,
+      "port": 19715,
+      "optimizer_cpu": 56,
+      "postgres_cpus": [
+        33,
+        34,
+        35
+      ]
+    },
+    "18": {
+      "stage": "warm30",
+      "task": "CEB_2B267",
+      "pid": 22303,
+      "host": "LLMOptimizer4",
+      "status": "running",
+      "at": 1794842670.670316,
+      "port": 19716,
+      "optimizer_cpu": 57,
+      "postgres_cpus": [
+        36,
+        37,
+        38
+      ]
+    },
+    "19": {
+      "stage": "warm30",
+      "task": "CEB_2B291",
+      "pid": 22315,
+      "host": "LLMOptimizer4",
+      "status": "running",
+      "at": 1794842673.3309436,
+      "port": 19717,
+      "optimizer_cpu": 58,
+      "postgres_cpus": [
+        39,
+        40,
+        41
+      ]
+    },
+    "20": {
+      "stage": "warm30",
+      "task": "CEB_2B326",
+      "pid": 22327,
+      "host": "LLMOptimizer4",
+      "status": "running",
+      "at": 1794842675.9499202,
+      "port": 19718,
+      "optimizer_cpu": 59,
+      "postgres_cpus": [
+        42,
+        43,
+        44
+      ]
+    }
+  },
+  "remote_host_reachable": true,
+  "expected_evaluators": 21,
+  "configured_gpu_services": {
+    "llm": 2,
+    "vae": 10
+  },
+  "measurement_delta": null,
+  "no_new_measurements_since_previous_check": false
+}

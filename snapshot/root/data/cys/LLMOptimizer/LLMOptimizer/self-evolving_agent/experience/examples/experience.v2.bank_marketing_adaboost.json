@@ -1,0 +1,514 @@
+{
+  "schema_version": "experience.v2",
+  "id": "exp_bank-marketing_adaboost_da039291ebbfb668",
+  "created_at": "2026-08-08T14:03:23Z",
+  "meta": {
+    "run_uri": "/root/data/cys/blockdata_archive/llmoptimizer_benchmark/history_data/history_data/cls/bal_acc/bank-marketing/adaboost.json",
+    "optimizer": "bo_history",
+    "seed": null,
+    "budget_trials": 100,
+    "summarizer": {
+      "facts": "top_worst_gap+incumbent_jumps+curve_dynamics",
+      "llm": null,
+      "template": "experience_builder.v2"
+    }
+  },
+  "problem": {
+    "domain": "tabular_ml",
+    "task_type": "classification",
+    "dataset_id": "bank-marketing",
+    "algorithm_id": "adaboost",
+    "context": "classification on bank-marketing with adaboost; optimize bal_acc (higher is better).",
+    "metric": "bal_acc",
+    "higher_is_better": true,
+    "profile": {},
+    "tags": [],
+    "representation": "structured_config",
+    "space": {
+      "space_hash": "da039291ebbfb668",
+      "dim": 4,
+      "decoder": null,
+      "bounds": null,
+      "factors": [
+        {
+          "name": "adaboost:algorithm",
+          "kind": "categorical_knob",
+          "role": "optimizer_choice",
+          "type": "categorical",
+          "log_scale": null,
+          "bounds": null
+        },
+        {
+          "name": "adaboost:learning_rate",
+          "kind": "numeric_knob",
+          "role": "learning_rate",
+          "type": "float",
+          "log_scale": null,
+          "bounds": null
+        },
+        {
+          "name": "adaboost:max_depth",
+          "kind": "numeric_knob",
+          "role": "tree_depth",
+          "type": "float",
+          "log_scale": null,
+          "bounds": null
+        },
+        {
+          "name": "adaboost:n_estimators",
+          "kind": "numeric_knob",
+          "role": "n_estimators",
+          "type": "float",
+          "log_scale": null,
+          "bounds": null
+        }
+      ],
+      "space_text": "adaboost:algorithm, adaboost:learning_rate, adaboost:max_depth, adaboost:n_estimators"
+    }
+  },
+  "result": {
+    "n_trials": 100,
+    "n_success": 100,
+    "n_failed": 0,
+    "score_range": {
+      "lo": 0.6146873419855048,
+      "hi": 0.7267220521631335
+    },
+    "best": {
+      "trial": 27,
+      "score": 0.7267220521631335,
+      "solution": {
+        "type": "config",
+        "config": {
+          "adaboost:algorithm": "SAMME.R",
+          "adaboost:learning_rate": 1.7006393258185872,
+          "adaboost:max_depth": 2,
+          "adaboost:n_estimators": 419
+        },
+        "vector": null,
+        "sequence": null,
+        "artifacts": null
+      }
+    },
+    "baseline_score": 0.6287900915056844,
+    "baseline_kind": "first_success",
+    "normalized_gain": 1.0,
+    "dynamics": {
+      "trend": "STAGNANT",
+      "stagnation": 73,
+      "incumbent_updates": 4,
+      "phase_note": "warm 1–10; progress with 4 incumbent updates until trial 27; plateau last 73 trials"
+    }
+  },
+  "knowledge": {
+    "factors": [
+      {
+        "name": "adaboost:learning_rate",
+        "kind": "numeric_knob",
+        "role": "learning_rate",
+        "status": "TESTED",
+        "importance": 0.39,
+        "method": "top_worst_gap",
+        "direction": "In this run, higher adaboost:learning_rate was over-represented in top trials (top mean=1.634, worst mean=0.6162).",
+        "good_region": {
+          "low": 0.23269342718619132,
+          "high": 1.8903393783933444
+        },
+        "bad_region": {
+          "low": 0.013183322887228916,
+          "high": 1.9310614421823773
+        },
+        "evidence_ids": [
+          "ev_004"
+        ]
+      },
+      {
+        "name": "adaboost:max_depth",
+        "kind": "numeric_knob",
+        "role": "tree_depth",
+        "status": "TESTED",
+        "importance": 0.3182,
+        "method": "top_worst_gap",
+        "direction": "In this run, lower adaboost:max_depth was over-represented in top trials (top mean=3.3, worst mean=4.8).",
+        "good_region": {
+          "low": 2.0,
+          "high": 8.0
+        },
+        "bad_region": {
+          "low": 2.0,
+          "high": 8.0
+        },
+        "evidence_ids": [
+          "ev_005"
+        ]
+      },
+      {
+        "name": "adaboost:n_estimators",
+        "kind": "numeric_knob",
+        "role": "n_estimators",
+        "status": "TESTED",
+        "importance": 0.2918,
+        "method": "top_worst_gap",
+        "direction": "In this run, higher adaboost:n_estimators was over-represented in top trials (top mean=305.4, worst mean=256.6).",
+        "good_region": {
+          "low": 90.0,
+          "high": 493.0
+        },
+        "bad_region": {
+          "low": 50.0,
+          "high": 489.0
+        },
+        "evidence_ids": [
+          "ev_006"
+        ]
+      }
+    ],
+    "evidence": [
+      {
+        "id": "ev_001",
+        "claim": "Incumbent jump trial 1→2: changed adaboost:algorithm, adaboost:learning_rate, adaboost:max_depth, adaboost:n_estimators; score 0.6288→0.6895.",
+        "kind": "incumbent_jump",
+        "factors": [
+          "adaboost:algorithm",
+          "adaboost:learning_rate",
+          "adaboost:max_depth",
+          "adaboost:n_estimators"
+        ],
+        "trials": [
+          1,
+          2
+        ],
+        "delta": 0.060728,
+        "confidence": 0.9
+      },
+      {
+        "id": "ev_002",
+        "claim": "Incumbent jump trial 2→3: changed adaboost:learning_rate, adaboost:max_depth, adaboost:n_estimators; score 0.6895→0.7213.",
+        "kind": "incumbent_jump",
+        "factors": [
+          "adaboost:learning_rate",
+          "adaboost:max_depth",
+          "adaboost:n_estimators"
+        ],
+        "trials": [
+          2,
+          3
+        ],
+        "delta": 0.031745,
+        "confidence": 0.9
+      },
+      {
+        "id": "ev_003",
+        "claim": "Incumbent jump trial 3→27: changed adaboost:algorithm, adaboost:learning_rate, adaboost:n_estimators; score 0.7213→0.7267.",
+        "kind": "incumbent_jump",
+        "factors": [
+          "adaboost:algorithm",
+          "adaboost:learning_rate",
+          "adaboost:n_estimators"
+        ],
+        "trials": [
+          3,
+          27
+        ],
+        "delta": 0.005459,
+        "confidence": 0.7449163728907134
+      },
+      {
+        "id": "ev_004",
+        "claim": "In this run, higher adaboost:learning_rate was over-represented in top trials (top mean=1.634, worst mean=0.6162).",
+        "kind": "top_vs_worst",
+        "factors": [
+          "adaboost:learning_rate"
+        ],
+        "trials": [
+          27,
+          29,
+          39,
+          43,
+          47,
+          82,
+          91,
+          99
+        ],
+        "delta": 0.052351,
+        "confidence": 0.89
+      },
+      {
+        "id": "ev_005",
+        "claim": "In this run, lower adaboost:max_depth was over-represented in top trials (top mean=3.3, worst mean=4.8).",
+        "kind": "top_vs_worst",
+        "factors": [
+          "adaboost:max_depth"
+        ],
+        "trials": [
+          27,
+          29,
+          39,
+          43,
+          47,
+          82,
+          91,
+          99
+        ],
+        "delta": 0.052351,
+        "confidence": 0.8182
+      },
+      {
+        "id": "ev_006",
+        "claim": "In this run, higher adaboost:n_estimators was over-represented in top trials (top mean=305.4, worst mean=256.6).",
+        "kind": "top_vs_worst",
+        "factors": [
+          "adaboost:n_estimators"
+        ],
+        "trials": [
+          27,
+          29,
+          39,
+          43,
+          47,
+          82,
+          91,
+          99
+        ],
+        "delta": 0.052351,
+        "confidence": 0.7918000000000001
+      }
+    ],
+    "takeaways": {
+      "worked": [
+        {
+          "text": "Prefer adaboost:learning_rate in {'low': 0.23269342718619132, 'high': 1.8903393783933444} (In this run, higher adaboost:learning_rate was over-represented in top trials (top mean=1.634, worst mean=0.6162).)",
+          "confidence": 0.89,
+          "evidence_ids": [
+            "ev_004"
+          ],
+          "scope": "same_algorithm"
+        },
+        {
+          "text": "Prefer adaboost:max_depth in {'low': 2.0, 'high': 8.0} (In this run, lower adaboost:max_depth was over-represented in top trials (top mean=3.3, worst mean=4.8).)",
+          "confidence": 0.818,
+          "evidence_ids": [
+            "ev_005"
+          ],
+          "scope": "same_algorithm"
+        },
+        {
+          "text": "Prefer adaboost:n_estimators in {'low': 90.0, 'high': 493.0} (In this run, higher adaboost:n_estimators was over-represented in top trials (top mean=305.4, worst mean=256.6).)",
+          "confidence": 0.792,
+          "evidence_ids": [
+            "ev_006"
+          ],
+          "scope": "same_algorithm"
+        }
+      ],
+      "failed": [
+        {
+          "text": "Avoid adaboost:learning_rate in {'low': 0.013183322887228916, 'high': 1.9310614421823773} on this run.",
+          "confidence": 0.89,
+          "evidence_ids": [
+            "ev_004"
+          ],
+          "scope": "same_algorithm"
+        },
+        {
+          "text": "Avoid adaboost:max_depth in {'low': 2.0, 'high': 8.0} on this run.",
+          "confidence": 0.818,
+          "evidence_ids": [
+            "ev_005"
+          ],
+          "scope": "same_algorithm"
+        },
+        {
+          "text": "Avoid adaboost:n_estimators in {'low': 50.0, 'high': 489.0} on this run.",
+          "confidence": 0.792,
+          "evidence_ids": [
+            "ev_006"
+          ],
+          "scope": "same_algorithm"
+        }
+      ],
+      "transfer": [
+        {
+          "text": "Role `learning_rate` (adaboost:learning_rate) showed top-vs-worst association in this run; treat as a candidate priority knob on similar tasks.",
+          "confidence": 0.801,
+          "evidence_ids": [
+            "ev_004"
+          ],
+          "scope": "same_domain"
+        },
+        {
+          "text": "Role `tree_depth` (adaboost:max_depth) showed top-vs-worst association in this run; treat as a candidate priority knob on similar tasks.",
+          "confidence": 0.736,
+          "evidence_ids": [
+            "ev_005"
+          ],
+          "scope": "same_domain"
+        },
+        {
+          "text": "Role `n_estimators` (adaboost:n_estimators) showed top-vs-worst association in this run; treat as a candidate priority knob on similar tasks.",
+          "confidence": 0.713,
+          "evidence_ids": [
+            "ev_006"
+          ],
+          "scope": "same_domain"
+        }
+      ]
+    },
+    "avoid": []
+  },
+  "delivery": {
+    "quality": {
+      "fidelity": 0.854,
+      "confidence": 0.7675,
+      "overall": 0.8107,
+      "note": "100/100 success; 4/4 factors TESTED; stagnation=73"
+    },
+    "embed_text": "classification on bank-marketing with adaboost; optimize bal_acc (higher is better). gain=1.0; incumbent_updates=4; trend=STAGNANT; stagnant=73. Top factors: adaboost:learning_rate(0.39); adaboost:max_depth(0.32); adaboost:n_estimators(0.29). Avoid: none.",
+    "filters": {
+      "domain": "tabular_ml",
+      "task_type": "classification",
+      "representation": "structured_config",
+      "algorithm_id": "adaboost",
+      "space_hash": "da039291ebbfb668"
+    },
+    "prompt_block": "EXPERIENCE (bank-marketing/adaboost, q=0.8107):\n- gain=1.0 over baseline (first_success); 4 incumbent updates; ended STAGNANT, stagnant 73.\n- curve: warm 1–10; progress with 4 incumbent updates until trial 27; plateau last 73 trials\n- factor adaboost:learning_rate: In this run, higher adaboost:learning_rate was over-represented in top trials (top mean=1.634, worst mean=0.6162).\n- factor adaboost:max_depth: In this run, lower adaboost:max_depth was over-represented in top trials (top mean=3.3, worst mean=4.8).\n- factor adaboost:n_estimators: In this run, higher adaboost:n_estimators was over-represented in top trials (top mean=305.4, worst mean=256.6).",
+    "train": {
+      "best": {
+        "type": "config",
+        "config": {
+          "adaboost:algorithm": "SAMME.R",
+          "adaboost:learning_rate": 1.7006393258185872,
+          "adaboost:max_depth": 2,
+          "adaboost:n_estimators": 419
+        },
+        "vector": null,
+        "sequence": null,
+        "artifacts": null
+      },
+      "good": [
+        {
+          "type": "config",
+          "config": {
+            "adaboost:algorithm": "SAMME.R",
+            "adaboost:learning_rate": 1.7006393258185872,
+            "adaboost:max_depth": 2,
+            "adaboost:n_estimators": 419
+          },
+          "vector": null,
+          "sequence": null,
+          "artifacts": null
+        },
+        {
+          "type": "config",
+          "config": {
+            "adaboost:algorithm": "SAMME",
+            "adaboost:learning_rate": 1.7421925052414504,
+            "adaboost:max_depth": 3,
+            "adaboost:n_estimators": 397
+          },
+          "vector": null,
+          "sequence": null,
+          "artifacts": null
+        },
+        {
+          "type": "config",
+          "config": {
+            "adaboost:algorithm": "SAMME",
+            "adaboost:learning_rate": 1.742536590303734,
+            "adaboost:max_depth": 3,
+            "adaboost:n_estimators": 144
+          },
+          "vector": null,
+          "sequence": null,
+          "artifacts": null
+        },
+        {
+          "type": "config",
+          "config": {
+            "adaboost:algorithm": "SAMME",
+            "adaboost:learning_rate": 1.8544621439439049,
+            "adaboost:max_depth": 3,
+            "adaboost:n_estimators": 348
+          },
+          "vector": null,
+          "sequence": null,
+          "artifacts": null
+        },
+        {
+          "type": "config",
+          "config": {
+            "adaboost:algorithm": "SAMME",
+            "adaboost:learning_rate": 1.742536590303734,
+            "adaboost:max_depth": 3,
+            "adaboost:n_estimators": 196
+          },
+          "vector": null,
+          "sequence": null,
+          "artifacts": null
+        }
+      ],
+      "bad": [
+        {
+          "type": "config",
+          "config": {
+            "adaboost:algorithm": "SAMME.R",
+            "adaboost:learning_rate": 0.028067499702079304,
+            "adaboost:max_depth": 6,
+            "adaboost:n_estimators": 220
+          },
+          "vector": null,
+          "sequence": null,
+          "artifacts": null
+        },
+        {
+          "type": "config",
+          "config": {
+            "adaboost:algorithm": "SAMME.R",
+            "adaboost:learning_rate": 1.73186191415011,
+            "adaboost:max_depth": 6,
+            "adaboost:n_estimators": 339
+          },
+          "vector": null,
+          "sequence": null,
+          "artifacts": null
+        },
+        {
+          "type": "config",
+          "config": {
+            "adaboost:algorithm": "SAMME",
+            "adaboost:learning_rate": 0.9148383002196313,
+            "adaboost:max_depth": 2,
+            "adaboost:n_estimators": 214
+          },
+          "vector": null,
+          "sequence": null,
+          "artifacts": null
+        },
+        {
+          "type": "config",
+          "config": {
+            "adaboost:algorithm": "SAMME.R",
+            "adaboost:learning_rate": 0.3620117204994321,
+            "adaboost:max_depth": 6,
+            "adaboost:n_estimators": 300
+          },
+          "vector": null,
+          "sequence": null,
+          "artifacts": null
+        },
+        {
+          "type": "config",
+          "config": {
+            "adaboost:algorithm": "SAMME.R",
+            "adaboost:learning_rate": 1.2145824103059482,
+            "adaboost:max_depth": 6,
+            "adaboost:n_estimators": 119
+          },
+          "vector": null,
+          "sequence": null,
+          "artifacts": null
+        }
+      ]
+    }
+  }
+}

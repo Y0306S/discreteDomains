@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "authorization": "User requested SemanticOPT proposals in batches of 50",
+  "base_recipe_sha256": "1c1d69f5693984527f42280b72f8b4cffdec5899d96ea93e4980483830fb0fec",
+  "size": 50,
+  "max_requests": 4,
+  "max_input_tokens": 15360,
+  "max_new_tokens": {
+    "peptide": 4096,
+    "query": 16384
+  },
+  "resume": "completed proposals use completed_count // 50 rounds and completed_count % 50 offset; a partial round requests only its remaining slots",
+  "feedback": "all configurations in a batch are proposed before any batch measurement is observed",
+  "validation": "every item is validated and deduplicated against initial observations, committed observations, and earlier items in the batch",
+  "fallback": "existing constrained random fallback fills missing valid items and is labelled random_fallback",
+  "response_format": "one numbered JSON object; peptide values are sequence strings and query values are integer plan arrays; converted losslessly to canonical configuration objects"
+}

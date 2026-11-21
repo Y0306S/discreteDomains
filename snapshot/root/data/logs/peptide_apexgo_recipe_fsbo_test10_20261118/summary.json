@@ -1,0 +1,69 @@
+{
+  "status": "complete",
+  "tasks": [
+    "pep_117",
+    "pep_219",
+    "pep_221",
+    "pep_575",
+    "pep_673",
+    "pep_921",
+    "pep_925",
+    "pep_967",
+    "pep_980",
+    "pep_999"
+  ],
+  "offline_seconds": {
+    "vae": 1937.1799327973276,
+    "embedding_refresh": 479.43968612514436,
+    "fsbo_meta": 1141.7760187517852
+  },
+  "offline_total_seconds": 3558.395637674257,
+  "stage_process_wall_seconds": {
+    "eval_pep_673_adapted_online": 19064.47060880065,
+    "eval_pep_967_adapted_online": 20784.931743994355,
+    "fsbo_meta": 1199.1188164241612,
+    "eval_pep_980_adapted_online": 16294.061605120078,
+    "reconstruction_gate": 16.40489556826651,
+    "eval_pep_999_adapted_online": 18073.024406123906,
+    "eval_pep_117_adapted_online": 7633.941531855613,
+    "encoding": 490.5355333928019,
+    "eval_pep_219_adapted_online": 8084.99862043187,
+    "eval_pep_221_adapted_online": 4744.053789746016,
+    "eval_pep_921_adapted_online": 22155.544792929664,
+    "eval_pep_925_adapted_online": 23313.01507037878,
+    "vae_sequence_training": 1962.1875982657075,
+    "eval_pep_575_adapted_online": 4463.576415384188
+  },
+  "offline_amortized_per_task_at10": 355.8395637674257,
+  "offline_amortized_per_task_at200": 17.791978188371285,
+  "comparisons": [
+    {
+      "reference": "author_frozen",
+      "variant": "adapted_online",
+      "wins": 5,
+      "losses": 5,
+      "ties": 0,
+      "mean_paired_mic_reduction": -4.768588614463806,
+      "paired_task_bootstrap95_mic_reduction": [
+        -23.12426915884018,
+        7.08026759982109
+      ],
+      "mean_paired_runtime_ratio": 5.988462751761552,
+      "median_paired_runtime_ratio": 5.466454746444261,
+      "ratio_of_total_online_seconds": 5.597634117558643,
+      "ratio_including_offline_cost_for_this10": 5.709669260230846
+    }
+  ],
+  "limitations": [
+    "Ten heldout tasks, one optimizer seed. Historical source800 corpus replaces original UniRef corpus for continued training; FSBO is our extension, not part of APEXGo.",
+    "The author baseline reuses completed historical FSBO archives. Software, device placement and contention differ; runtime ratios do not isolate adaptation overhead.",
+    "GPU hardware is shared with existing work; matched task/arm hardware and recorded utilization do not eliminate temporal contention.",
+    "Every accepted online reconstruction/KL VAE update is followed by a fresh 100000-step FSBO meta-training run using source800 plus this task observed so far, all encoded with the updated VAE.",
+    "Completed incumbents carry forward after proposal exhaustion; paired_results.csv records actual fresh-call support for every task.",
+    "Offline VAE sees sequences from all 800 source tasks. FSBO uses all 800 source tasks with disjoint validation observations. The 10 held-out evaluation tasks remain excluded.",
+    "APEXGo optimizer/loss settings are reused for continued training on source800, not a reproduction of its original UniRef pretraining run.",
+    "Online VAE updates use reconstruction/KL on current-task recent50 and feasible top1000 unique observed sequences; rejected decoder updates roll back.",
+    "The FSBO training population also changes relative to the historical baseline; this comparison evaluates the full revised method and does not isolate the VAE effect."
+  ],
+  "baseline_source": "/root/data/logs/peptide_batch50_gpu_test200_20261102_v1/fsbo"
+}

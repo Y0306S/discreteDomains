@@ -1,0 +1,537 @@
+{
+  "job_identity": {
+    "task_id": "CEB_11A30",
+    "phase": "cycle1_01_similar",
+    "scenario": "retrieval",
+    "prefix_k": 10,
+    "prefix_end_exclusive": 149,
+    "repeat": 0,
+    "group_id": "cycle1_01_similar/CEB_11A30/k10"
+  },
+  "cards": [
+    {
+      "task": {
+        "task_id": "CEB_11A128",
+        "description": "Optimize 10-alias CEB SQL join tree.",
+        "objective": "minimize PostgreSQL wall runtime seconds",
+        "constraints": {
+          "preserve_SQL_and_predicates": true,
+          "aliases": [
+            {
+              "table": "title",
+              "table_id": 20,
+              "alias": 1
+            },
+            {
+              "table": "movie_companies",
+              "table_id": 12,
+              "alias": 1
+            },
+            {
+              "table": "company_name",
+              "table_id": 5,
+              "alias": 1
+            },
+            {
+              "table": "company_type",
+              "table_id": 6,
+              "alias": 1
+            },
+            {
+              "table": "kind_type",
+              "table_id": 10,
+              "alias": 1
+            },
+            {
+              "table": "cast_info",
+              "table_id": 2,
+              "alias": 1
+            },
+            {
+              "table": "name",
+              "table_id": 17,
+              "alias": 1
+            },
+            {
+              "table": "role_type",
+              "table_id": 19,
+              "alias": 1
+            },
+            {
+              "table": "movie_info",
+              "table_id": 13,
+              "alias": 1
+            },
+            {
+              "table": "info_type",
+              "table_id": 8,
+              "alias": 1
+            }
+          ],
+          "joins": 9,
+          "operators": {
+            "1": "NestLoop",
+            "2": "HashJoin",
+            "3": "MergeJoin"
+          },
+          "no_implicit_codec_repairs": true
+        },
+        "query_text": "SELECT n.gender, rt.role, cn.name, COUNT(*)\nFROM title as t,\nmovie_companies as mc,\ncompany_name as cn,\ncompany_type as ct,\nkind_type as kt,\ncast_info as ci,\nname as n,\nrole_type as rt,\nmovie_info as mi1,\ninfo_type as it\nWHERE t.id = mc.movie_id\nAND t.id = ci.movie_id\nAND t.id = mi1.movie_id\nAND mi1.movie_id = ci.movie_id\nAND ci.movie_id = mc.movie_id\nAND cn.id = mc.company_id\nAND ct.id = mc.company_type_id\nAND kt.id = t.kind_id\nAND ci.person_id = n.id\nAND ci.role_id = rt.id\nAND mi1.info_type_id = it.id\nAND (kt.kind ILIKE '%m%')\nAND (rt.role IN ('actress','cinematographer','composer','costume designer','guest','miscellaneous crew','producer'))\nAND (t.production_year <= 1990)\nAND (t.production_year >= 1945)\nAND (it.id IN ('4'))\nAND (mi1.info ILIKE '%e%')\nAND (cn.name ILIKE '%pr%')\nGROUP BY n.gender, rt.role, cn.name\nORDER BY COUNT(*) DESC\n",
+        "search_space": {
+          "representation": "AliasesCodec integer groups of five",
+          "table_ids": "zero based",
+          "alias_ids": "one based",
+          "component_merge": "Each operand names an alias inside an active component; merge distinct components."
+        }
+      },
+      "top": [
+        {
+          "candidate": {
+            "plan": [
+              12,
+              1,
+              5,
+              1,
+              2,
+              20,
+              1,
+              12,
+              1,
+              2,
+              13,
+              1,
+              20,
+              1,
+              2,
+              13,
+              1,
+              6,
+              1,
+              2,
+              13,
+              1,
+              10,
+              1,
+              2,
+              13,
+              1,
+              2,
+              1,
+              1,
+              13,
+              1,
+              19,
+              1,
+              2,
+              13,
+              1,
+              17,
+              1,
+              1,
+              8,
+              1,
+              13,
+              1,
+              1
+            ]
+          },
+          "measured_value": 1.395762402
+        },
+        {
+          "candidate": {
+            "plan": [
+              12,
+              1,
+              5,
+              1,
+              2,
+              20,
+              1,
+              12,
+              1,
+              2,
+              20,
+              1,
+              10,
+              1,
+              2,
+              13,
+              1,
+              20,
+              1,
+              2,
+              6,
+              1,
+              13,
+              1,
+              2,
+              6,
+              1,
+              2,
+              1,
+              1,
+              6,
+              1,
+              19,
+              1,
+              2,
+              6,
+              1,
+              17,
+              1,
+              1,
+              8,
+              1,
+              6,
+              1,
+              1
+            ]
+          },
+          "measured_value": 1.5194605207070708
+        },
+        {
+          "candidate": {
+            "plan": [
+              12,
+              1,
+              5,
+              1,
+              2,
+              20,
+              1,
+              12,
+              1,
+              2,
+              20,
+              1,
+              6,
+              1,
+              2,
+              13,
+              1,
+              20,
+              1,
+              2,
+              13,
+              1,
+              10,
+              1,
+              2,
+              13,
+              1,
+              2,
+              1,
+              1,
+              13,
+              1,
+              19,
+              1,
+              2,
+              13,
+              1,
+              17,
+              1,
+              1,
+              8,
+              1,
+              13,
+              1,
+              1
+            ]
+          },
+          "measured_value": 1.52234464045614
+        }
+      ],
+      "bottom": [
+        {
+          "candidate": {
+            "plan": [
+              20,
+              1,
+              2,
+              1,
+              3,
+              20,
+              1,
+              12,
+              1,
+              1,
+              17,
+              1,
+              20,
+              1,
+              3,
+              6,
+              1,
+              17,
+              1,
+              3,
+              6,
+              1,
+              10,
+              1,
+              2,
+              6,
+              1,
+              13,
+              1,
+              1,
+              19,
+              1,
+              6,
+              1,
+              1,
+              19,
+              1,
+              5,
+              1,
+              1,
+              19,
+              1,
+              8,
+              1,
+              1
+            ]
+          },
+          "measured_value": 18.270031849853694
+        },
+        {
+          "candidate": {
+            "plan": [
+              12,
+              1,
+              20,
+              1,
+              2,
+              12,
+              1,
+              10,
+              1,
+              2,
+              2,
+              1,
+              12,
+              1,
+              2,
+              2,
+              1,
+              13,
+              1,
+              2,
+              2,
+              1,
+              8,
+              1,
+              2,
+              2,
+              1,
+              17,
+              1,
+              2,
+              2,
+              1,
+              6,
+              1,
+              1,
+              2,
+              1,
+              5,
+              1,
+              2,
+              2,
+              1,
+              19,
+              1,
+              1
+            ]
+          },
+          "measured_value": 18.94594537001103
+        },
+        {
+          "candidate": {
+            "plan": [
+              10,
+              1,
+              20,
+              1,
+              3,
+              10,
+              1,
+              12,
+              1,
+              3,
+              10,
+              1,
+              5,
+              1,
+              3,
+              10,
+              1,
+              2,
+              1,
+              3,
+              10,
+              1,
+              6,
+              1,
+              3,
+              10,
+              1,
+              17,
+              1,
+              3,
+              10,
+              1,
+              19,
+              1,
+              3,
+              10,
+              1,
+              13,
+              1,
+              3,
+              10,
+              1,
+              8,
+              1,
+              3
+            ]
+          },
+          "measured_value": 19.441528726369143
+        }
+      ]
+    }
+  ],
+  "ranking": {
+    "method": "table_Jaccard_alias_count_shortlist16_then_exact_source_GP_Spearman",
+    "scores": [
+      {
+        "task": "CEB_11A128",
+        "spearman": 0.7,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "467e5e63013ea13b919105bc245af0cea4f6bb52d96791a48447b22a69d0cf17"
+      },
+      {
+        "task": "CEB_11A112",
+        "spearman": 0.49999999999999994,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "e6ad6b89011852157b33dd5d9406da9aadd290ec737a17f1b893d25379f76011"
+      },
+      {
+        "task": "CEB_11A115",
+        "spearman": 0.3,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "d839be9d3359fb97df637e61412cf64bdee16bdaca871f8a5ba547fc34301034"
+      },
+      {
+        "task": "CEB_11A138",
+        "spearman": 0.19999999999999998,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "30f29d6e9a46afdeb3c71379661f0a4e65c73019a50277f7b3ba05acb6e84fd0"
+      },
+      {
+        "task": "CEB_11A105",
+        "spearman": 0.09999999999999999,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "4235337df64ff4387dd16a7cb230f8a9cbf3eb13b76e0d826fbaf73511695940"
+      },
+      {
+        "task": "CEB_11A1",
+        "spearman": -0.09999999999999999,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "17bde17f2c7b08faf7c9e71ddaf0308cd26b8dea058b0d975ed2cc27d7dd6d38"
+      },
+      {
+        "task": "CEB_11A127",
+        "spearman": -0.09999999999999999,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "4ccb11f7afdfcc114a486dd38f68095676e141b2ef0dd45c34fc61a8602761d1"
+      },
+      {
+        "task": "CEB_11A132",
+        "spearman": -0.09999999999999999,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "4f030601108ab17978a3c7d147ce706c238b561ff4f6420e4334c3df20556264"
+      },
+      {
+        "task": "CEB_11A117",
+        "spearman": -0.19999999999999998,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "4af7dca796e7d4c35c644d7f48d5ade818d4c479d97e358846364da3b47480b1"
+      },
+      {
+        "task": "CEB_11A130",
+        "spearman": -0.3,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "7b56450d716fc81e3811ca3436e79f9d5232e06199843ed1e25cecbf2c699495"
+      },
+      {
+        "task": "CEB_11A135",
+        "spearman": -0.3,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "5d55601626f9d7d019b84648a67f7c5d16d96e0427ff8c8cf847f0e580151117"
+      },
+      {
+        "task": "CEB_11A0",
+        "spearman": -0.6,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "c80e6c068548da12d3edabe0fa30f0edeb60877484f507c24b82f6fef55222b9"
+      },
+      {
+        "task": "CEB_11A116",
+        "spearman": -0.6,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "3af302b6e1f64f285603d7024c04ea100fbcea4842f10a145b427354e2708ec7"
+      },
+      {
+        "task": "CEB_11A12",
+        "spearman": -0.6,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "56078b8ca177444427b6f48df30192a7b76e3266c83c0e21e9fdf807f6ff301c"
+      },
+      {
+        "task": "CEB_11A136",
+        "spearman": -0.7,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "817a53fb6d3e4f56ab3fcc563038dbc1818de71e7bdd7c3c10c0837f791fb28a"
+      },
+      {
+        "task": "CEB_11A106",
+        "spearman": -0.8999999999999998,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "923714371befc2611555da173671132e2f667b21bcd3ffd20f903de7ccc2e8ef"
+      }
+    ],
+    "selected_source_ids": [
+      "CEB_11A128"
+    ],
+    "strong_agreement_count": 1,
+    "confidence": "rank_agreement_ge_0.5",
+    "floor": 0.5,
+    "target_evidence_indices": [
+      0,
+      76,
+      77,
+      78,
+      98
+    ],
+    "target_future_labels_used": false,
+    "source_label_scope": "other training tasks only"
+  }
+}

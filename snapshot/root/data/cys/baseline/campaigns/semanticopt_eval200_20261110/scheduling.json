@@ -1,0 +1,46 @@
+{
+  "start_alongside_ml": true,
+  "authorized_by": "User requested two GPU inference slots for peptide full SFT; CPU evaluation allocations return to SemanticOPT",
+  "stages": [
+    "peptide",
+    "query"
+  ],
+  "protect_active_ml_cpu_affinities": true,
+  "protect_ml_memory_growth": true,
+  "orpo_reserved_cpus": {
+    "LLMOptimizer4": [],
+    "LLMOptimizer2": [
+      6,
+      7,
+      8,
+      9,
+      10
+    ]
+  },
+  "released_ml_worker_destination": "Two GPU inference slots reserved for full SFT on GPUs 2 and 3; remote CPU allocations return to SemanticOPT",
+  "orpo_reservation_authorized_at": 1794371964.3608215,
+  "reservation_purposes": {
+    "LLMOptimizer2": {
+      "extra_SemanticOPT_inference": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "peptide_warmstart_LoRA_SFT": [],
+      "peptide_warmstart_full_SFT": [],
+      "query_ORPO_RL": [],
+      "query_warmstart_full_SFT": []
+    },
+    "LLMOptimizer4": {
+      "peptide_warmstart_SFT_preparation": []
+    }
+  },
+  "query_training_resource_amendment": {
+    "at": 1794699478.4994056,
+    "campaign": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112",
+    "kind": "query_warmstart_full_SFT",
+    "released": true
+  }
+}

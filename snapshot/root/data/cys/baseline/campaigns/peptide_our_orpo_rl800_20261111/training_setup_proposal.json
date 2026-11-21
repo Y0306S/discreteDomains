@@ -1,0 +1,62 @@
+{
+  "status": "adopted_and_queued",
+  "domain": "peptide",
+  "selection_audit": "reports/peptide_task_selection_audit.json",
+  "task_inventory": "assets/rl_task_inventory.json",
+  "ORPO": {
+    "base_model": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+    "parent_adapter": null,
+    "examples": 1263,
+    "tasks_with_pairs": 651,
+    "tasks_scanned": 800,
+    "epochs": 1,
+    "optimizer_steps": 158,
+    "config": "orpo_config.json",
+    "token_preflight": "orpo_preflight.json",
+    "ready": true
+  },
+  "RL": {
+    "ready": "integrated; queued CPU and live GPU gates are mandatory before launch",
+    "parent": "exact verified new peptide ORPO adapter",
+    "reference": "same ORPO adapter, fixed for all four phases",
+    "cycles": 1,
+    "phase_order": [
+      "retrieval",
+      "normal",
+      "explore",
+      "exploit"
+    ],
+    "training_passes_per_phase": 2,
+    "task_scope": "all800 early phases; only genuinely eligible tasks in later phases",
+    "prompts": "current-task top/bottom + Recent50 + constraints; source-task top/bottom and task differences in RS/post50 exploitation; no region summaries",
+    "reward": "measured APEX bacteria_0 MIC improvement, with the ML GRPO framework; final normalization must be verified in peptide adapter",
+    "output": "one discrete peptide sequence per response",
+    "sample_rule": "ML adaptive4-10 proposals, exactly4 selected responses per GRPO group; no oracle call for duplicates/invalid sequences",
+    "checkpoints": "ORPO final; each RL phase with optimizer/RNG state; preserved cycle1 checkpoint",
+    "remaining": [
+      "Finish GP export and retrieval-card preparation",
+      "Full RL prompt token checks",
+      "Exact newly trained ORPO parent and actual GPU backward check"
+    ]
+  },
+  "concurrency": {
+    "dependency": "current ML ORPO+RL+FSBO120 must release its 12 replicas",
+    "semanticopt": "existing queue: query200 then peptide200, one 21GiB-capped inference replica per A800",
+    "training": "one A800 shared with one SemanticOPT replica; ORPO48GiB allocator cap, admission requires54GiB free; actual memory smoke required",
+    "rollout": "reuse training allocation sequentially for rollout generation and optimization; fixed-reference log probabilities via adapter swap on one base, as in ML",
+    "GPUs": 1,
+    "CPU_training_threads": 4,
+    "CPU_rollout_workers_initial": 4,
+    "CPU_note": "Only launch rollout workers after joint admission against SemanticOPT load. Its adaptive controller can yield workers at safe boundaries.",
+    "no_unrelated_job_preemption": true,
+    "admission_gates": [
+      "ML dependency audited complete",
+      "SemanticOPT stage running with all4 verified replicas",
+      "at least54GiB genuinely free on selected GPU after SemanticOPT load",
+      "shared output writable with free bytes and inodes",
+      "backward/memory smoke passes before full training"
+    ]
+  },
+  "scheduling_note": "This is a proposal, not a running queue. No ORPO/RL process is started by this offline preparation.",
+  "queue": "services/queue_status.json"
+}

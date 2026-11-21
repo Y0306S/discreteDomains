@@ -1,0 +1,845 @@
+{
+  "description": "PT4Opt-LLM prompt history blocks for Option 2 Stage 1. Applied to ptllm and ptllm_tpe (hybrid fixed at H0 unless noted). history_window defaults to 20 for all.",
+  "defaults": {
+    "history_window": 20,
+    "hybrid": "H0"
+  },
+  "variants": [
+    {
+      "id": "P0",
+      "label": "baseline",
+      "top_k": 6,
+      "worst_k": 4,
+      "recent_k": 10,
+      "run_summary": false,
+      "notes": "Current production defaults."
+    },
+    {
+      "id": "P1",
+      "label": "top5_worst5_summary",
+      "top_k": 5,
+      "worst_k": 5,
+      "recent_k": 0,
+      "run_summary": true,
+      "notes": "User proposal: best/worst only plus run-level summary."
+    },
+    {
+      "id": "P2",
+      "label": "top5_worst5",
+      "top_k": 5,
+      "worst_k": 5,
+      "recent_k": 0,
+      "run_summary": false,
+      "notes": "Ablate summary vs P1."
+    },
+    {
+      "id": "P3",
+      "label": "top5_worst5_recent5_summary",
+      "top_k": 5,
+      "worst_k": 5,
+      "recent_k": 5,
+      "run_summary": true,
+      "notes": "User proposal: short recency tail."
+    },
+    {
+      "id": "P4",
+      "label": "top10_worst5_summary",
+      "top_k": 10,
+      "worst_k": 5,
+      "recent_k": 0,
+      "run_summary": true,
+      "notes": "User proposal: more best trials, no recency block."
+    },
+    {
+      "id": "P5",
+      "label": "top5_worst5_recent10_summary",
+      "top_k": 5,
+      "worst_k": 5,
+      "recent_k": 10,
+      "run_summary": true,
+      "notes": "P1 plus full recent-10 block."
+    },
+    {
+      "id": "P6",
+      "label": "top5_worst5_recent10",
+      "top_k": 5,
+      "worst_k": 5,
+      "recent_k": 10,
+      "run_summary": false,
+      "notes": "P2 plus recent-10; tests recency without summary."
+    },
+    {
+      "id": "P7",
+      "label": "top10_worst5_recent10_summary",
+      "top_k": 10,
+      "worst_k": 5,
+      "recent_k": 10,
+      "run_summary": true,
+      "notes": "P4 plus recent-10 (richest fixed recipe)."
+    },
+    {
+      "id": "P8",
+      "label": "baseline_recent10_summary",
+      "top_k": 6,
+      "worst_k": 4,
+      "recent_k": 10,
+      "run_summary": true,
+      "notes": "P0 counts + summary only."
+    },
+    {
+      "id": "P9",
+      "label": "top10_worst5_recent5_summary",
+      "top_k": 10,
+      "worst_k": 5,
+      "recent_k": 5,
+      "run_summary": true,
+      "notes": "Many best + medium recency."
+    },
+    {
+      "id": "P10",
+      "label": "top8_worst5_recent10_summary",
+      "top_k": 8,
+      "worst_k": 5,
+      "recent_k": 10,
+      "run_summary": true,
+      "notes": "Balanced high-signal context."
+    },
+    {
+      "id": "P11",
+      "label": "top5_worst4_recent10_summary",
+      "top_k": 5,
+      "worst_k": 4,
+      "recent_k": 10,
+      "run_summary": true,
+      "notes": "Tighter worst pool (baseline worst_k) + recent10."
+    },
+    {
+      "id": "P12",
+      "label": "top6_worst5_recent10_summary",
+      "top_k": 6,
+      "worst_k": 5,
+      "recent_k": 10,
+      "run_summary": true,
+      "notes": "Near-baseline top_k with symmetric worst5."
+    },
+    {
+      "id": "P13",
+      "label": "top10_worst4_recent10_summary",
+      "top_k": 10,
+      "worst_k": 4,
+      "recent_k": 10,
+      "run_summary": true,
+      "notes": "Wide best + baseline worst + recent10."
+    },
+    {
+      "id": "P14",
+      "label": "top5_worst5_recent5",
+      "top_k": 5,
+      "worst_k": 5,
+      "recent_k": 5,
+      "run_summary": false,
+      "notes": "Ablate summary vs P3."
+    },
+    {
+      "id": "P15",
+      "label": "top6_worst4_recent10",
+      "top_k": 6,
+      "worst_k": 4,
+      "recent_k": 10,
+      "run_summary": false,
+      "notes": "P0 without summary (summary ablation on baseline shape)."
+    },
+    {
+      "id": "P16",
+      "label": "tcs_p5_h2",
+      "top_k": 5,
+      "worst_k": 5,
+      "recent_k": 10,
+      "run_summary": true,
+      "tcs_analysis": true,
+      "notes": "Paper-faithful TCS + Analysis Agent (gpt-4o-mini); P5 history settings + H2 hybrid."
+    },
+    {
+      "id": "P30",
+      "label": "tcs_single_agent",
+      "extends": "P16",
+      "tcs_single_agent": true,
+      "notes": "TCS + 6-part analysis + JSON in one LLM call (ablation vs P16 two-call split)."
+    },
+    {
+      "id": "P17",
+      "label": "p5_budget_context",
+      "extends": "P5",
+      "optimizer": "ptllm",
+      "prompt_blocks": { "budget_context": true },
+      "notes": "P5 + run budget and stagnation context (ptllm ablation)."
+    },
+    {
+      "id": "P18",
+      "label": "p5_explore_refine",
+      "extends": "P5",
+      "optimizer": "ptllm",
+      "prompt_blocks": { "explore_refine_summary": true },
+      "notes": "P5 with explore/refine phase replacing numeric HP trends (ptllm ablation)."
+    },
+    {
+      "id": "P19",
+      "label": "p5_best_so_far",
+      "extends": "P5",
+      "optimizer": "ptllm",
+      "prompt_blocks": { "best_so_far_trajectory": true },
+      "notes": "P5 + best-so-far improvement trajectory (ptllm ablation)."
+    },
+    {
+      "id": "P20",
+      "label": "p5_hp_marginals",
+      "extends": "P5",
+      "optimizer": "ptllm",
+      "prompt_blocks": { "hp_marginals": true },
+      "notes": "P5 + per-hyperparameter marginal stats (ptllm ablation)."
+    },
+    {
+      "id": "P21",
+      "label": "p5_source_tags",
+      "extends": "P5",
+      "optimizer": "ptllm_tpe",
+      "prompt_blocks": { "source_tags": true },
+      "notes": "P5 + llm/tpe source tags on history lines (ptllm_tpe/H2 ablation)."
+    },
+    {
+      "id": "P22",
+      "label": "p5_tuning_playbook",
+      "extends": "P5",
+      "optimizer": "ptllm",
+      "prompt_blocks": { "tuning_playbook_system": true },
+      "notes": "P5 + Google tuning playbook principles in system prompt (ptllm ablation)."
+    },
+    {
+      "id": "P23",
+      "label": "p5_coverage_map",
+      "extends": "P5",
+      "optimizer": "ptllm",
+      "prompt_blocks": { "coverage_map": true },
+      "notes": "P5 + search-space coverage map (ptllm ablation)."
+    },
+    {
+      "id": "P24",
+      "label": "p5_rationale_diversity",
+      "extends": "P5",
+      "optimizer": "ptllm",
+      "prompt_blocks": { "rationale_diversity_summary": true },
+      "notes": "P5 + last LLM rationale outcome and diversity warning (ptllm ablation)."
+    },
+    {
+      "id": "P25",
+      "label": "p5_tpe_hint",
+      "extends": "P5",
+      "optimizer": "ptllm_tpe",
+      "prompt_blocks": { "tpe_hint": true },
+      "notes": "P5 + TPE peek hint on LLM turns (ptllm_tpe P5/H2 ablation)."
+    },
+    {
+      "id": "P26",
+      "label": "p22_playbook_run_context",
+      "extends": "P22",
+      "optimizer": "ptllm",
+      "prompt_blocks": { "playbook_run_context": true },
+      "notes": "P22 + trial position and playbook-aligned action hints per run (ptllm ablation)."
+    },
+    {
+      "id": "P27",
+      "label": "p22_coverage_map",
+      "extends": "P22",
+      "optimizer": "ptllm",
+      "prompt_blocks": { "coverage_map": true },
+      "notes": "P22 + search-space coverage map (ptllm ablation)."
+    },
+    {
+      "id": "P28",
+      "label": "p22_best_so_far",
+      "extends": "P22",
+      "optimizer": "ptllm",
+      "prompt_blocks": { "best_so_far_trajectory": true },
+      "notes": "P22 + best-so-far improvement trajectory (ptllm ablation)."
+    },
+    {
+      "id": "P29",
+      "label": "p22_full_context",
+      "extends": "P26",
+      "optimizer": "ptllm",
+      "prompt_blocks": { "coverage_map": true },
+      "notes": "P22 + playbook run context + coverage map (ptllm ablation)."
+    },
+    {
+      "id": "P5plus",
+      "label": "P5+",
+      "extends": "P5",
+      "prompt_blocks": { "experience_self": true },
+      "experience_self_mode": "cohort",
+      "notes": "P5 + self-run experience (cohort top/worst min-max; may overlap). A1 baseline."
+    },
+    {
+      "id": "P5plusA2",
+      "label": "P5+_A2_cohort_nonoverlap",
+      "extends": "P5",
+      "prompt_blocks": { "experience_self": true },
+      "experience_self_mode": "cohort_nonoverlap",
+      "notes": "A2: cohort ranges with neither-dead-zone non-overlap (prefer∩avoid claimed by neither)."
+    },
+    {
+      "id": "P5plusA5",
+      "label": "P5+_A5_marginal_nonoverlap",
+      "extends": "P5",
+      "prompt_blocks": { "experience_self": true },
+      "experience_self_mode": "marginal_nonoverlap",
+      "notes": "A5: marginal per-HP bins for prefer/avoid; bins exclusive; neither on envelope overlap."
+    },
+    {
+      "id": "P5plusA6",
+      "label": "P5+_A6_marginal_diff",
+      "extends": "P5",
+      "prompt_blocks": { "experience_self": true },
+      "experience_self_mode": "marginal_diff",
+      "notes": "A6: prefer from marginal bins; avoid from nearest-good-diff blamed HPs; neither non-overlap."
+    },
+    {
+      "id": "P5plusT50",
+      "label": "P5+_A1_trial50",
+      "extends": "P5plus",
+      "experience_self_start_trial": 50,
+      "notes": "P5+ A1 cohort; experience_self block from trial 50 only (trials 1-49 = plain P5)."
+    },
+    {
+      "id": "P5plusA2T50",
+      "label": "P5+_A2_trial50",
+      "extends": "P5plusA2",
+      "experience_self_start_trial": 50,
+      "notes": "P5+ A2 cohort+neither; experience_self from trial 50."
+    },
+    {
+      "id": "P5plusA5T50",
+      "label": "P5+_A5_trial50",
+      "extends": "P5plusA5",
+      "experience_self_start_trial": 50,
+      "notes": "P5+ A5 marginal+neither; experience_self from trial 50."
+    },
+    {
+      "id": "P5plusA6T50",
+      "label": "P5+_A6_trial50",
+      "extends": "P5plusA6",
+      "experience_self_start_trial": 50,
+      "notes": "P5+ A6 marginal+diff; experience_self from trial 50."
+    },
+    {
+      "id": "P5plusA2T50X50",
+      "label": "P5+_A2_trial50_explore_exploit_50",
+      "extends": "P5plusA2T50",
+      "experience_explore_mode": "fifty_fifty",
+      "experience_explore_prob": 0.5,
+      "notes": "A2 T50 + 50/50: exploit=experience_self(A2) OR explore=coverage_map (never both)."
+    },
+    {
+      "id": "P5plusA5T50X50",
+      "label": "P5+_A5_trial50_explore_exploit_50",
+      "extends": "P5plusA5T50",
+      "experience_explore_mode": "fifty_fifty",
+      "experience_explore_prob": 0.5,
+      "notes": "A5 T50 + 50/50: exploit=experience_self(A5) OR explore=coverage_map (never both)."
+    },
+    {
+      "id": "P5plusA5T50X50G",
+      "label": "P5+_A5_trial50_explore_exploit_50_histgate",
+      "extends": "P5plusA5T50X50",
+      "experience_blame": {
+        "numeric_log_bins": true,
+        "numeric_space_gate": true,
+        "cat_history_gate": "conservative"
+      },
+      "notes": "A5 T50 X50 + conservative cat history gate (n>=5, delta>=0.03, prefer in top 25% and avoid not in top) and log-space numeric bins. New eval id so it does not overwrite P5plusA5T50X50."
+    },
+    {
+      "id": "P5plusA5T50X50L",
+      "label": "P5+_A5_trial50_explore_exploit_50_logbins",
+      "extends": "P5plusA5T50X50",
+      "experience_blame": {
+        "numeric_log_bins": true,
+        "numeric_space_gate": false,
+        "cat_history_gate": "off"
+      },
+      "notes": "A5 T50 X50 + log-space numeric bins only (legacy cat, no 15% numeric gate)."
+    },
+    {
+      "id": "P5plusA5T50X50C",
+      "label": "P5+_A5_trial50_explore_exploit_50_cat_neither",
+      "extends": "P5plusA5T50X50",
+      "experience_blame": {
+        "numeric_log_bins": false,
+        "numeric_space_gate": false,
+        "cat_history_gate": "neither",
+        "cat_min_n": 3,
+        "cat_score_delta": 0.02,
+        "cat_top_frac": 0.25
+      },
+      "notes": "A5 T50 X50 + cat-neither history gate (n>=3, delta>=0.02, prefer in top 25%; avoid only if not in top, else prefer-only)."
+    },
+    {
+      "id": "P5plusA5T50X50R",
+      "label": "P5+_A5_trial50_explore_exploit_50_retrieve",
+      "extends": "P5plusA5T50X50",
+      "prompt_blocks": { "experience_retrieve": true },
+      "experience_retrieve_k": 3,
+      "experience_retrieve_start_trial": 1,
+      "experience_retrieve_rerank_trial": 24,
+      "experience_retrieve_fade": true,
+      "experience_bank_path": "history_data/experience_bank_v2.jsonl",
+      "notes": "X50 + cross-task experience retrieval (role-importance + Spearman rerank after 24 local trials, top-3). Bank is experience_bank_v2.jsonl with frozen weights. Does not overwrite P5plusA5T50X50."
+    },
+    {
+      "id": "P5plusA5T50X50RC",
+      "label": "P5+_A5_T50_X50_cascade_holdout",
+      "extends": "P5plusA5T50X50",
+      "prompt_blocks": { "experience_retrieve": true },
+      "experience_retrieve_k": 3,
+      "experience_retrieve_start_trial": 1,
+      "experience_retrieve_rerank_trial": 24,
+      "experience_retrieve_ranker": "cascade",
+      "experience_retrieve_fade": false,
+      "experience_bank_path": "history_data/experience_bank_v2_holdout40.jsonl",
+      "notes": "X50 + cascade similar-task on every LLM turn. Eval 30 datasets held out of the bank. Does not overwrite X50."
+    },
+    {
+      "id": "P5plusA5T50X50RS",
+      "label": "P5+_A5_T50_X50_surrogate_holdout",
+      "extends": "P5plusA5T50X50",
+      "prompt_blocks": { "experience_retrieve": true },
+      "experience_retrieve_k": 3,
+      "experience_retrieve_start_trial": 1,
+      "experience_retrieve_rerank_trial": 24,
+      "experience_retrieve_ranker": "surrogate",
+      "experience_retrieve_fade": false,
+      "experience_bank_path": "history_data/experience_bank_v2_holdout40.jsonl",
+      "notes": "X50 + per-algo GP landscape similar-task on every LLM turn. Eval 30 datasets held out. Does not overwrite X50."
+    },
+    {
+      "id": "P5plusA5T50X50RSWarm",
+      "label": "P5+_A5_T50_X50_surrogate_until_self",
+      "extends": "P5plusA5T50X50RS",
+      "experience_retrieve_until_self": true,
+      "experience_retrieve_stop_trial": 50,
+      "notes": "RS retrieve only until trial 50 (P5+ this-run start). Warm-start similar tasks, then this-run prefer/avoid takes over. Does not overwrite RS."
+    },
+    {
+      "id": "P5plusA5T50X50RS10",
+      "label": "P5+_A5_T50_X50_surrogate_stop10",
+      "extends": "P5plusA5T50X50RS",
+      "experience_retrieve_stop_trial": 11,
+      "notes": "RS surrogate retrieve for trials 1-10 only (stop_trial=11). Same T50/X50 as shipping HPUCB_arm. Pair with HPUCB_arm decay sweep. Does not overwrite RSWarm."
+    },
+    {
+      "id": "P5plusA5T50X50RS10gp",
+      "label": "P5+_A5_T50_X50_landscape_stop10",
+      "extends": "P5plusA5T50X50RS10",
+      "experience_retrieve_ranker": "surrogate",
+      "experience_retrieve_rerank_trial": 1,
+      "notes": "RS10 retry with full landscape cache (eval targets scored from trial 1). New id so it does not overwrite P5plusA5T50X50RS10."
+    },
+    {
+      "id": "P5plusA5T50X50RS3",
+      "label": "P5+_A5_T50_X50_landscape_stop3",
+      "extends": "P5plusA5T50X50RS10gp",
+      "experience_retrieve_stop_trial": 4,
+      "notes": "RS3: landscape retrieve for trials 1-3 only (stop_trial=4). Same T50/X50 + HPUCB_arm 90→10. Does not overwrite RS10gp."
+    },
+    {
+      "id": "P5plusA5T50X50RS10f05",
+      "label": "P5+_A5_T50_X50_landscape_stop10_floor05",
+      "extends": "P5plusA5T50X50RS10gp",
+      "experience_retrieve_spearman_floor": 0.5,
+      "notes": "RS10 landscape, GP sim floor 0.5. Does not overwrite RS10gp."
+    },
+    {
+      "id": "P5plusA5T50X50RS3f05",
+      "label": "P5+_A5_T50_X50_landscape_stop3_floor05",
+      "extends": "P5plusA5T50X50RS3",
+      "experience_retrieve_spearman_floor": 0.5,
+      "notes": "RS3 landscape, GP sim floor 0.5. Does not overwrite RS3."
+    },
+    {
+      "id": "P5plusA5T50X50RS5f05",
+      "label": "P5+_A5_T50_X50_landscape_stop5_floor05",
+      "extends": "P5plusA5T50X50RS3f05",
+      "experience_retrieve_stop_trial": 6,
+      "notes": "RS5 landscape (trials 1-5, stop_trial=6), GP sim floor 0.5. Does not overwrite RS5f03."
+    },
+    {
+      "id": "P5plusA5T50X50RS10f03",
+      "label": "P5+_A5_T50_X50_landscape_stop10_floor03",
+      "extends": "P5plusA5T50X50RS10gp",
+      "experience_retrieve_spearman_floor": 0.3,
+      "notes": "RS10 landscape, GP sim floor 0.3. Does not overwrite RS10gp/RS10f05."
+    },
+    {
+      "id": "P5plusA5T50X50RS5f03",
+      "label": "P5+_A5_T50_X50_landscape_stop5_floor03",
+      "extends": "P5plusA5T50X50RS10f03",
+      "experience_retrieve_stop_trial": 6,
+      "notes": "RS5 landscape (trials 1-5, stop_trial=6), GP sim floor 0.3."
+    },
+    {
+      "id": "P5plusRS",
+      "label": "P5+_similar_surrogate_holdout_v3",
+      "extends": "P5",
+      "prompt_blocks": { "experience_retrieve": true },
+      "experience_retrieve_k": 3,
+      "experience_retrieve_start_trial": 1,
+      "experience_retrieve_rerank_trial": 1,
+      "experience_retrieve_ranker": "surrogate",
+      "experience_retrieve_fade": false,
+      "experience_bank_path": "history_data/experience_bank_v3_holdout40.jsonl",
+      "notes": "GRPO collect: P5 + v3 fANOVA cards + landscape GP from trial 1. Mix schedule uses this at prefixes k=3,10 (rs_warm). Empty k allowed. Does not overwrite P5plusA5T50X50RS / RS10gp eval ids."
+    },
+    {
+      "id": "P5plusRSv4",
+      "label": "P5+_similar_surrogate_holdout_v4_top3bottom3",
+      "extends": "P5plusRS",
+      "experience_retrieve_include_top_bottom": true,
+      "experience_retrieve_top_k": 3,
+      "experience_retrieve_bottom_k": 3,
+      "notes": "v4 RS cards: v3 fANOVA prefer lines plus top-3 and bottom-3 trial configs. Mix schedule rs_warm at k=3,10 when --rs-version v4."
+    },
+    {
+      "id": "P5plusA5T50X50RS3f05v4",
+      "label": "P5+_A5_T50_X50_landscape_stop3_floor05_v4",
+      "extends": "P5plusA5T50X50RS3f05",
+      "experience_retrieve_include_top_bottom": true,
+      "experience_retrieve_top_k": 3,
+      "experience_retrieve_bottom_k": 3,
+      "experience_bank_path": "history_data/experience_bank_v3_holdout40.jsonl",
+      "notes": "RS3f05 + v4 top-3/bottom-3 configs (v3 bank). Trials 1-3. Does not overwrite RS3f05."
+    },
+    {
+      "id": "P5plusA5T50X50RS5f05v4",
+      "label": "P5+_A5_T50_X50_landscape_stop5_floor05_v4",
+      "extends": "P5plusA5T50X50RS3f05v4",
+      "experience_retrieve_stop_trial": 6,
+      "notes": "RS5 + v4 top-3/bottom-3, GP sim floor 0.5, trials 1-5 (stop_trial=6). Does not overwrite RS5f03."
+    },
+    {
+      "id": "P5plusA5T50X50RS10f05v4",
+      "label": "P5+_A5_T50_X50_landscape_stop10_floor05_v4",
+      "extends": "P5plusA5T50X50RS3f05v4",
+      "experience_retrieve_stop_trial": 11,
+      "notes": "RS10 + v4 top-3/bottom-3, GP sim floor 0.5, trials 1-10 (stop_trial=11). Does not overwrite RS10f05."
+    },
+    {
+      "id": "P5plusRSv5",
+      "label": "P5+_similar_surrogate_holdout_v5_quantile20_tb3",
+      "extends": "P5plusRS",
+      "experience_retrieve_include_prefer": false,
+      "experience_retrieve_region_style": "quantile20",
+      "experience_retrieve_include_top_bottom": true,
+      "experience_retrieve_top_k": 3,
+      "experience_retrieve_bottom_k": 3,
+      "experience_retrieve_tb_layout": "grouped",
+      "notes": "v5 RS cards: 3-segment HP ranges (exclusive top / mixed overlap / exclusive bottom) plus grouped top3/bottom3 configs. Mix schedule rs_warm at k=3,10 when --rs-version v5."
+    },
+    {
+      "id": "P5plusA5T50X50RS3f05v5",
+      "label": "P5+_A5_T50_X50_landscape_stop3_floor05_v5_q20",
+      "extends": "P5plusA5T50X50RS3f05",
+      "experience_retrieve_include_prefer": false,
+      "experience_retrieve_region_style": "quantile20",
+      "experience_retrieve_include_top_bottom": true,
+      "experience_retrieve_top_k": 3,
+      "experience_retrieve_bottom_k": 3,
+      "experience_retrieve_tb_layout": "grouped",
+      "experience_bank_path": "history_data/experience_bank_v3_holdout40.jsonl",
+      "notes": "RS3f05 + v5: exclusive top / mixed / exclusive bottom 20% ranges plus top3/bottom3 configs. Trials 1-3."
+    },
+    {
+      "id": "P5plusA5T50X50RS5f05v5",
+      "label": "P5+_A5_T50_X50_landscape_stop5_floor05_v5_q20",
+      "extends": "P5plusA5T50X50RS3f05v5",
+      "experience_retrieve_stop_trial": 6,
+      "notes": "RS5 window + v5 quantile20 + top3/bottom3. Trials 1-5."
+    },
+    {
+      "id": "P5plusA5T50X50RS10f05v5",
+      "label": "P5+_A5_T50_X50_landscape_stop10_floor05_v5_q20",
+      "extends": "P5plusA5T50X50RS3f05v5",
+      "experience_retrieve_stop_trial": 11,
+      "notes": "RS10 window + v5 quantile20 + top3/bottom3. Trials 1-10."
+    },
+    {
+      "id": "P5plusA5Exploit",
+      "label": "P5+_A5_exploit_force",
+      "extends": "P5plusA5",
+      "experience_self_start_trial": 1,
+      "experience_explore_mode": "off",
+      "notes": "GRPO collect: A5 self-run regions on every LLM turn (no retrieve, no coverage). Mix schedule uses this at prefixes k=60,80. start_trial=1 so those prefixes include the block."
+    },
+    {
+      "id": "P5plusA5Explore",
+      "label": "P5+_A5_explore_force",
+      "extends": "P5plusA5",
+      "experience_self_start_trial": 1,
+      "experience_explore_mode": "fifty_fifty",
+      "experience_explore_prob": 1.0,
+      "notes": "GRPO collect: coverage_map only (XOR explore). Mix schedule uses this at prefixes k=50,70. start_trial=1 so those prefixes include the block. Does not mix retrieve."
+    },
+    {
+      "id": "P5plusA2T40X50",
+      "label": "P5+_A2_trial40_explore_exploit_50",
+      "extends": "P5plusA2",
+      "experience_self_start_trial": 40,
+      "experience_explore_mode": "fifty_fifty",
+      "experience_explore_prob": 0.5,
+      "notes": "A2 from trial 40 + 50/50 exploit(experience) vs explore(coverage_map)."
+    },
+    {
+      "id": "P5plusA5T40X50",
+      "label": "P5+_A5_trial40_explore_exploit_50",
+      "extends": "P5plusA5",
+      "experience_self_start_trial": 40,
+      "experience_explore_mode": "fifty_fifty",
+      "experience_explore_prob": 0.5,
+      "notes": "A5 from trial 40 + 50/50 exploit(experience) vs explore(coverage_map)."
+    },
+    {
+      "id": "P5plusA5TRdyX50",
+      "label": "P5+_A5_ready_latch_X50",
+      "extends": "P5plusA5T50X50",
+      "experience_self_gate": "ready",
+      "experience_self_start_trial": 50,
+      "notes": "Part B: replace trial-50 clock with floor 24 + region-stability latch K=3; cap still 50. X50 explore/exploit keys off the same latch. Does not overwrite X50."
+    },
+    {
+      "id": "P5plusA5TRaceX50",
+      "label": "P5+_A5_bernstein_race_X50",
+      "extends": "P5plusA5T50X50",
+      "experience_self_gate": "race",
+      "experience_self_start_trial": 50,
+      "experience_blame": { "numeric_assign": "race" },
+      "notes": "Part B: ready latch + Bernstein/Hoeffding race on min-max rel_score (neither unless CIs separate). Does not overwrite X50."
+    },
+    {
+      "id": "P5plusA5TRdyFanovaX50",
+      "label": "P5+_A5_ready_fanova_X50",
+      "extends": "P5plusA5T50X50",
+      "experience_self_gate": "fanova",
+      "experience_self_start_trial": 50,
+      "notes": "Part B: ready latch + keep only HPs with 1D bin-mean importance >= 0.10. Does not overwrite X50."
+    },
+    {
+      "id": "P5plusA5TRdyFanovaFullX50",
+      "label": "P5+_A5_ready_fanova_full_X50",
+      "extends": "P5plusA5T50X50",
+      "experience_self_gate": "fanova_full",
+      "experience_self_start_trial": 50,
+      "notes": "Part B: ready latch + official automl/fanova HP filter (thresh=0.10, 32 trees, min 24 trials) via dedicated venv. Falls back to sklearn RF then 1D proxy. Does not overwrite TRdyFanova."
+    },
+    {
+      "id": "P5plusA5TRdyFanovaFullCsX50",
+      "label": "P5+_A5_ready_fanova_full_realcs_X50",
+      "extends": "P5plusA5T50X50",
+      "experience_self_gate": "fanova_full_cs",
+      "experience_self_start_trial": 50,
+      "notes": "1+3: official fANOVA 1D main effects on the REAL ConfigSpace (types/bounds/log), keep top-k=4 or cumulative 0.60 (min 2 else unfiltered). Does not overwrite FanovaFull."
+    },
+    {
+      "id": "P5plusA5TRdyFanovaFullIxX50",
+      "label": "P5+_A5_ready_fanova_full_interact_X50",
+      "extends": "P5plusA5T50X50",
+      "experience_self_gate": "fanova_full_ix",
+      "experience_self_start_trial": 50,
+      "notes": "2+3: official fANOVA TOTAL importance (main+interactions) on the REAL ConfigSpace, same calibrated keep as FullCs. Does not overwrite FanovaFull or FullCs."
+    },
+    {
+      "id": "P5plusA5TRdyFanovaRfX50",
+      "label": "P5+_A5_ready_fanova_rf_X50",
+      "extends": "P5plusA5T50X50",
+      "experience_self_gate": "fanova_rf",
+      "experience_self_start_trial": 50,
+      "notes": "Part B: ready latch + sklearn RF impurity importance HP filter (in-process, no extra env). Does not overwrite TRdyFanova."
+    },
+    {
+      "id": "P5plusA5TRdyFanovaX50RS",
+      "label": "P5+_A5_ready_fanova_X50_surrogate_holdout",
+      "extends": "P5plusA5TRdyFanovaX50",
+      "prompt_blocks": { "experience_retrieve": true },
+      "experience_retrieve_k": 3,
+      "experience_retrieve_start_trial": 1,
+      "experience_retrieve_rerank_trial": 24,
+      "experience_retrieve_ranker": "surrogate",
+      "experience_retrieve_fade": false,
+      "experience_bank_path": "history_data/experience_bank_v2_holdout40.jsonl",
+      "notes": "Kitchen-sink combo: A5 + Fanova readiness gate + X50 + RS surrogate retrieve. Pair with HPUCB_arm. Does not overwrite TRdyFanova or RS."
+    },
+    {
+      "id": "P5plusA5TRdyFanovaX50RSWarm",
+      "label": "P5+_A5_ready_fanova_X50_surrogate_until_self",
+      "extends": "P5plusA5TRdyFanovaX50RS",
+      "experience_retrieve_until_self": true,
+      "experience_retrieve_stop_trial": 50,
+      "notes": "Rectified combo: proxy Fanova + X50 + RS retrieve only until trial 50 (P5+ this-run start). Pair with HPUCB_arm_p05 (LLM ω 0.9→0.5). Does not overwrite TRdyFanovaX50RS or RSWarm."
+    },
+    {
+      "id": "P5plusA5TRdyTurboX50",
+      "label": "P5+_A5_ready_turbo_X50",
+      "extends": "P5plusA5T50X50",
+      "experience_self_gate": "turbo",
+      "experience_self_start_trial": 50,
+      "notes": "Part B: ready latch + TuRBO L; tau_fail = max(4, n_hps) so GBM waits longer than CatBoost. Does not overwrite X50."
+    },
+    {
+      "id": "P5plusA5TRdyStrengthX50",
+      "label": "P5+_A5_ready_strength_X50",
+      "extends": "P5plusA5T50X50",
+      "experience_self_gate": "strength",
+      "experience_self_start_trial": 50,
+      "notes": "Part B: ready latch + piBO-style increasing language (hint / prefer / strongly prefer). Does not overwrite X50."
+    },
+    {
+      "id": "P5plusA5TContrastX50",
+      "label": "P5+_A5_contrast_X50",
+      "extends": "P5plusA5T50X50",
+      "experience_self_gate": "contrast",
+      "experience_self_start_trial": 50,
+      "notes": "Part B cheap fallback: insert when top-vs-bottom score gap >= 0.05*span after floor 24. Does not overwrite X50."
+    },
+    {
+      "id": "P5plusA5TStagX50",
+      "label": "P5+_A5_stagnation_X50",
+      "extends": "P5plusA5T50X50",
+      "experience_self_gate": "stagnation",
+      "experience_self_start_trial": 50,
+      "notes": "Part B cheap fallback: insert when incumbent stagnates max(5, 0.15n) after floor 24. Does not overwrite X50."
+    },
+    {
+      "id": "P5plusA5T50XStag",
+      "label": "P5+_A5_T50_explore_stagnation",
+      "extends": "P5plusA5T50X50",
+      "experience_explore_mode": "stagnation",
+      "experience_explore_prob": 0.5,
+      "notes": "Part C: p_explore = clip(stag/max(5,0.15n), 0.2, 0.8). Clock still 50. Does not overwrite X50."
+    },
+    {
+      "id": "P5plusA5T50XCov",
+      "label": "P5+_A5_T50_explore_coverage",
+      "extends": "P5plusA5T50X50",
+      "experience_explore_mode": "coverage",
+      "experience_explore_prob": 0.5,
+      "notes": "Part C: p_explore = clip(1-coverage/100, 0.2, 0.8). Does not overwrite X50."
+    },
+    {
+      "id": "P5plusA5T50XInt",
+      "label": "P5+_A5_T50_explore_intensify",
+      "extends": "P5plusA5T50X50",
+      "experience_explore_mode": "intensify",
+      "experience_explore_prob": 0.5,
+      "notes": "Part C: SMAC intensify — exploit 3 LLM turns after an incumbent beat, else 50/50. Does not overwrite X50."
+    },
+    {
+      "id": "P5plusA5T50XRefine",
+      "label": "P5+_A5_T50_explore_refine",
+      "extends": "P5plusA5T50X50",
+      "experience_explore_mode": "refine",
+      "experience_explore_prob": 0.5,
+      "notes": "Part C: hard switch using existing explore_refine_summary rule (n<15 or stag>=8 or coverage<40). Does not overwrite X50."
+    },
+    {
+      "id": "P5plusA5T50XHAP",
+      "label": "P5+_A5_T50_explore_hap",
+      "extends": "P5plusA5T50X50",
+      "experience_explore_mode": "hap",
+      "experience_explore_prob": 0.5,
+      "notes": "Part C: adaptive pursuit on (exploit, explore) prompt arms, P_min=0.2. Does not overwrite X50."
+    },
+    {
+      "id": "P5plusA5T50XDTS",
+      "label": "P5+_A5_T50_explore_dts",
+      "extends": "P5plusA5T50X50",
+      "experience_explore_mode": "dts",
+      "experience_explore_prob": 0.5,
+      "notes": "Part C: discounted Thompson on (exploit, explore) prompt arms. Does not overwrite X50."
+    },
+    {
+      "id": "P5plusA5T50XUCB",
+      "label": "P5+_A5_T50_explore_ucb",
+      "extends": "P5plusA5T50X50",
+      "experience_explore_mode": "ucb",
+      "experience_explore_prob": 0.5,
+      "notes": "Part C: UCB on (exploit, explore) prompt arms, reward=incumbent beat. Does not overwrite X50."
+    },
+    {
+      "id": "P5plusA5T50XTPE",
+      "label": "P5+_A5_T50_explore_tpe_advisor",
+      "extends": "P5plusA5T50X50",
+      "experience_explore_mode": "tpe",
+      "experience_explore_prob": 0.5,
+      "notes": "Part C: ghost TPE sample from the live study (ALL LLM+TPE trials). If that config sits in prefer regions → exploit, else explore. Does not overwrite X50. On 80-trial evals TPE is still messy; use P5plusA5T50XTPELate for high-budget runs."
+    },
+    {
+      "id": "P5plusA5T50XTPELate",
+      "label": "P5+_A5_T50_explore_tpe_advisor_late",
+      "extends": "P5plusA5T50XTPE",
+      "experience_explore_tpe_min_trial": 200,
+      "notes": "XTPE backup: XOR stays off (X50 coin-flip) until trial 200, then ghost-TPE hard XOR. For budgets >> 80. Does not overwrite XTPE. Not queued on the 80-trial suite."
+    },
+    {
+      "id": "P5plusA5T50XTPESoft",
+      "label": "P5+_A5_T50_explore_tpe_advisor_soft",
+      "extends": "P5plusA5T50X50",
+      "experience_explore_mode": "tpe_soft",
+      "experience_explore_prob": 0.5,
+      "notes": "Part C: p_explore = clip(1 - TPE-in-prefer-ratio, 0.2, 0.8) using TPE fit on ALL trials so far. Does not overwrite X50."
+    },
+    {
+      "id": "P5plusA5T50XTPELLM",
+      "label": "P5+_A5_T50_explore_tpe_advisor_llm_only",
+      "extends": "P5plusA5T50X50",
+      "experience_explore_mode": "tpe_llm",
+      "experience_explore_prob": 0.5,
+      "notes": "Part C: ghost TPE fit on LLM(+warm-start) trials only. If that sample sits in prefer regions → exploit, else explore. Does not overwrite XTPE."
+    },
+    {
+      "id": "P5plusA5T50XTPELLMSoft",
+      "label": "P5+_A5_T50_explore_tpe_advisor_llm_only_soft",
+      "extends": "P5plusA5T50X50",
+      "experience_explore_mode": "tpe_llm_soft",
+      "experience_explore_prob": 0.5,
+      "notes": "Part C: p_explore = clip(1 - ratio, 0.2, 0.8) with TPE fit on LLM trials only. Does not overwrite XTPE."
+    }
+  ],
+  "recommended_batches": {
+    "stage1_core": ["P0", "P1", "P2", "P4", "P5", "P6", "P7", "P8"],
+    "stage1_extended": ["P3", "P9", "P10", "P11", "P12", "P13", "P14", "P15"],
+    "stage1_minimal": ["P0", "P1", "P5", "P7", "P8"],
+    "part_b_gates": [
+      "P5plusA5TRdyX50",
+      "P5plusA5TRaceX50",
+      "P5plusA5TRdyFanovaX50",
+      "P5plusA5TRdyFanovaFullX50",
+      "P5plusA5TRdyFanovaFullCsX50",
+      "P5plusA5TRdyFanovaFullIxX50",
+      "P5plusA5TRdyFanovaRfX50",
+      "P5plusA5TRdyTurboX50",
+      "P5plusA5TRdyStrengthX50",
+      "P5plusA5TContrastX50",
+      "P5plusA5TStagX50"
+    ],
+    "part_c_explore": [
+      "P5plusA5T50XStag",
+      "P5plusA5T50XCov",
+      "P5plusA5T50XInt",
+      "P5plusA5T50XRefine",
+      "P5plusA5T50XHAP",
+      "P5plusA5T50XDTS",
+      "P5plusA5T50XUCB",
+      "P5plusA5T50XTPE",
+      "P5plusA5T50XTPESoft",
+      "P5plusA5T50XTPELLM",
+      "P5plusA5T50XTPELLMSoft"
+    ]
+  }
+}

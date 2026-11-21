@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "authorized_at": 1794372119.7231412,
+  "authorization": "User requested constrained random fallback after invalid-proposal retries and peptide before query",
+  "base_recipe_sha256": "1c1d69f5693984527f42280b72f8b4cffdec5899d96ea93e4980483830fb0fec",
+  "stages": [
+    "peptide",
+    "query"
+  ],
+  "fallback": {
+    "enabled": true,
+    "after_candidate_pairs": 5,
+    "max_random_attempts": 10000,
+    "distribution": "peptide bounded random reference edits; query random canonical join trees with connected merges where possible",
+    "novelty": "exclude all evaluated configurations and rejected retry configurations",
+    "oracle_budget": "one normal proposal slot, one oracle call; retries consume no oracle slots",
+    "prediction_policy": "no fabricated mean/std; label as external random_fallback measurement"
+  }
+}

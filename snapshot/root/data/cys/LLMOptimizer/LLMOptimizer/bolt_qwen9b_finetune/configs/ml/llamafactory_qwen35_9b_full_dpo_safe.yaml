@@ -1,0 +1,48 @@
+### model
+# Safe full-FT DPO on Qwen3.5-9B (DeepSpeed ZeRO-3, multi-GPU).
+# Conservative: low LR, 1 epoch, batch=1, cutoff 4096 (chosen+rejected is heavy).
+# Run with e.g. CUDA_VISIBLE_DEVICES=1,2,3 FORCE_TORCHRUN=1 NNODES=1 NPROC_PER_NODE=3
+model_name_or_path: /root/eb-public/huggingface-models/Qwen/Qwen3.5-9B
+trust_remote_code: true
+
+### method
+stage: dpo
+do_train: true
+finetuning_type: full
+deepspeed: /root/LLMOptimizer/LlamaFactory/examples/deepspeed/ds_z3_config.json
+pref_beta: 0.1
+pref_loss: sigmoid
+pref_ftx: 0.0
+
+### dataset
+dataset_dir: /root/LLMOptimizer/LLMOptimizer/bolt_qwen9b_finetune/llamafactory_data
+dataset: p5_s2_dpo
+template: qwen3_5_nothink
+cutoff_len: 6016
+preprocessing_num_workers: 8
+dataloader_num_workers: 2
+overwrite_cache: true
+packing: false
+
+### output
+output_dir: /root/data/cys/blockdata_archive/model-weights/llamafactory_qwen35_9b_full_dpo_safe
+logging_steps: 5
+save_steps: 200
+plot_loss: true
+overwrite_output_dir: true
+save_only_model: true
+save_total_limit: 1
+report_to: none
+
+### train
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 16
+learning_rate: 5.0e-7
+num_train_epochs: 1.0
+lr_scheduler_type: cosine
+warmup_ratio: 0.1
+bf16: true
+gradient_checkpointing: true
+ddp_timeout: 180000000
+resume_from_checkpoint: null
+seed: 42

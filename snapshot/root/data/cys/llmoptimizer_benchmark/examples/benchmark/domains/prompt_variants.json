@@ -1,0 +1,96 @@
+{
+  "description": "Domain-transfer prompt packs. P5 history window; domain-specific action schema. Do not mix with tabular prompt_variants.json.",
+  "defaults": {
+    "history_window": 20,
+    "hybrid": "H2"
+  },
+  "variants": [
+    {
+      "id": "P5",
+      "label": "top5_worst5_recent10_summary",
+      "top_k": 5,
+      "worst_k": 5,
+      "recent_k": 10,
+      "run_summary": true,
+      "notes": "Same history recipe as tabular P5; action JSON is domain-specific."
+    },
+    {
+      "id": "P5_protein",
+      "label": "protein_semantic",
+      "top_k": 5,
+      "worst_k": 5,
+      "recent_k": 10,
+      "run_summary": true,
+      "schema": "sequence_constraints",
+      "notes": "LLM proposes length_bin/charge_bin/cys_bin; CMA-ES walks z."
+    },
+    {
+      "id": "P5_query",
+      "label": "query_semantic",
+      "top_k": 5,
+      "worst_k": 5,
+      "recent_k": 10,
+      "run_summary": true,
+      "schema": "join_hint",
+      "notes": "LLM proposes join_skeleton; CMA-ES walks plan VAE latent."
+    },
+    {
+      "id": "P5_dl",
+      "label": "dl_train_hp",
+      "top_k": 5,
+      "worst_k": 5,
+      "recent_k": 10,
+      "run_summary": true,
+      "schema": "train_hp",
+      "notes": "LLM proposes named training HPs (no domain VAE)."
+    }
+  ]
+}
+{
+  "description": "Domain-transfer prompt packs. P5 history window; domain-specific action schema. Do not mix with tabular prompt_variants.json.",
+  "defaults": {
+    "history_window": 20,
+    "hybrid": "H2"
+  },
+  "variants": [
+    {
+      "id": "P5",
+      "label": "top5_worst5_recent10_summary",
+      "top_k": 5,
+      "worst_k": 5,
+      "recent_k": 10,
+      "run_summary": true,
+      "notes": "Same history recipe as tabular P5; action JSON is domain-specific."
+    },
+    {
+      "id": "P5_protein",
+      "label": "protein_semantic",
+      "top_k": 5,
+      "worst_k": 5,
+      "recent_k": 10,
+      "run_summary": true,
+      "schema": "sequence_constraints",
+      "notes": "LLM proposes length_bin/charge_bin/cys_bin; CMA-ES walks z."
+    },
+    {
+      "id": "P5_query",
+      "label": "query_semantic",
+      "top_k": 5,
+      "worst_k": 5,
+      "recent_k": 10,
+      "run_summary": true,
+      "schema": "join_hint",
+      "notes": "LLM proposes join_skeleton; CMA-ES walks plan VAE latent."
+    },
+    {
+      "id": "P5_dl",
+      "label": "dl_train_hp",
+      "top_k": 5,
+      "worst_k": 5,
+      "recent_k": 10,
+      "run_summary": true,
+      "schema": "train_hp",
+      "notes": "LLM proposes named training HPs (no domain VAE)."
+    }
+  ]
+}

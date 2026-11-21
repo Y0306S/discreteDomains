@@ -1,0 +1,139 @@
+{
+  "passed": true,
+  "checks": {
+    "real_checkpoint_target_degradation_rejected": true,
+    "all_parameters_and_buffers_restored": true,
+    "recorded_weight_delta_zero": true,
+    "first100_initializations_only": true,
+    "no_training_steps": true
+  },
+  "event": {
+    "accepted": false,
+    "rolled_back": true,
+    "rejection_reasons": [
+      "target_loss_worse_than_pre_update",
+      "target_loss_worse_than_initial_baseline"
+    ],
+    "target_loss_before": {
+      "mean_target_loss": 0.0003095287732624759,
+      "reconstruction_loss": 4.143939117777033e-09,
+      "kl_divergence": 3.0952463150024414,
+      "by_seed": [
+        {
+          "loss": 0.0003095285501331091,
+          "recon_loss": 3.9168748244833296e-09,
+          "kldiv": 3.0952463150024414
+        },
+        {
+          "loss": 0.0003095284628216177,
+          "recon_loss": 3.8317251593866786e-09,
+          "kldiv": 3.0952463150024414
+        },
+        {
+          "loss": 0.00030952930683270097,
+          "recon_loss": 4.68321736946109e-09,
+          "kldiv": 3.0952463150024414
+        }
+      ],
+      "seeds": [
+        8131,
+        8132,
+        8133
+      ],
+      "sequences": 100,
+      "sequence_sha256": "9b7a5c553a693e062203e2f7c791abe753102b0b520893b3447d2c74ba7915ae",
+      "precision": "fp32_eval",
+      "device": "cpu",
+      "independent_heldout": false
+    },
+    "target_loss_after": {
+      "mean_target_loss": 0.0008952037120858828,
+      "reconstruction_loss": 0.0005894730954120556,
+      "kl_divergence": 3.0573065280914307,
+      "by_seed": [
+        {
+          "loss": 0.0009404463926330209,
+          "recon_loss": 0.0006347157759591937,
+          "kldiv": 3.0573065280914307
+        },
+        {
+          "loss": 0.0008588245837017894,
+          "recon_loss": 0.0005530939670279622,
+          "kldiv": 3.0573065280914307
+        },
+        {
+          "loss": 0.0008863401599228382,
+          "recon_loss": 0.000580609543249011,
+          "kldiv": 3.0573065280914307
+        }
+      ],
+      "seeds": [
+        8131,
+        8132,
+        8133
+      ],
+      "sequences": 100,
+      "sequence_sha256": "9b7a5c553a693e062203e2f7c791abe753102b0b520893b3447d2c74ba7915ae",
+      "precision": "fp32_eval",
+      "device": "cpu",
+      "independent_heldout": false
+    },
+    "target_loss_initial_baseline": {
+      "mean_target_loss": 0.0003095287732624759,
+      "reconstruction_loss": 4.143939117777033e-09,
+      "kl_divergence": 3.0952463150024414,
+      "by_seed": [
+        {
+          "loss": 0.0003095285501331091,
+          "recon_loss": 3.9168748244833296e-09,
+          "kldiv": 3.0952463150024414
+        },
+        {
+          "loss": 0.0003095284628216177,
+          "recon_loss": 3.8317251593866786e-09,
+          "kldiv": 3.0952463150024414
+        },
+        {
+          "loss": 0.00030952930683270097,
+          "recon_loss": 4.68321736946109e-09,
+          "kldiv": 3.0952463150024414
+        }
+      ],
+      "seeds": [
+        8131,
+        8132,
+        8133
+      ],
+      "sequences": 100,
+      "sequence_sha256": "9b7a5c553a693e062203e2f7c791abe753102b0b520893b3447d2c74ba7915ae",
+      "precision": "fp32_eval",
+      "device": "cpu",
+      "independent_heldout": false
+    },
+    "target_loss_absolute_tolerance": 1e-12,
+    "source_decoder_before": {
+      "feasible": 128,
+      "reconstruction_loss": 1.0,
+      "validation_fixture": true
+    },
+    "source_decoder_after": {
+      "feasible": 128,
+      "reconstruction_loss": 1.0,
+      "validation_fixture": true
+    },
+    "vae_change_l2": 0.0,
+    "optimizer_steps": 0,
+    "training_steps": [],
+    "first_loss": null,
+    "last_loss": null,
+    "objective": "reconstruction+0.0001*KL",
+    "gate_version": 1
+  },
+  "oracle_calls": 0,
+  "training_performed": false,
+  "device": "cpu",
+  "elapsed_seconds": 0.6870856396853924,
+  "caveat": "Final-versus-initial checkpoint replay validates rejection and restoration, not specific intermediate historical update decisions. Source probe uses a passing fixture to isolate target gate.",
+  "inherited_from": "/root/data/logs/peptide_target_loss_gate_test10_20261119/validation/saved_pep999_gate.json",
+  "scope": "Previous unchanged target gate/GPU training components; scheduling validated separately in this experiment."
+}

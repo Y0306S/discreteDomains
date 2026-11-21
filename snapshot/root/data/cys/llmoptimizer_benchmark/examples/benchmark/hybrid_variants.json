@@ -1,0 +1,322 @@
+{
+  "description": "LLM+TPE hybrid schedules for Option 2 Stage 2 (apply with a fixed prompt variant). mix_sweep is 30/70 through 70/30 (H1, H40, H0, H60, H2). selector_sweep is UCB/PUCB (wired, not launched).",
+  "defaults": {
+    "n_initial_samples": 4,
+    "tpe_startup_trials": 3
+  },
+  "variants": [
+    {
+      "id": "H0",
+      "label": "mix50",
+      "llm_prob": 0.5,
+      "llm_phase_trials": 0,
+      "notes": "Current default after warm-start."
+    },
+    {
+      "id": "H1",
+      "label": "mix30",
+      "llm_prob": 0.3,
+      "llm_phase_trials": 0
+    },
+    {
+      "id": "H20",
+      "label": "mix20",
+      "llm_prob": 0.2,
+      "llm_phase_trials": 0,
+      "notes": "P16 mix sweep: 20% LLM / 80% TPE after warm-start."
+    },
+    {
+      "id": "H40",
+      "label": "mix40",
+      "llm_prob": 0.4,
+      "llm_phase_trials": 0,
+      "notes": "P16 mix sweep: 40% LLM / 60% TPE after warm-start."
+    },
+    {
+      "id": "H2",
+      "label": "mix70",
+      "llm_prob": 0.7,
+      "llm_phase_trials": 0,
+      "notes": "70% LLM / 30% TPE after warm-start."
+    },
+    {
+      "id": "H60",
+      "label": "mix60",
+      "llm_prob": 0.6,
+      "llm_phase_trials": 0,
+      "hybrid_selector": "bernoulli",
+      "notes": "60% LLM / 40% TPE after warm-start."
+    },
+    {
+      "id": "H3",
+      "label": "phase20_tpe",
+      "llm_prob": 0.0,
+      "llm_phase_trials": 20,
+      "notes": "Trials 0-19 LLM (after warm-start still applies), then 100% TPE."
+    },
+    {
+      "id": "H4",
+      "label": "phase20_mix50",
+      "llm_prob": 0.5,
+      "llm_phase_trials": 20
+    },
+    {
+      "id": "H5",
+      "label": "phase10_tpe",
+      "llm_prob": 0.0,
+      "llm_phase_trials": 10
+    },
+    {
+      "id": "H6",
+      "label": "phase20_mix30",
+      "llm_prob": 0.3,
+      "llm_phase_trials": 20
+    },
+    {
+      "id": "H7",
+      "label": "phase20_mix70",
+      "llm_prob": 0.7,
+      "llm_phase_trials": 20
+    },
+    {
+      "id": "H8",
+      "label": "phase40_tpe",
+      "llm_prob": 0.0,
+      "llm_phase_trials": 40,
+      "notes": "Trials 0-39 LLM (4 warm-start + 36 with history), then trials 40-79 100% TPE."
+    },
+    {
+      "id": "H9",
+      "label": "phase5_tpe",
+      "llm_prob": 0.0,
+      "llm_phase_trials": 5,
+      "notes": "Trials 0-4 LLM warm-start only, then 100% TPE."
+    },
+    {
+      "id": "H11",
+      "label": "phase15_tpe",
+      "llm_prob": 0.0,
+      "llm_phase_trials": 15,
+      "notes": "Trials 0-14 LLM, then 100% TPE."
+    },
+    {
+      "id": "H12",
+      "label": "phase25_tpe",
+      "llm_prob": 0.0,
+      "llm_phase_trials": 25,
+      "notes": "Trials 0-24 LLM, then 100% TPE."
+    },
+    {
+      "id": "HUCB",
+      "label": "ucb",
+      "llm_prob": 0.5,
+      "llm_phase_trials": 0,
+      "hybrid_selector": "ucb",
+      "ucb_c": 1.4,
+      "pucb_q": "window_minmax",
+      "pucb_window": 10,
+      "notes": "Two-arm UCB, C=1.4, Q=last-10 min-max. Not launched."
+    },
+    {
+      "id": "HPUCB",
+      "label": "pucb_window",
+      "llm_prob": 0.5,
+      "llm_phase_trials": 0,
+      "hybrid_selector": "pucb",
+      "pucb_c2": 1.4,
+      "pucb_p1": 0.9,
+      "pucb_q": "window_minmax",
+      "pucb_window": 10,
+      "notes": "CoFEH PUCB, C2=1.4, LLM prior 0.9\u21920.1, Q=window min-max. Not launched."
+    },
+    {
+      "id": "HPUCB_breakthrough",
+      "label": "pucb_breakthrough",
+      "llm_prob": 0.5,
+      "llm_phase_trials": 0,
+      "hybrid_selector": "pucb",
+      "pucb_c2": 1.4,
+      "pucb_p1": 0.9,
+      "pucb_q": "breakthrough",
+      "notes": "PUCB with CoFEH breakthrough-rate Q. Not launched."
+    },
+    {
+      "id": "HPUCB_arm",
+      "label": "pucb_arm_best",
+      "llm_prob": 0.5,
+      "llm_phase_trials": 0,
+      "hybrid_selector": "pucb",
+      "pucb_c2": 1.4,
+      "pucb_p1": 0.9,
+      "pucb_q": "arm_best",
+      "notes": "PUCB with arm-best Q. LLM prior 0.9\u21920.1."
+    },
+    {
+      "id": "HPUCB_arm_p08",
+      "label": "pucb_arm_best_p08",
+      "llm_prob": 0.5,
+      "llm_phase_trials": 0,
+      "hybrid_selector": "pucb",
+      "pucb_c2": 1.4,
+      "pucb_p1": 0.8,
+      "pucb_q": "arm_best",
+      "notes": "PUCB arm-best Q. LLM \u03c9 0.8\u21920.2. Pair with P5plusA5T50X50RS10."
+    },
+    {
+      "id": "HPUCB_arm_p07",
+      "label": "pucb_arm_best_p07",
+      "llm_prob": 0.5,
+      "llm_phase_trials": 0,
+      "hybrid_selector": "pucb",
+      "pucb_c2": 1.4,
+      "pucb_p1": 0.7,
+      "pucb_q": "arm_best",
+      "notes": "PUCB arm-best Q. LLM \u03c9 0.7\u21920.3. Pair with P5plusA5T50X50RS10."
+    },
+    {
+      "id": "HPUCB_arm_p05",
+      "label": "pucb_arm_best_end05",
+      "llm_prob": 0.5,
+      "llm_phase_trials": 0,
+      "hybrid_selector": "pucb",
+      "pucb_c2": 1.4,
+      "pucb_p1": 0.9,
+      "pucb_p_end": 0.5,
+      "pucb_q": "arm_best",
+      "notes": "PUCB arm-best Q. LLM \u03c9 0.9\u21920.5, TPE \u03c9 0.1\u21920.5 so LLM still runs after trial 50 when P5+ this-run/fANOVA can enter. Tilts the WHOLE schedule, not late-only."
+    },
+    {
+      "id": "HPUCB_arm_late05",
+      "label": "pucb_arm_best_late_floor05",
+      "llm_prob": 0.5,
+      "llm_phase_trials": 0,
+      "hybrid_selector": "pucb",
+      "pucb_c2": 1.4,
+      "pucb_p1": 0.9,
+      "pucb_q": "arm_best",
+      "pucb_floor": 0.5,
+      "pucb_floor_after_frac": 0.6,
+      "notes": "Same 0.9\u21920.1 PUCB decay as HPUCB_arm until ~trial 50 (frac 0.6 of adaptive budget), then clamp \u03c9_llm\u22650.5. Pair with P5plusA5TRdyFanovaX50 so Fanova-filtered prompts actually get late LLM turns. Does not overwrite HPUCB_arm or HPUCB_arm_p05."
+    },
+    {
+      "id": "HPUCB_arm_H0split",
+      "label": "pucb_arm_then_mix50",
+      "llm_prob": 0.5,
+      "llm_phase_trials": 0,
+      "hybrid_selector": "pucb",
+      "pucb_c2": 1.4,
+      "pucb_p1": 0.9,
+      "pucb_q": "arm_best",
+      "pucb_switch_after_frac": 0.47,
+      "notes": "HPUCB_arm for the first ~40 trials (frac 0.47 of adaptive budget, same 0.9\u21920.1 decay as shipping), then Bernoulli 50/50 (H0) for trials 41\u201380. Sequential splice of the two-run portfolio idea. Pair with P5plusA5T50X50. Does not overwrite HPUCB_arm."
+    },
+    {
+      "id": "HDTS",
+      "label": "discounted_thompson",
+      "llm_prob": 0.5,
+      "llm_phase_trials": 0,
+      "hybrid_selector": "dts",
+      "dts_gamma": 0.95,
+      "pucb_q": "breakthrough",
+      "notes": "Discounted Thompson: Beta(S+1,F+1), gamma=0.95 on both arms each trial. Reward = beat incumbent."
+    },
+    {
+      "id": "HAP",
+      "label": "adaptive_pursuit",
+      "llm_prob": 0.5,
+      "llm_phase_trials": 0,
+      "hybrid_selector": "ap",
+      "ap_beta": 0.3,
+      "ap_pmin": 0.2,
+      "pucb_q": "window_minmax",
+      "pucb_window": 10,
+      "notes": "Adaptive pursuit P_min=0.2 beta=0.3 on window min-max Q. LLM floor 20% matches mix-grid / Part C."
+    },
+    {
+      "id": "HDUCB",
+      "label": "discounted_ucb",
+      "llm_prob": 0.5,
+      "llm_phase_trials": 0,
+      "hybrid_selector": "ducb",
+      "ucb_c": 1.4,
+      "dts_gamma": 0.95,
+      "notes": "Garivier D-UCB on discounted incumbent-beat rewards, C=1.4, gamma=0.95."
+    },
+    {
+      "id": "HDMAB",
+      "label": "ucb_page_hinkley",
+      "llm_prob": 0.5,
+      "llm_phase_trials": 0,
+      "hybrid_selector": "dmab",
+      "ucb_c": 1.4,
+      "pucb_q": "window_minmax",
+      "pucb_window": 10,
+      "notes": "UCB1 + Page-Hinkley restart when the reward stream changes."
+    },
+    {
+      "id": "HTRAN",
+      "label": "llinbo_transient",
+      "llm_prob": 0.5,
+      "llm_phase_trials": 0,
+      "hybrid_selector": "transient",
+      "notes": "LLINBO-Transient: p_LLM = clip(8/t, 0.1, 0.9). Scheduled decay, not learned. Contrast arm vs H2."
+    }
+  ],
+  "recommended_batches": {
+    "stage2_all": [
+      "H0",
+      "H1",
+      "H2",
+      "H3",
+      "H4",
+      "H5",
+      "H6",
+      "H7",
+      "H8",
+      "H9",
+      "H11",
+      "H12"
+    ],
+    "p27_phase_sweep": [
+      "H9",
+      "H5",
+      "H11",
+      "H3",
+      "H12"
+    ],
+    "p16_mix_sweep": [
+      "H20",
+      "H1",
+      "H40"
+    ],
+    "mix_sweep": [
+      "H1",
+      "H40",
+      "H0",
+      "H60",
+      "H2"
+    ],
+    "mix_7040": [
+      "H2",
+      "H60",
+      "H0",
+      "H40"
+    ],
+    "selector_sweep": [
+      "HUCB",
+      "HPUCB",
+      "HPUCB_breakthrough",
+      "HPUCB_arm",
+      "HPUCB_arm_p08",
+      "HPUCB_arm_p07",
+      "HPUCB_arm_p05",
+      "HPUCB_arm_late05",
+      "HPUCB_arm_H0split",
+      "HDTS",
+      "HAP",
+      "HDUCB",
+      "HDMAB",
+      "HTRAN"
+    ]
+  }
+}

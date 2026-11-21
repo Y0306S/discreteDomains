@@ -1,0 +1,71 @@
+{
+  "checked_at": "2026-11-19T02:29:59.007547+00:00",
+  "status": "all30_method_task_results_complete",
+  "endpoint_metrics": {
+    "Original frozen FSBO": {
+      "mean_final_mic": 24.182604789733887,
+      "median_final_mic": 19.93337345123291,
+      "mean_task_improvement_percent": 34.56981888199457,
+      "wins": 2
+    },
+    "Online VAE + FSBO": {
+      "mean_final_mic": 28.951193404197692,
+      "median_final_mic": 17.56373119354248,
+      "mean_task_improvement_percent": 33.98782310979501,
+      "wins": 2
+    },
+    "SemanticOPT with fallback": {
+      "mean_final_mic": 14.28379213809967,
+      "median_final_mic": 13.06407117843628,
+      "mean_task_improvement_percent": 53.16774216629229,
+      "wins": 6
+    }
+  },
+  "endpoint_online_vs_original_wins": 5,
+  "endpoint_online_vs_semanticopt_wins": 3,
+  "matched": {
+    "3500_fresh": {
+      "tasks": 10,
+      "mean_mic": {
+        "Original frozen FSBO": 28.55900993347168,
+        "Online VAE + FSBO": 31.51464626789093,
+        "SemanticOPT with fallback": 14.7135999917984
+      },
+      "online_vs_original_wins": 6,
+      "online_vs_original_ties": 0,
+      "online_vs_semanticopt_wins": 3
+    },
+    "online_actual_fresh": {
+      "tasks": 10,
+      "mean_mic": {
+        "Original frozen FSBO": 28.405395698547363,
+        "Online VAE + FSBO": 28.951193404197692,
+        "SemanticOPT with fallback": 14.492411065101624
+      },
+      "online_vs_original_wins": 5,
+      "online_vs_original_ties": 0,
+      "online_vs_semanticopt_wins": 3
+    }
+  },
+  "runtime": {
+    "original_mean_task_minutes": 52.935706196009804,
+    "original_sum_task_hours": 8.822617699334968,
+    "online_mean_task_hours": 4.9385785839974154,
+    "online_sum_task_hours": 49.385785839974154,
+    "online_to_original_sum_ratio": 5.597634117558643,
+    "online_initial_offline_hours": 0.9884432326872936,
+    "online_campaign_start_to_report_hours": 17.0236207993163,
+    "semanticopt_continuation_start_to_report_hours": 26.561888272497388,
+    "semanticopt_mean_task_continuation_hours": 26.152308248394064,
+    "source_reencoding_and_scratch_fsbo_fraction_of_online_wall": 0.6782489150574368
+  },
+  "semanticopt_random_fallback_fraction": 0.78315,
+  "audits": "All initial100 sequences and measured scores identical; frozen archive payload hashes and SemanticOPT imported1000 hashes verified; unique/cache accounting and75% similarity constraints checked; batch-causal curves; endpoints and counts validated.",
+  "limitations": [
+    "Endpoint budgets unequal: original stops at5000 proposal or fresh cap; online at4000 proposal or fresh cap; SemanticOPT exactly4000 fresh. See matched budgets to assess quality independently of this discrepancy.",
+    "SemanticOPT first1000 observations imported from an earlier campaign.26.6h continuation runtime is not the runtime for all4000; last process timer is only about7.9h and is not total.",
+    "Frozen and online task wall sums are aggregate task hours, not elapsed campaign duration. SemanticOPT tasks run concurrently and its task hours must not be interpreted as CPU/GPU compute.",
+    "Historical hardware/software, inference concurrency, shared resources and pause/restart histories differ; runtimes are operational measurements, not a controlled speed benchmark.",
+    "One seed per method/task. Online changes initial VAE and FSBO training population as well as online updates; this does not isolate the VAE contribution."
+  ]
+}

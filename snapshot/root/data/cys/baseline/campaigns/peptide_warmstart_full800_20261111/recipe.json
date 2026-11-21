@@ -1,0 +1,51 @@
+{
+  "domain": "peptide",
+  "purpose": "fresh-base full-language-model warm-start SFT",
+  "framework": "LLaMA-Factory",
+  "finetuning_type": "full",
+  "source_full_recipe": "/root/data/cys/baseline/artifacts/bolt_peptide_top10_full_sft/run_20261029T065700Z/training_config.json",
+  "dataset": "/root/data/cys/llmoptimizer_benchmark/benchmark_data/bolt_peptide_top10_train800_v1",
+  "train_tasks": 800,
+  "excluded_test_tasks": 200,
+  "examples": 8000,
+  "top_k": 10,
+  "epochs": 5,
+  "effective_batch": 16,
+  "optimizer_steps": 2500,
+  "parent_adapter": null,
+  "gpus": [
+    2,
+    3
+  ],
+  "gpu_memory_cap_gib_per_rank": 21,
+  "minimum_free_gpu_gib_per_rank": 23,
+  "minimum_free_host_ram_gib": 240,
+  "minimum_free_disk_gib": 600,
+  "local_cpus_by_rank": [
+    [
+      24,
+      25,
+      26
+    ],
+    [
+      27,
+      28,
+      29
+    ]
+  ],
+  "remote_preparation_cpus": [
+    0,
+    1,
+    2
+  ],
+  "two_workers_interpretation": "User confirmed two GPU inference slots; used as full-SFT ranks on GPUs 2 and 3",
+  "learning_rate": 1e-05,
+  "warmup_steps": 20,
+  "optimizer": "DeepSpeedCPUAdam FP32 states with ZeRO3, BF16 GPU compute",
+  "changes_from_previous_full": [
+    "fresh output, no checkpoint resume",
+    "three CPU threads per training rank instead of one",
+    "21GiB GPU allocation cap based on prior measured 15.92GiB peak"
+  ],
+  "status": "queued"
+}

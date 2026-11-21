@@ -1,0 +1,47 @@
+# Phase 0 benchmark environment (Python 3.11, CUDA PyTorch, HF Qwen + MindWare HPO).
+# Install PyTorch separately via setup_benchmark_env.sh (CUDA wheel).
+
+# Core scientific stack
+numpy>=1.24.4,<2.0
+pandas>=2.0.3,<3.0
+scipy>=1.10.1,<2.0
+scikit-learn>=1.3.2,<1.6
+
+# HPO / search
+ConfigSpace>=0.4.21,<0.7
+openbox==0.8.4
+scikit-optimize>=0.9.0
+optuna>=3.6.0,<5.0
+cmaes>=0.10.0,<1.0
+
+# ML backends
+lightgbm>=4.6.0
+xgboost>=2.1.0
+catboost>=1.2.0
+
+# MindWare import-time deps
+openai>=1.0.0,<2.0
+aiohttp>=3.9.0,<4.0
+tiktoken>=0.7.0,<1.0
+langchain==0.2.17
+beautifulsoup4>=4.12.0,<5.0
+requests>=2.31.0,<3.0
+charset-normalizer>=3.3.0,<4.0
+PyYAML>=6.0.0,<7.0
+filelock>=3.13.0,<4.0
+liac-arff==2.5.0
+psutil>=5.9.0,<8.0
+tqdm>=4.66.0,<5.0
+shap>=0.44.1,<0.46
+slicer==0.0.7
+cvxpy>=1.4.3,<2.0
+
+# Plotting / aggregation
+matplotlib>=3.8.0,<4.0
+
+# HuggingFace Qwen SFT6 in-process inference
+transformers>=5.6.0,<6.0
+accelerate>=1.0.0,<2.0
+safetensors>=0.4.0
+sentencepiece>=0.2.0
+protobuf>=4.0.0

@@ -1,0 +1,23 @@
+{
+  "status": "failed",
+  "worker": {
+    "name": "LLMOptimizer4.random00",
+    "host": "LLMOptimizer4",
+    "method": "random",
+    "bo_cpu": 15,
+    "db_cpus": [
+      19,
+      20,
+      21
+    ],
+    "gpu": "",
+    "port": 5470,
+    "pgdata": "/dev/shm/query_random_optformer_20261014/w00/pg_imdb_d",
+    "source_pgdata": "/root/data/cys/logs/semanticopt_recovery_20261007/pg_imdb_d.clean_shutdown.tar",
+    "volatile_database": true,
+    "device": "cpu",
+    "handover_deployment": "/root/data/cys/logs/query_random_optformer_handoff_20261014"
+  },
+  "time": 1791993667.4267476,
+  "error": "Command '['taskset', '-c', '19,20,21', 'setpriv', '--reuid=10000', '--regid=10000', '--clear-groups', '/root/data/cys/envs/pg16/bin/pg_ctl', '-D', '/dev/shm/query_random_optformer_20261014/w00/pg_imdb_d', '-l', '/dev/shm/query_random_optformer_20261014/w00/pg_imdb_d/query_train800_author_20261002.log', '-o', '-p 5470 -c shared_buffers=1GB -c work_mem=64MB -c max_parallel_workers_per_gather=2 -c max_parallel_workers=2 -c dynamic_library_path=/root/data/cys/envs/hpo_benchmark/lib:/root/data/cys/envs/pg16/lib', '-w', '-t', '90', 'start']' returned non-zero exit status 1."
+}

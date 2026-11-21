@@ -1,0 +1,29 @@
+{
+  "description": "One LoRA adapter per domain. Do not reuse the tabular CASH LoRA as the policy.",
+  "backbone": "/root/data/cys/blockdata_archive/model-weights/llamafactory_qwen35_9b_full_sft_6",
+  "adapters": {
+    "protein": {
+      "path": "/root/data/cys/blockdata_archive/model-weights/domain_lora/protein",
+      "prompt_variant": "P5_protein",
+      "hybrid_variant": "H2_latent",
+      "optimizer": "ptllm_cmaes"
+    },
+    "query": {
+      "path": "/root/data/cys/blockdata_archive/model-weights/domain_lora/query",
+      "prompt_variant": "P5_query",
+      "hybrid_variant": "H2_latent",
+      "optimizer": "ptllm_cmaes"
+    },
+    "dl": {
+      "path": "/root/data/cys/blockdata_archive/model-weights/domain_lora/dl",
+      "prompt_variant": "P5_dl",
+      "hybrid_variant": "H2",
+      "optimizer": "ptllm_tpe"
+    }
+  },
+  "train": {
+    "script": "examples/benchmark/train_p5_reinforce.py",
+    "reward": "delta_best",
+    "tune_only": true
+  }
+}

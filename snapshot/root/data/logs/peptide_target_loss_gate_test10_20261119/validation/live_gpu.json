@@ -1,0 +1,166 @@
+{
+  "passed": true,
+  "checks": {
+    "live_gpu_update_accepted": true,
+    "target_loss_did_not_worsen": true,
+    "two_real_optimizer_steps": true,
+    "scratch_FSBO_rebuilt": true,
+    "separate_four_sources_plus_current": true,
+    "post_update_decoding_and_scoring": true,
+    "oracle_ledger_matches_fresh": true,
+    "request_event_ids_unique": true,
+    "cache_and_similarity_accounting": true,
+    "saved_coordinates_match_retained_VAE": true,
+    "real_GPU_target_degradation_rejected": true,
+    "GPU_rollback_restores_every_tensor": true
+  },
+  "host": "cs-0b2cd-18deb-server",
+  "gpu": "NVIDIA A16",
+  "validation_oracle_calls": 99,
+  "validation_directory": "/root/data/logs/peptide_target_loss_gate_test10_20261119/validation_fullscale/adapted_online/pep_219",
+  "production_oracle_calls": 0,
+  "component_budget": "GPU VAE update + four real source tasks/current task,50 FSBO steps; production800/100000 unchanged",
+  "target_degradation_rejection": {
+    "accepted": false,
+    "rolled_back": true,
+    "rejection_reasons": [
+      "target_loss_worse_than_pre_update",
+      "target_loss_worse_than_initial_baseline"
+    ],
+    "target_loss_before": {
+      "mean_target_loss": 0.0003095290740020573,
+      "reconstruction_loss": 4.4561535202565965e-09,
+      "kl_divergence": 3.0952463150024414,
+      "by_seed": [
+        {
+          "loss": 0.0003095282008871436,
+          "recon_loss": 3.5762766081859354e-09,
+          "kldiv": 3.0952463150024414
+        },
+        {
+          "loss": 0.00030952980159781873,
+          "recon_loss": 5.1941144718625765e-09,
+          "kldiv": 3.0952463150024414
+        },
+        {
+          "loss": 0.0003095292195212096,
+          "recon_loss": 4.5980694807212785e-09,
+          "kldiv": 3.0952463150024414
+        }
+      ],
+      "seeds": [
+        8131,
+        8132,
+        8133
+      ],
+      "sequences": 100,
+      "sequence_sha256": "9b7a5c553a693e062203e2f7c791abe753102b0b520893b3447d2c74ba7915ae",
+      "precision": "fp32_eval",
+      "device": "cuda:0",
+      "independent_heldout": false
+    },
+    "target_loss_after": {
+      "mean_target_loss": 0.001047790244532128,
+      "reconstruction_loss": 0.0007420596084557474,
+      "kl_divergence": 3.0573065280914307,
+      "by_seed": [
+        {
+          "loss": 0.001124312519095838,
+          "recon_loss": 0.0008185819024220109,
+          "kldiv": 3.0573065280914307
+        },
+        {
+          "loss": 0.001034157001413405,
+          "recon_loss": 0.0007284263265319169,
+          "kldiv": 3.0573065280914307
+        },
+        {
+          "loss": 0.0009849012130871415,
+          "recon_loss": 0.0006791705964133143,
+          "kldiv": 3.0573065280914307
+        }
+      ],
+      "seeds": [
+        8131,
+        8132,
+        8133
+      ],
+      "sequences": 100,
+      "sequence_sha256": "9b7a5c553a693e062203e2f7c791abe753102b0b520893b3447d2c74ba7915ae",
+      "precision": "fp32_eval",
+      "device": "cuda:0",
+      "independent_heldout": false
+    },
+    "target_loss_initial_baseline": {
+      "mean_target_loss": 0.0003095290740020573,
+      "reconstruction_loss": 4.4561535202565965e-09,
+      "kl_divergence": 3.0952463150024414,
+      "by_seed": [
+        {
+          "loss": 0.0003095282008871436,
+          "recon_loss": 3.5762766081859354e-09,
+          "kldiv": 3.0952463150024414
+        },
+        {
+          "loss": 0.00030952980159781873,
+          "recon_loss": 5.1941144718625765e-09,
+          "kldiv": 3.0952463150024414
+        },
+        {
+          "loss": 0.0003095292195212096,
+          "recon_loss": 4.5980694807212785e-09,
+          "kldiv": 3.0952463150024414
+        }
+      ],
+      "seeds": [
+        8131,
+        8132,
+        8133
+      ],
+      "sequences": 100,
+      "sequence_sha256": "9b7a5c553a693e062203e2f7c791abe753102b0b520893b3447d2c74ba7915ae",
+      "precision": "fp32_eval",
+      "device": "cuda:0",
+      "independent_heldout": false
+    },
+    "target_loss_absolute_tolerance": 1e-12,
+    "source_decoder_before": {
+      "tasks": 32,
+      "sequences": 128,
+      "feasible": 128,
+      "mean_similarity": 0.8395125940327284,
+      "reconstruction_loss": 0.00035698452120414004,
+      "source_only": true
+    },
+    "source_decoder_after": {
+      "tasks": 32,
+      "sequences": 128,
+      "feasible": 128,
+      "mean_similarity": 0.8395125940327284,
+      "reconstruction_loss": 0.0003554082795744762,
+      "source_only": true
+    },
+    "vae_change_l2": 0.0,
+    "optimizer_steps": 0,
+    "training_steps": [],
+    "first_loss": null,
+    "last_loss": null,
+    "objective": "reconstruction+0.0001*KL",
+    "gate_version": 1
+  },
+  "code_sha256": {
+    "/root/data/logs/peptide_target_loss_gate_test10_20261119/code/target_gate.py": "758eb006be86d1b8b3552cdbb090fefd795ef2469d2ff76d0e935c710804cd65",
+    "/root/data/logs/peptide_target_loss_gate_test10_20261119/code/validate_saved_pep999.py": "08f5c67c88a79e6bbcb3dc1f055627c55b7d9a5c2ecf895737fba5ac8666e1c4",
+    "/root/data/logs/peptide_target_loss_gate_test10_20261119/code/monitor.py": "e4242477032f22804bc2ceeed3992f1b567c64b3e8bdaf1fa62267840c6258cb",
+    "/root/data/logs/peptide_target_loss_gate_test10_20261119/code/reconstruction.py": "fcd929ee744d5110d19426cc94f2bff5fcdd3bc7c2e2229deee58222ba09aae8",
+    "/root/data/logs/peptide_target_loss_gate_test10_20261119/code/evaluate.py": "6a3833f18769e5fee360fe227fc9b9c3612d299082a0bbcd2a582ee438dd3b04",
+    "/root/data/logs/peptide_target_loss_gate_test10_20261119/code/test_target_gate.py": "414a3ddd4259be33c9ab1442a086d021a9cc020ecc7c6b4aa497772bae3cae0b",
+    "/root/data/logs/peptide_target_loss_gate_test10_20261119/code/report.py": "99afdeadd31e1436cb1d2815457fb09e243eab0b5116fc29bc9eeed46d2ed1dd",
+    "/root/data/logs/peptide_target_loss_gate_test10_20261119/code/source_meta.py": "f8d60c6c7125c1b79573713401b30ec4d1d6d6a0baf571c54dac5582c8504876",
+    "/root/data/logs/peptide_target_loss_gate_test10_20261119/code/validate_live.py": "796c93150fcca1e421b07970077f75b5e7d8975f13aa46523ae2723aaff09e48",
+    "/root/data/logs/peptide_target_loss_gate_test10_20261119/code/pipeline.py": "36c23a20037a642817b3988344d4b2699b5014abc6a823ba2a0584f6e1afb713",
+    "/root/data/logs/peptide_target_loss_gate_test10_20261119/code/common.py": "18ed441ddcaa680ffedd73ba6735591fe51c4075f860fa00fa6b4f6976d39cdf",
+    "/root/data/logs/peptide_target_loss_gate_test10_20261119/code/offline.py": "d49905fc15dea58c0ebd04c627d0808b8befabaf578239c842951e86cd5d01bc"
+  },
+  "validated_at": 1795077086.3101819
+}

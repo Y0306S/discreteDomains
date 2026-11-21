@@ -1,0 +1,53 @@
+# BOLT open-source recipe adapted to text-only Qwen3.5-9B in LLaMA-Factory.
+model_name_or_path: /root/eb-public/huggingface-models/Qwen/Qwen3.5-9B
+trust_remote_code: true
+stage: sft
+do_train: true
+finetuning_type: full
+freeze_language_model: false
+freeze_vision_tower: true
+freeze_multi_modal_projector: true
+deepspeed: /root/data/cys/blockdata_archive/llmoptimizer_benchmark/configs/bolt_ml/zero3_cpu_adam.json
+flash_attn: sdpa
+use_reentrant_gc: false
+
+dataset_dir: /root/data/cys/blockdata_archive/llmoptimizer_benchmark/benchmark_data/bolt_ml_top10_train80_v1
+dataset: bolt_ml_top10_train80
+template: qwen3_5_nothink
+train_on_prompt: false
+packing: false
+cutoff_len: 4096
+preprocessing_num_workers: 4
+dataloader_num_workers: 0
+dataloader_pin_memory: false
+val_size: 0.0
+
+output_dir: /root/data/cys/baseline/artifacts/bolt_ml_top10_full_sft/model
+overwrite_output_dir: false
+logging_steps: 1
+logging_nan_inf_filter: false
+save_strategy: steps
+save_steps: 50
+save_only_model: false
+save_total_limit: 2
+report_to: none
+
+# Published effective batch: 4 GPUs x 4. This layout: 2 GPUs x 1 x 8.
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 8
+num_train_epochs: 5
+max_steps: -1
+learning_rate: 1.0e-5
+lr_scheduler_type: cosine
+warmup_steps: 20
+weight_decay: 0.01
+adam_beta1: 0.9
+adam_beta2: 0.999
+adam_epsilon: 1.0e-8
+max_grad_norm: 0.0
+bf16: true
+gradient_checkpointing: true
+seed: 42
+data_seed: 42
+ddp_timeout: 1800
+resume_from_checkpoint: null

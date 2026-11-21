@@ -1,0 +1,87 @@
+{
+  "checked_at": "2026-10-22T08:57:19.060322+00:00",
+  "worker": {
+    "name": "LLMOptimizer3.w05",
+    "host": "LLMOptimizer3",
+    "bo_cpu": 24,
+    "db_cpus": [
+      25,
+      26,
+      27
+    ],
+    "gpu": 1,
+    "pgdata": "/dev/shm/queryopt_pg_20261007/w05/pg_imdb_d",
+    "port": 5445,
+    "source_pgdata": "/root/data/cys/logs/query_train800_author_fixed_20261004/maintenance/LLMOptimizer3_gpu_change_20261005/pg_imdb_d.clean_shutdown.tar",
+    "volatile_database": true,
+    "method": "tpe"
+  },
+  "checkpoint_files": {
+    "/root/data/cys/logs/query_tpe_recovery_20261022/before/task/checkpoint.pt": "0bba1c08bd175b96ff0247a4d5b9657ac0f906437afc22d63b5f516d169bbf22",
+    "/root/data/cys/logs/query_tpe_recovery_20261022/before/task/artifacts.sqlite3": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/root/data/cys/logs/query_tpe_recovery_20261022/before/task/artifacts.sqlite3-journal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "initial_observations": 49,
+  "completed_proposals": 0,
+  "pending_proposals": 1,
+  "pending_uses_cached_initial_score": true,
+  "other_database_clients": 0,
+  "smoke_refresh_required": "Smoke verification is stale or belongs to different settings",
+  "prior_states": {
+    "workers/LLMOptimizer3.w05.json": {
+      "name": "LLMOptimizer3.w05",
+      "host": "LLMOptimizer3",
+      "bo_cpu": 24,
+      "db_cpus": [
+        25,
+        26,
+        27
+      ],
+      "gpu": 1,
+      "pgdata": "/dev/shm/queryopt_pg_20261007/w05/pg_imdb_d",
+      "port": 5445,
+      "source_pgdata": "/root/data/cys/logs/query_train800_author_fixed_20261004/maintenance/LLMOptimizer3_gpu_change_20261005/pg_imdb_d.clean_shutdown.tar",
+      "volatile_database": true,
+      "method": "tpe",
+      "pid": 1478,
+      "started_at": "2026-10-20T06:21:10.754018+00:00",
+      "mode": "production",
+      "task": "CEB_9A74",
+      "status": "failed",
+      "updated_at": "2026-10-21T13:36:46.088284+00:00",
+      "error": "no such table: artifacts"
+    },
+    "rolling/LLMOptimizer3.w05.json": {
+      "worker": "LLMOptimizer3.w05",
+      "host": "LLMOptimizer3",
+      "process": {
+        "pid": 1478,
+        "start_ticks": "422783901",
+        "boot_id": "aa683a3b-83c5-4e94-ac17-2e310b5636e3"
+      },
+      "started_at": "2026-10-20T06:21:09.995758+00:00",
+      "status": "failed",
+      "updated_at": "2026-10-21T13:36:46.225894+00:00",
+      "method": "tpe",
+      "error": "no such table: artifacts"
+    },
+    "rolling/LLMOptimizer3.w05.process.json": {
+      "pid": 1478,
+      "start_ticks": "422783901",
+      "boot_id": "aa683a3b-83c5-4e94-ac17-2e310b5636e3"
+    },
+    "claims/tpe.CEB_9A74.json": {
+      "task": "CEB_9A74",
+      "worker": "LLMOptimizer3.w05",
+      "host": "LLMOptimizer3",
+      "method": "tpe",
+      "status": "running",
+      "updated_at": "2026-10-21T13:34:43.476156+00:00"
+    }
+  },
+  "tests_passed": 18,
+  "tpe_runner_sha256": "87f54009d6ffadcdee9c0ee57616d5fa66cd058c9de5597c2da3d5ec7a6c8676",
+  "plan_sha256": "e9c676a90b364f2a14de95fadb8553cda12c388f8f95d18182766451a71cf3c0",
+  "dispatcher_sha256": "ecaf2dd5b58a933dd319d44ee05d35859e7fe3f7321db43c588bb71491a00fec",
+  "change": "Initialize the journal before spawning, retry transient monitor reads"
+}

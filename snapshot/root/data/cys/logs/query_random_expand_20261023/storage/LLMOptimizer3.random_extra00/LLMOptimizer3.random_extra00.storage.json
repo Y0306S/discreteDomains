@@ -1,0 +1,79 @@
+{
+  "worker": "LLMOptimizer3.random_extra00",
+  "port": 5480,
+  "pgdata": "/dev/shm/query_random_expand_20261023/w00/pg_imdb_d",
+  "tablespace": "query_random_disk_temp",
+  "location": "/root/data/cys/queryopt_temp/query_random_expand_20261023/LLMOptimizer3.random_extra00",
+  "started_at": 1792767949.4201527,
+  "headroom_before": {
+    "free_gib": 758.9035377502441,
+    "free_files": 766389,
+    "time": 1792767949.420169
+  },
+  "previous_temp_tablespaces": "",
+  "worker_at_change": {
+    "task": null,
+    "saved_proposals": null,
+    "updated_at": null
+  },
+  "effective_temp_tablespaces": "query_random_disk_temp",
+  "temporary_relation": "pg_tblspc/32775/PG_16_202307071/16385/t3_32778",
+  "spill_probe": {
+    "Node Type": "Sort",
+    "Parallel Aware": false,
+    "Async Capable": false,
+    "Startup Cost": 3483.77,
+    "Total Cost": 3533.77,
+    "Plan Rows": 20000,
+    "Plan Width": 64,
+    "Actual Startup Time": 362.315,
+    "Actual Total Time": 375.392,
+    "Actual Rows": 20000,
+    "Actual Loops": 1,
+    "Sort Key": [
+      "(md5((g)::text))"
+    ],
+    "Sort Method": "external merge",
+    "Sort Space Used": 21032,
+    "Sort Space Type": "Disk",
+    "Shared Hit Blocks": 4,
+    "Shared Read Blocks": 0,
+    "Shared Dirtied Blocks": 0,
+    "Shared Written Blocks": 0,
+    "Local Hit Blocks": 0,
+    "Local Read Blocks": 0,
+    "Local Dirtied Blocks": 0,
+    "Local Written Blocks": 0,
+    "Temp Read Blocks": 10530,
+    "Temp Written Blocks": 11055,
+    "Plans": [
+      {
+        "Node Type": "Function Scan",
+        "Parent Relationship": "Outer",
+        "Parallel Aware": false,
+        "Async Capable": false,
+        "Function Name": "generate_series",
+        "Alias": "g",
+        "Startup Cost": 0.0,
+        "Total Cost": 550.0,
+        "Plan Rows": 20000,
+        "Plan Width": 64,
+        "Actual Startup Time": 7.681,
+        "Actual Total Time": 47.43,
+        "Actual Rows": 20000,
+        "Actual Loops": 1,
+        "Shared Hit Blocks": 1,
+        "Shared Read Blocks": 0,
+        "Shared Dirtied Blocks": 0,
+        "Shared Written Blocks": 0,
+        "Local Hit Blocks": 0,
+        "Local Read Blocks": 0,
+        "Local Dirtied Blocks": 0,
+        "Local Written Blocks": 0,
+        "Temp Read Blocks": 35,
+        "Temp Written Blocks": 35
+      }
+    ]
+  },
+  "verified_at": 1792767949.8636148
+}

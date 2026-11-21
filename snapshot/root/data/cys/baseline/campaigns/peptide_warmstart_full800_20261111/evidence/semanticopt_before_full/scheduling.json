@@ -1,0 +1,47 @@
+{
+  "start_alongside_ml": true,
+  "authorized_by": "User requested one remaining ML allocation to peptide LoRA SFT and the other to SemanticOPT",
+  "stages": [
+    "peptide",
+    "query"
+  ],
+  "protect_active_ml_cpu_affinities": true,
+  "protect_ml_memory_growth": true,
+  "orpo_reserved_cpus": {
+    "LLMOptimizer4": [],
+    "LLMOptimizer2": [
+      6,
+      7,
+      8,
+      9,
+      10,
+      32,
+      33,
+      34,
+      35
+    ]
+  },
+  "released_ml_worker_destination": "one SFT preparation; one SemanticOPT; preparation CPUs return to SemanticOPT afterwards",
+  "orpo_reservation_authorized_at": 1794371964.3608215,
+  "reservation_purposes": {
+    "LLMOptimizer2": {
+      "extra_SemanticOPT_inference": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "peptide_ORPO_RL": [
+        32,
+        33,
+        34,
+        35
+      ],
+      "peptide_warmstart_LoRA_SFT": []
+    },
+    "LLMOptimizer4": {
+      "peptide_warmstart_SFT_preparation": []
+    }
+  }
+}

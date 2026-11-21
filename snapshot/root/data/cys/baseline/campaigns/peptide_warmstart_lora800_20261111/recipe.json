@@ -1,0 +1,39 @@
+{
+  "domain": "peptide",
+  "purpose": "independent base-model warm-start SFT",
+  "framework": "LLaMA-Factory",
+  "source_full_recipe": "/root/data/cys/baseline/artifacts/bolt_peptide_top10_full_sft/run_20261029T081056Z_adamw8bit/training_config.json",
+  "dataset": "/root/data/cys/llmoptimizer_benchmark/benchmark_data/bolt_peptide_top10_train800_v1",
+  "train_tasks": 800,
+  "excluded_test_tasks": 200,
+  "examples": 8000,
+  "top_k": 10,
+  "epochs": 5,
+  "effective_batch": 16,
+  "optimizer_steps": 2500,
+  "parent_adapter": null,
+  "gpu": 3,
+  "gpu_memory_cap_gib": 32,
+  "minimum_free_gpu_gib": 36,
+  "local_cpus": [
+    24,
+    25,
+    26
+  ],
+  "remote_preparation_cpus": [
+    0,
+    1,
+    2
+  ],
+  "remaining_ml_workers": {
+    "cls/sf-police-incidents/extra_trees": "SFT preparation on LLMOptimizer4 CPUs 0-2 then release",
+    "cls/volkert/catboost": "SemanticOPT on completion"
+  },
+  "changes_from_full": [
+    "LoRA rank32 alpha64 dropout0.05, base and vision frozen",
+    "microbatch1 accumulation16 preserves effective batch16",
+    "FP32 AdamW adapter optimizer instead of 8bit full-model optimizer; BF16 base",
+    "fresh clean base with no previous adapter or full-SFT weights"
+  ],
+  "status": "queued"
+}

@@ -1,0 +1,119 @@
+{
+  "at": 1794922812.6568909,
+  "status": {
+    "stages": {
+      "warm30": {
+        "complete_tasks": 200,
+        "started_tasks": 200,
+        "measurements": 6000,
+        "generation_attempts_or_optimization_attempts": 9526
+      },
+      "orpo_batch10": {
+        "complete_tasks": 0,
+        "started_tasks": 23,
+        "measurements": 3225,
+        "generation_attempts_or_optimization_attempts": 3225
+      }
+    },
+    "total_rounds": 80,
+    "batch_size": 10,
+    "evaluations_per_task": 800,
+    "total_tasks": 200,
+    "measurement_target": 160000,
+    "counted_measurements": 9225,
+    "paused": false,
+    "rl_enabled": false,
+    "at": 1794922806.7633576,
+    "status": "running",
+    "stage": "orpo_batch10",
+    "worker_launchers": [
+      391779,
+      391780,
+      391781,
+      391782,
+      391783,
+      391784,
+      391785,
+      391820,
+      392252,
+      393111,
+      393193,
+      393226,
+      393309,
+      393344,
+      393417,
+      393468,
+      393513,
+      393564,
+      393608,
+      393742,
+      393790,
+      393844,
+      393876,
+      393931
+    ],
+    "worker_count": 24,
+    "worker_hosts": {
+      "LLMOptimizer2": 6,
+      "LLMOptimizer4": 18
+    },
+    "resources_sha256": "480ac59c9dbe09db428839cf9023a61d814c9fc82b7b580ebbe9ff616ef318ef"
+  },
+  "workers_by_host": {
+    "LLMOptimizer2": 6,
+    "LLMOptimizer4": 18
+  },
+  "private_postgres_instances": 24,
+  "new_workers": [
+    {
+      "stage": "orpo_batch10",
+      "task": "CEB_11B177",
+      "pid": 18525,
+      "host": "LLMOptimizer4",
+      "status": "running",
+      "at": 1794922488.386322,
+      "port": 19720,
+      "optimizer_cpu": 71,
+      "postgres_cpus": [
+        68,
+        69,
+        70
+      ]
+    },
+    {
+      "stage": "orpo_batch10",
+      "task": "CEB_11B206",
+      "pid": 18700,
+      "host": "LLMOptimizer4",
+      "status": "running",
+      "at": 1794922491.0350382,
+      "port": 19721,
+      "optimizer_cpu": 75,
+      "postgres_cpus": [
+        72,
+        73,
+        74
+      ]
+    }
+  ],
+  "llm_replicas": 8,
+  "llm_ready": 8,
+  "vae_services": 16,
+  "cpu_sample": {
+    "at": 1794922668.74407,
+    "sample_seconds": 45.00027462095022,
+    "used_cores": 8.777403634246078,
+    "quota_cores": 64,
+    "throttled_periods": 0,
+    "memory_used_gib": 178.45843124389648
+  },
+  "recovery_tests_passed": 23,
+  "changes": [
+    "Add verified PostgreSQL/optimizer worker22 port19720 CPUs68-71",
+    "Add verified PostgreSQL/optimizer worker23 port19721 CPUs72-75",
+    "Reduce Query LLM resident replicas from12 to8 after GPU allocation failures",
+    "Increase campaign VAE timeout to1800 seconds; retain SQL timeout50 seconds",
+    "Allow reviewed query VAE HTTP timeouts through existing recovery scheduler"
+  ],
+  "further_expansion": "Defer while GPUs are saturated; CPU quota is not the measured limit"
+}

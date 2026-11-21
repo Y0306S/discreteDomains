@@ -1,0 +1,62 @@
+{
+  "status": "superseded_by_fsbo_only_pilot",
+  "domain": "ceb_query_runtime",
+  "vae_services_started": 10,
+  "physical_gpu_distribution": {
+    "0": 2,
+    "1": 2,
+    "2": 2,
+    "3": 4
+  },
+  "pool_manifest": "/root/data/logs/query_vae_cpu_capacity_20261106_v1/pool.json",
+  "cpu_cores_per_query_worker": 3,
+  "cpu_policy": "PostgreSQL inherits three-core affinity; single-thread optimizer shares one of those cores and waits during runtime evaluation.",
+  "initial_workers": {
+    "LLMOptimizer2": 4,
+    "LLMOptimizer4": 16
+  },
+  "target_workers": {
+    "LLMOptimizer2": 6,
+    "LLMOptimizer4": 18
+  },
+  "cpu_quota_cores": {
+    "LLMOptimizer2": 40,
+    "LLMOptimizer4": 64
+  },
+  "postgres_settings": {
+    "max_parallel_workers_per_gather": "2",
+    "max_parallel_workers": "2",
+    "max_worker_processes": "8",
+    "shared_buffers": "1GB",
+    "work_mem": "64MB"
+  },
+  "remote_tmpfs_current_gib": 128,
+  "remote_tmpfs_proposed_gib": 192,
+  "remote_tmpfs_changed": false,
+  "memory_budget_gib_per_query_worker": {
+    "database": 8.713,
+    "shared_buffers": 1,
+    "optimizer_and_query_working_reserve": 2
+  },
+  "admission_conditions": [
+    "Before even the 20-worker stage, increase remote /dev/shm to 192 GiB or provide an equivalent validated local database storage layout.",
+    "Keep at least 30 GiB cgroup memory free locally and 32 GiB remotely, including database storage and optimizer peak memory.",
+    "Keep at least four measured CPU quota cores free on LLMOptimizer2 with no sustained throttling; reserve ten quota cores on LLMOptimizer4 at the 18-worker target.",
+    "Increase 20 -> 22 -> 24 only after a concurrency pilot confirms memory, VAE queueing and query timing stability.",
+    "Pin each optimizer to a CPU in its own three-core PostgreSQL allocation; it must not fit models asynchronously while its runtime oracle runs.",
+    "Do not reinterpret the existing historical four-core runs; validate core sharing before comparing new results."
+  ],
+  "query_weights": "/root/data/logs/query_transfer_train800_20261106_v1",
+  "new_optimization_campaigns_started": 0,
+  "acquisition_wrapper": null,
+  "fsbo_rgpe_acquisition_runner_implemented": false,
+  "benchmark_summary": "/root/data/logs/query_vae_cpu_capacity_20261106_v1/cpu_benchmark_summary.json",
+  "current_result": "/root/data/logs/query_fsbo_pilot_20261106_v1/README.md",
+  "actual_active_cpu_workers": {
+    "LLMOptimizer2": 0,
+    "LLMOptimizer4": 16
+  },
+  "prepared_slots": 20,
+  "parked_local_slots": 4,
+  "full_campaign_started": false
+}

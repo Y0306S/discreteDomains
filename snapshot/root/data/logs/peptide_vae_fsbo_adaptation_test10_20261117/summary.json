@@ -1,0 +1,69 @@
+{
+  "status": "complete",
+  "tasks": [
+    "pep_117",
+    "pep_219",
+    "pep_221",
+    "pep_575",
+    "pep_673",
+    "pep_921",
+    "pep_925",
+    "pep_967",
+    "pep_980",
+    "pep_999"
+  ],
+  "offline_seconds": {
+    "vae": 3977.208102060482,
+    "embedding_refresh": 316.1088804844767,
+    "fsbo_meta": 1036.7088988330215
+  },
+  "offline_total_seconds": 5330.02588137798,
+  "stage_process_wall_seconds": {
+    "eval_pep_219_adapted_frozen": 4966.349427239969,
+    "eval_pep_673_adapted_online": 729.123734107241,
+    "fsbo_meta": 1054.6103416495025,
+    "eval_pep_980_adapted_online": 609.152291642502,
+    "eval_pep_221_author_frozen": 9577.833792386577,
+    "eval_pep_117_author_frozen": 14985.225212240592,
+    "eval_pep_575_author_frozen": 10057.436497341841,
+    "eval_pep_999_adapted_online": 766.5667609814554,
+    "encoding": 329.33166367188096,
+    "eval_pep_219_adapted_online": 382.0422330610454,
+    "eval_pep_221_adapted_online": 1148.2497478406876,
+    "eval_pep_921_adapted_online": 756.7020171396434,
+    "eval_pep_221_adapted_frozen": 5335.677601203322,
+    "eval_pep_925_adapted_online": 909.0445873755962,
+    "eval_pep_219_author_frozen": 10715.310095656663,
+    "eval_pep_575_adapted_online": 465.52955804392695,
+    "eval_pep_575_adapted_frozen": 4463.225785978138
+  },
+  "offline_amortized_per_task_at10": 533.002588137798,
+  "offline_amortized_per_task_at200": 26.6501294068899,
+  "comparisons": [
+    {
+      "reference": "author_frozen",
+      "variant": "adapted_online",
+      "wins": 0,
+      "losses": 10,
+      "ties": 0,
+      "mean_paired_mic_reduction": -19.867637276649475,
+      "paired_task_bootstrap95_mic_reduction": [
+        -38.200030920505526,
+        -5.463428549766549
+      ],
+      "mean_paired_runtime_ratio": 0.24141527081490496,
+      "median_paired_runtime_ratio": 0.19698833137201552,
+      "ratio_of_total_online_seconds": 0.22396848862346985,
+      "ratio_including_offline_cost_for_this10": 0.3917829395362436
+    }
+  ],
+  "limitations": [
+    "Single optimizer seed; sequential shared offline VAE replay is a new transfer adaptation, not a fresh 800-task LOLBO campaign.",
+    "The author baseline reuses completed historical FSBO archives. Software, device placement and contention differ; runtime ratios do not isolate adaptation overhead.",
+    "GPU hardware is shared with existing work; matched task/arm hardware and recorded utilization do not eliminate temporal contention.",
+    "Online joint optimization uses exact FSBO marginal likelihood plus native constraint predictive likelihood; it is a new FSBO adaptation variant.",
+    "Completed incumbents carry forward after proposal exhaustion; paired_results.csv records actual fresh-call support for every task.",
+    "Offline VAE sees all 800 source tasks, including FSBO internal validation tasks. The 10 held-out evaluation tasks remain excluded."
+  ],
+  "baseline_source": "/root/data/logs/peptide_batch50_gpu_test200_20261102_v1/fsbo"
+}

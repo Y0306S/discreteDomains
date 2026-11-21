@@ -1,0 +1,24 @@
+{
+  "started_at": 1795055618.9553676,
+  "purpose": "failed prompt prefill, one diagnostic output token, no oracle calls",
+  "weight_memory_gib": [
+    11,
+    10
+  ],
+  "tests": [],
+  "passed": false,
+  "traceback": "Traceback (most recent call last):\n  File \"/root/data/cys/baseline/campaigns/peptide_bora_test200_20261118/operations/diagnose_memory.py\", line 31, in <module>\n    replica = Replica(cfg)\n              ^^^^^^^^^^^^\n  File \"/root/data/cys/baseline/campaigns/peptide_bora_test200_20261118/services/qwen_inference_server.py\", line 57, in __init__\n    self.client._ensure_loaded()\n  File \"/root/data/cys/baseline/campaigns/peptide_bora_test200_20261118/services/hf_qwen_client.py\", line 159, in _ensure_loaded\n    model = AutoModelForImageTextToText.from_pretrained(\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/root/data/cys/blockdata_archive/miniconda3/envs/llamafactory_qwen35/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py\", line 394, in from_pretrained\n    return model_class.from_pretrained(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/root/data/cys/blockdata_archive/miniconda3/envs/llamafactory_qwen35/lib/python3.11/site-packages/transformers/modeling_utils.py\", line 4230, in from_pretrained\n    accelerate_dispatch(model, hf_quantizer, device_map, offload_folder, disk_offload_index, offload_buffers)\n  File \"/root/data/cys/blockdata_archive/miniconda3/envs/llamafactory_qwen35/lib/python3.11/site-packages/transformers/integrations/accelerate.py\", line 403, in accelerate_dispatch\n    dispatch_model(model, **device_map_kwargs)\n  File \"/root/data/cys/blockdata_archive/miniconda3/envs/llamafactory_qwen35/lib/python3.11/site-packages/accelerate/big_modeling.py\", line 426, in dispatch_model\n    attach_align_device_hook_on_blocks(\n  File \"/root/data/cys/blockdata_archive/miniconda3/envs/llamafactory_qwen35/lib/python3.11/site-packages/accelerate/hooks.py\", line 676, in attach_align_device_hook_on_blocks\n    attach_align_device_hook_on_blocks(\n  File \"/root/data/cys/blockdata_archive/miniconda3/envs/llamafactory_qwen35/lib/python3.11/site-packages/accelerate/hooks.py\", line 676, in attach_align_device_hook_on_blocks\n    attach_align_device_hook_on_blocks(\n  File \"/root/data/cys/blockdata_archive/miniconda3/envs/llamafactory_qwen35/lib/python3.11/site-packages/accelerate/hooks.py\", line 634, in attach_align_device_hook_on_blocks\n    add_hook_to_module(module, hook)\n  File \"/root/data/cys/blockdata_archive/miniconda3/envs/llamafactory_qwen35/lib/python3.11/site-packages/accelerate/hooks.py\", line 166, in add_hook_to_module\n    module = hook.init_hook(module)\n             ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/root/data/cys/blockdata_archive/miniconda3/envs/llamafactory_qwen35/lib/python3.11/site-packages/accelerate/hooks.py\", line 288, in init_hook\n    set_module_tensor_to_device(module, name, self.execution_device, tied_params_map=self.tied_params_map)\n  File \"/root/data/cys/blockdata_archive/miniconda3/envs/llamafactory_qwen35/lib/python3.11/site-packages/accelerate/utils/modeling.py\", line 335, in set_module_tensor_to_device\n    new_value = old_value.to(device, non_blocking=non_blocking)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntorch.OutOfMemoryError: CUDA out of memory. Tried to allocate 96.00 MiB. GPU 0 has a total capacity of 14.61 GiB of which 646.50 MiB is free. Including non-PyTorch memory, this process has 13.97 GiB memory in use. 14.00 GiB allowed; Of the allocated memory 13.89 GiB is allocated by PyTorch, and 20.57 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)\n",
+  "memory": {
+    "0": {
+      "allocated_gib": 13.892024040222168,
+      "reserved_gib": 13.912109375,
+      "peak_reserved_gib": 13.912109375
+    },
+    "1": {
+      "allocated_gib": 2.7857613563537598,
+      "reserved_gib": 8.345703125,
+      "peak_reserved_gib": 8.345703125
+    }
+  },
+  "finished_at": 1795055680.8060157
+}

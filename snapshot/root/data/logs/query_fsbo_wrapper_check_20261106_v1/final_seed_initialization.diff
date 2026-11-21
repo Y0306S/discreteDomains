@@ -1,0 +1,24 @@
+--- validated_runner
++++ final_runner
+@@ -66,6 +66,13 @@
+ def normalized(x, recipe):
+     low, high = np.asarray(recipe['lower']), np.asarray(recipe['upper'])
+     return ((np.asarray(x)-low)/np.where(high > low, high-low, 1.)).astype(np.float32)
++
++
++def seed_fresh_task(seed):
++    import torch
++    random.seed(seed)
++    np.random.seed(seed)
++    torch.manual_seed(seed)
+ 
+ 
+ def distinct_completed(rows):
+@@ -350,6 +357,7 @@
+     directory = campaign/'runs'/task
+     with lock(campaign/'locks'/(task+'.lock')):
+         if not (directory/'checkpoint.pt').exists():
++            seed_fresh_task(recipe['seed'])
+             plans = list(dict.fromkeys(tuple(r['plan']) for r in initial))
+             features = np.asarray(vae.encode([list(p) for p in plans]))
+             if features.shape != (len(plans), 64) or not np.isfinite(features).all():

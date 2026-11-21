@@ -1,0 +1,46 @@
+# Based on the user-selected s1b_ep7p5_dpo_rationale_G recipe.
+model_name_or_path: /root/eb-public/huggingface-models/Qwen/Qwen3.5-9B
+adapter_name_or_path: /root/data/cys/blockdata_archive/model-weights/llamafactory_qwen35_9b_lora_p5_s1b_ep7p5
+trust_remote_code: true
+
+stage: dpo
+do_train: true
+finetuning_type: lora
+lora_rank: 32
+lora_alpha: 64
+lora_dropout: 0.05
+lora_target: all
+pref_beta: 0.1
+pref_loss: orpo
+pref_ftx: 0.0
+
+dataset_dir: /root/data/cys/blockdata_archive/llmoptimizer_benchmark/benchmark_data/preference_rebuild_20261005_v4
+dataset: p5_attr_t2_rationale
+template: qwen3_5_nothink
+cutoff_len: 6016
+preprocessing_num_workers: 8
+dataloader_num_workers: 2
+overwrite_cache: true
+packing: false
+
+output_dir: /root/data/cys/blockdata_archive/model-weights/llamafactory_qwen35_9b_lora_p5_s1b_ep7p5_orpo_t2_rationale_20261005
+logging_steps: 5
+save_steps: 100
+plot_loss: true
+overwrite_output_dir: false
+save_only_model: false
+save_total_limit: 2
+report_to: none
+
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 8
+learning_rate: 5.0e-6
+num_train_epochs: 1.0
+lr_scheduler_type: cosine
+warmup_ratio: 0.1
+bf16: true
+gradient_checkpointing: true
+ddp_timeout: 180000000
+resume_from_checkpoint: null
+seed: 42
+deepspeed: /root/data/cys/LLMOptimizer/LlamaFactory/examples/deepspeed/ds_z3_config.json

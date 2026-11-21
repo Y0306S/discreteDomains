@@ -1,0 +1,78 @@
+{
+  "completed_archives_validated": 600,
+  "methods": {
+    "FSBO": {
+      "tasks": 200,
+      "initial_mean_best_mic": 63.218382450342176,
+      "final_mean_best_mic": 20.90090664803982,
+      "mean_relative_improvement_percent": 59.05776139004628,
+      "final_mean_mic_ci95": [
+        17.48486800120771,
+        24.68274698171019
+      ],
+      "fresh_evaluations_range": [
+        3707,
+        4927
+      ],
+      "mean_fresh_evaluations": 4439.625,
+      "improved_tasks": 196
+    },
+    "LOLBO": {
+      "tasks": 200,
+      "initial_mean_best_mic": 63.218382450342176,
+      "final_mean_best_mic": 34.14289862513542,
+      "mean_relative_improvement_percent": 39.506202169779186,
+      "final_mean_mic_ci95": [
+        28.457554989606145,
+        39.96414891982078
+      ],
+      "fresh_evaluations_range": [
+        2883,
+        5000
+      ],
+      "mean_fresh_evaluations": 4943.26,
+      "improved_tasks": 167
+    },
+    "TPE": {
+      "tasks": 200,
+      "initial_mean_best_mic": 63.218382450342176,
+      "final_mean_best_mic": 63.120064531564715,
+      "mean_relative_improvement_percent": 0.10271484454991742,
+      "final_mean_mic_ci95": [
+        54.04052663314341,
+        72.57167001318932
+      ],
+      "fresh_evaluations_range": [
+        3948,
+        4861
+      ],
+      "mean_fresh_evaluations": 4444.975,
+      "improved_tasks": 3
+    }
+  },
+  "checks": [
+    "all archived member SHA256 checksums",
+    "complete status and frozen recipe identity",
+    "same held-out task IDs",
+    "same initial sequences and revalidated scores",
+    "finite scores and MIC sign",
+    "fresh/cache/recenter/proposal accounting",
+    "terminal budget exhaustion",
+    "recorded final incumbent",
+    "nonincreasing feasible incumbent curves"
+  ],
+  "x_axis": "Post-initialization fresh logical oracle evaluations, including recentering. Cache hits have zero cost.",
+  "batch_policy": "Whole logged batches revealed at their endpoint; no arbitrary within-batch ordering.",
+  "terminal_policy": "Last measured incumbent carried forward to budget 5000 after either production budget is exhausted.",
+  "uncertainty": "Pointwise percentile bootstrap 95% CI; 2000 paired task resamples; seed20261101. One optimizer seed/task.",
+  "excluded": {
+    "RGPE": "test200 optimization incomplete",
+    "BOLT": "SFT completion alone is not completed peptide optimization"
+  },
+  "source_roots": {
+    "FSBO": "/root/data/logs/peptide_transfer_test200_20261028_v1/fsbo",
+    "LOLBO": "/root/data/logs/peptide_test200_baselines_20261027_v2/lolbo",
+    "TPE": "/root/data/logs/peptide_test200_baselines_20261027_v2/tpe"
+  },
+  "initialization": "/root/reports/peptide_train800_test200_audit_20261027/test200_revalidated_initialization.json"
+}

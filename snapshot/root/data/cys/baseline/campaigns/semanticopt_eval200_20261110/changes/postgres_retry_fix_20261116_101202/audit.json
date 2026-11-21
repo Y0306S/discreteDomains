@@ -1,0 +1,76 @@
+{
+  "at": "2026-11-16T10:16:37.911478+08:00",
+  "observed_failures": [
+    {
+      "task": "CEB_9A53",
+      "at": "2026-11-15T20:00:46+08:00",
+      "error": "PostgreSQL connection timeout after the existing five-second connect limit"
+    },
+    {
+      "task": "CEB_9A63",
+      "at": "2026-11-15T22:42:10+08:00",
+      "error": "PostgreSQL XX000: temporary-file open returned Interrupted system call",
+      "storage": "PostgreSQL data/temp path is on Lustre; the source of the interrupt is not established by the logs"
+    }
+  ],
+  "stop_cause": "Both errors escaped the oracle wrapper. The host controller pauses the whole campaign on any worker exception.",
+  "changes": {
+    "code/query_resource_recovery.py": {
+      "before": "656316b9e05afd5c828c5bda57d24af369d30c4cf675dbc38fba9e3082b805a1",
+      "after": "1ed34efe1489414004f1a029e5c1acffd17523514c1554c5360ee275af66993b"
+    },
+    "code/evaluate.py": {
+      "before": "b96d8720ae82de946312020ad3cabeb59b8c98591767d48c505d5f0b1bb5665e",
+      "after": "226506da4c03e1388057e690e95d28d3b6b0dfc102179c92f528db4a63d93858"
+    },
+    "code/queue.py": {
+      "before": "4cf5bcb0f2d7f91cf90676a2a5e3ff7e03c4adedade986b7204243aba4ea60c0",
+      "after": "0193728db5a262d4e44386189f8762d4f3e47e7c1baf8d607cdf479fbac6d037"
+    },
+    "code/test_query_resource_recovery.py": {
+      "before": "e69568ab939c4c4f64b946af87856d297ae47b1229285b76bfbea89104bd47c9",
+      "after": "42c58828ba0b1e81ed29a16e99fe0f950c168cff007976a8b8baa080917b009c"
+    }
+  },
+  "retry_policy": {
+    "maximum_calls": 4,
+    "backoff_seconds": [
+      1,
+      2,
+      4
+    ],
+    "same_proposal": true,
+    "same_timeout_seconds": true,
+    "eligible": [
+      "ConnectionTimeout",
+      "InternalError_ with exact temporary-file-open Interrupted system call diagnostic"
+    ],
+    "ordinary_timeout_retried": false,
+    "lost_connection_during_execution_retried": false,
+    "unresolved_process_interruption_retried": false,
+    "exhausted": "persist selected proposal and failure audit; consume no budget; propagate error to pause controller"
+  },
+  "existing_data": {
+    "tasks": 200,
+    "evaluations": 40000,
+    "complete_tasks": 200,
+    "pending_calls": 0,
+    "sqlite_integrity_checks_passed": 200,
+    "record_cursors_and_evaluation_numbers_valid": true,
+    "duplicate_recorded_configurations": 0,
+    "status_counts": {
+      "success": 20934,
+      "timeout": 19045,
+      "query_resource_error": 21
+    },
+    "production_observations_modified": false
+  },
+  "completion": "The resumed query run completed at 2026-11-16T00:57:20+08:00; the queue completed at 00:57:32. Nothing remains to resume.",
+  "telemetry_bug": "Last normal controller refresh was throttled at 39992. The queue now forces a journal-based final refresh before emitting query completion.",
+  "validation": {
+    "focused_recovery_and_telemetry_tests": 12,
+    "passed": true,
+    "live_fault_injection": false
+  },
+  "historical_identity_backup": "/root/data/cys/baseline/campaigns/semanticopt_eval200_20261110/changes/postgres_retry_fix_20261116_101202/identity.json"
+}

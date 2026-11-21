@@ -1,0 +1,47 @@
+### model
+model_name_or_path: /jizhicfs/pkuhetu/bcxu/models/Qwen3.5-9B-Base
+trust_remote_code: true
+
+### method
+stage: sft
+do_train: true
+finetuning_type: full
+deepspeed: /jizhicfs/pkuhetu/bcxu/LLMOptimizer/bolt_qwen9b_finetune/configs/ds_z3_config.json
+
+### dataset
+dataset_dir: /jizhicfs/pkuhetu/bcxu/LLMOptimizer/bolt_qwen9b_finetune/llamafactory_data
+dataset: bolt_ml_warmstart_train
+eval_dataset: bolt_ml_warmstart_validation
+template: qwen3_5_nothink
+cutoff_len: 2048
+preprocessing_num_workers: 8
+dataloader_num_workers: 2
+overwrite_cache: true
+packing: false
+
+### output
+output_dir: /jizhicfs/pkuhetu/bcxu/LLMOptimizer/bolt_qwen9b_finetune/outputs/smoke_test
+logging_steps: 1
+save_steps: 3
+eval_steps: 3
+plot_loss: true
+overwrite_output_dir: true
+save_only_model: false
+report_to: none
+
+### train
+per_device_train_batch_size: 2
+per_device_eval_batch_size: 1
+gradient_accumulation_steps: 1
+learning_rate: 1.0e-5
+max_steps: 3
+lr_scheduler_type: cosine
+warmup_steps: 1
+bf16: true
+gradient_checkpointing: true
+ddp_timeout: 180000000
+resume_from_checkpoint: null
+
+### eval
+do_eval: true
+eval_strategy: steps

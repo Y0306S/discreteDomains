@@ -1,0 +1,50 @@
+### model
+# DPO-B: stronger preference (higher beta + LR) from s1b_ep7p5 SFT
+model_name_or_path: /root/eb-public/huggingface-models/Qwen/Qwen3.5-9B
+adapter_name_or_path: /root/data/cys/blockdata_archive/model-weights/llamafactory_qwen35_9b_lora_p5_s1b_ep7p5
+trust_remote_code: true
+
+### method
+stage: dpo
+do_train: true
+finetuning_type: lora
+lora_rank: 32
+lora_alpha: 64
+lora_dropout: 0.05
+lora_target: all
+pref_beta: 0.3
+pref_loss: sigmoid
+pref_ftx: 0.0
+
+### dataset
+dataset_dir: /root/LLMOptimizer/LLMOptimizer/bolt_qwen9b_finetune/llamafactory_data
+dataset: p5_s2_dpo
+template: qwen3_5_nothink
+cutoff_len: 6016
+preprocessing_num_workers: 8
+dataloader_num_workers: 2
+overwrite_cache: true
+packing: false
+
+### output
+output_dir: /root/data/cys/blockdata_archive/model-weights/llamafactory_qwen35_9b_lora_p5_s1b_ep7p5_dpo_B
+logging_steps: 5
+save_steps: 100
+plot_loss: true
+overwrite_output_dir: true
+save_only_model: false
+save_total_limit: 2
+report_to: none
+
+### train
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 8
+learning_rate: 1.0e-5
+num_train_epochs: 2.0
+lr_scheduler_type: cosine
+warmup_ratio: 0.1
+bf16: true
+gradient_checkpointing: true
+ddp_timeout: 180000000
+resume_from_checkpoint: null
+seed: 42

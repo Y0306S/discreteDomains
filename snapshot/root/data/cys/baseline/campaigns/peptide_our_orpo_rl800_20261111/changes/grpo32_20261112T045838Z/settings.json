@@ -1,0 +1,161 @@
+{
+  "run_id": "peptide_our_orpo_rl800_20261111",
+  "root": "/root/data/cys/baseline/campaigns/peptide_our_orpo_rl800_20261111",
+  "status": "ready_to_launch",
+  "repo": "/root/data/cys/llmoptimizer_benchmark",
+  "parent_adapter": "/root/data/cys/baseline/campaigns/peptide_our_orpo_rl800_20261111/models/orpo",
+  "parent_kind": "Peptide ORPO initialized from clean Qwen3.5-9B",
+  "base_model": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+  "phases": [
+    {
+      "id": "cycle1_01_similar",
+      "scenario": "retrieval",
+      "prefixes": [
+        3,
+        5,
+        10
+      ],
+      "phase_kind": "01_similar",
+      "cycle": 1
+    },
+    {
+      "id": "cycle1_02_normal",
+      "scenario": "normal",
+      "prefixes": [
+        20,
+        30,
+        40
+      ],
+      "phase_kind": "02_normal",
+      "cycle": 1
+    },
+    {
+      "id": "cycle1_03_explore",
+      "scenario": "explore",
+      "prefixes": [
+        50,
+        70,
+        90
+      ],
+      "phase_kind": "03_explore",
+      "cycle": 1
+    },
+    {
+      "id": "cycle1_04_exploit",
+      "scenario": "exploit",
+      "prefixes": [
+        60,
+        80,
+        100
+      ],
+      "phase_kind": "04_exploit",
+      "cycle": 1
+    }
+  ],
+  "group_size": 4,
+  "rollout_repeats": 1,
+  "temperature": 1.0,
+  "top_p": 0.9,
+  "top_k": 50,
+  "max_new_tokens": 128,
+  "max_seq_len": 16384,
+  "training_steps": 1000,
+  "eval_every_n": 1000,
+  "num_replicas": 1,
+  "objective_metric": "min_normalized_valid_outer",
+  "evaluation_timeout_seconds": 2400,
+  "taskset_python": "/root/data/cys/conda_envs/taskset_eval/bin/python",
+  "worker_python": "/root/data/cys/envs/bolt_clean_venv/bin/python",
+  "training_python": "/root/data/cys/baseline/envs/taskset_qwen35_fast_20261030/bin/python",
+  "scratch_root": "/root/data/cys/baseline/campaigns/peptide_our_orpo_rl800_20261111/scratch",
+  "training": {
+    "algorithm": "clipped GRPO plus anchored duplicate rejection",
+    "learning_rate": 2.5e-07,
+    "kl_beta": 0.2,
+    "clip_epsilon": 0.2,
+    "grad_accum_groups": 4,
+    "max_grad_norm": 1.0,
+    "epochs_per_phase": 2,
+    "seed": 1,
+    "bf16": true,
+    "reference": "original ORPO parent remains frozen across all phases",
+    "phase_handoff": "policy and optimizer state carry forward; rollouts use the policy at the start of their phase",
+    "advantages": "Population-standardized rewards over exactly the four selected responses; extras are audit-only. Duplicates receive rejection loss and KL only; selected all-repeat groups retain rejection signal; measurement-failure pools excluded.",
+    "objective": "Exact ML delta-best + 0.1 absolute term, using perf=-measured APEX bacteria_0 MIC; invalid=-0.5; duplicates=-1.0 plus rejection objective.",
+    "duplicate_aux_weight": 1.0,
+    "observability": [
+      "per-step gradient norm",
+      "per-step and cumulative LoRA weight delta L2 and relative L2",
+      "token reference KL",
+      "clip fraction",
+      "duplicate rejection loss",
+      "adapter hash per checkpoint",
+      "fixed duplicate probes before and after each phase"
+    ],
+    "max_reference_kl": 0.1,
+    "weight_decay": 0.01,
+    "kl_guard": "Mean reference KL on the current update batch checked before and after each update; no checkpoint published on an overshoot. This is a sampled-token diagnostic, not an exact full-distribution KL.",
+    "backoff_attempts": 5,
+    "backoff_factor": 0.5,
+    "per_context_kl_guard": true,
+    "activation_offload": true
+  },
+  "notes": [
+    "Train800 only; held-out200 excluded. One peptide ORPO + one complete four-phase RL cycle.",
+    "No Good/Bad Region summaries. Top/bottom actual measured examples and Recent50 retained."
+  ],
+  "resources": {
+    "preferred_host": "LLMOptimizer2",
+    "gpu_count": 1,
+    "cpu_collectors": 4,
+    "minimum_free_gpu_gib": 54,
+    "sequence": "Share one A800 with one SemanticOPT replica; alternate dedicated rollout inference and GRPO training.",
+    "availability": "preflight: bounded sharing of existing A800, no other process stopped"
+  },
+  "tasks_per_family": 2,
+  "max_group_size": 10,
+  "sampling": {
+    "minimum": 4,
+    "maximum": 10,
+    "stop": "Always collect the first four; if none beats the frozen prefix best loss, sample one at a time until the first strict improvement or ten total",
+    "improvement_absolute_tolerance": 0.0,
+    "group_weighting": "equal weight per task/context group; normalize and average only its four selected members",
+    "sibling_context": "fixed identical prompt; later siblings do not see earlier results",
+    "training_members": "Keep the original four. If only an extra candidate improves, replace a uniformly random original member with that improver; match ML v14 with random.Random(f\"{group_id}:{training.seed}\"). Preserve all candidates and original sample IDs in the audit.",
+    "training_group_size": 4
+  },
+  "duplicate_matching": {
+    "scope": "full frozen prefix plus earlier siblings",
+    "matches": [
+      "exact parsed JSON",
+      "all active values equal at the existing six-significant-digit prompt display precision"
+    ],
+    "evaluation": "never reevaluate either kind; retain sampled answer in audit and apply rejection objective if selected among the four training members"
+  },
+  "cycles": 1,
+  "passes_per_phase": 2,
+  "gpu_memory_gib": 48.0,
+  "offload_visual": false,
+  "attention_implementation": "sdpa",
+  "cpu_affinity": [
+    32,
+    33,
+    34,
+    35
+  ],
+  "gpu": 0,
+  "port": 19895,
+  "domain": "peptide",
+  "retrieval": {
+    "method": "reference_shortlist16_then_source_GP_Spearman",
+    "shortlist": 16,
+    "top_k": 3,
+    "spearman_floor": 0.5,
+    "evidence_limit": 60,
+    "weak_source_policy": "Explicitly report low/undefined rank agreement and task differences; no claim of reliable transfer.",
+    "bank": "/root/data/logs/peptide_transfer_train800_20261027_v2/rgpe/models.sqlite",
+    "corpus": "/root/data/logs/peptide_transfer_train800_20261027_v2/corpus",
+    "python": "/root/data/cys/baseline/envs/bl_rgpe/bin/python"
+  },
+  "parent_adapter_sha256": "2eabb41148226e32eb8d60237067941c670b4924a7beb89864364e1640e77640"
+}

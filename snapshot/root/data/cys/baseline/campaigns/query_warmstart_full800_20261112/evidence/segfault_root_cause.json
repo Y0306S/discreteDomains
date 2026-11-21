@@ -1,0 +1,18 @@
+{
+  "at": 1794565691.052504,
+  "confirmed": true,
+  "signal": "SIGSEGV",
+  "faulting_thread": "faulthandler watchdog thread",
+  "native_stack": [
+    "dump_frame: Python/traceback.c:1264",
+    "dump_traceback",
+    "_Py_DumpTracebackThreads",
+    "faulthandler_thread: Modules/faulthandler.c:634"
+  ],
+  "training_thread_at_failure": "autograd backward; other thread performing normal D2H copy",
+  "fix": "Remove recurring faulthandler.dump_traceback_later; retain fatal-signal handler and scalar-status telemetry",
+  "resume": "model/checkpoint-4",
+  "optimizer_and_rng_preserved": true,
+  "reference": "evidence/native_crash_backtrace.txt",
+  "communication_overlap_mitigation_alone_failed": true
+}

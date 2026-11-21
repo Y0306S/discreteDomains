@@ -1,0 +1,139 @@
+{
+  "at": 1794501582.1456914,
+  "ORPO": {
+    "campaign": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112",
+    "data_pairs": 817,
+    "source_tasks_scanned": 800,
+    "tasks_with_pairs": 336,
+    "gpu": 0,
+    "steps": 103,
+    "status": {
+      "status": "training",
+      "pid": 8127,
+      "host": "LLMOptimizer2",
+      "gpu": "0",
+      "framework": "LLaMA-Factory",
+      "parent_adapter": null,
+      "resumed_from": null,
+      "at": 1794501542.98001,
+      "step": 19,
+      "max_steps": 103,
+      "initial_adapter_hash": "5946649c501c120e62d805c162bac885e3108db47b78996ec83b7e781d7217c2",
+      "attention": "sdpa",
+      "flash_sdpa_enabled": true,
+      "optimized_linear_attention": true,
+      "epoch": 0.18604651162790697,
+      "first_update_verified": true,
+      "peak_gpu_gib": 33.647737979888916,
+      "latest_metrics": {
+        "loss": 0.4399736523628235,
+        "grad_norm": 1.756779670715332,
+        "learning_rate": 9.857835446989708e-06,
+        "rewards/chosen": -0.07421687990427017,
+        "rewards/rejected": -0.10295101255178452,
+        "rewards/accuracies": 0.625,
+        "rewards/margins": 0.028734132647514343,
+        "logps/chosen": -0.24738959968090057,
+        "logps/rejected": -0.34317004680633545,
+        "logits/chosen": -1.4926962852478027,
+        "logits/rejected": -1.8501262664794922,
+        "sft_loss": 0.24738959968090057,
+        "odds_ratio_loss": 0.6419468522071838,
+        "epoch": 0.18604651162790697
+      },
+      "latest_checkpoint": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-2"
+    }
+  },
+  "GRPO": {
+    "selected_tasks": 32,
+    "eligible_late_improvers": 187,
+    "groups": 384,
+    "cycles": 1,
+    "phase_prefixes": [
+      [
+        3,
+        5,
+        10
+      ],
+      [
+        20,
+        30,
+        40
+      ],
+      [
+        50,
+        70,
+        90
+      ],
+      [
+        60,
+        80,
+        100
+      ]
+    ],
+    "selection": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/assets/grpo_task_selection.json",
+    "state": "queued_after_exact_new_ORPO_parent",
+    "postgres_ports": [
+      20580,
+      20581
+    ]
+  },
+  "BOLT_full_SFT": {
+    "campaign": "/root/data/cys/baseline/campaigns/query_warmstart_full800_20261112",
+    "examples": 6522,
+    "training_tasks": 800,
+    "top_k_per_task": 10,
+    "epochs": 3,
+    "steps": 1224,
+    "gpu": 3,
+    "status": {
+      "status": "training",
+      "pid": 13688,
+      "rank": 0,
+      "gpu": 3,
+      "framework": "LLaMA-Factory",
+      "finetuning_type": "full",
+      "parent_adapter": null,
+      "base_model": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+      "resumed_from": null,
+      "at": 1794501580.4679403,
+      "step": 3,
+      "epoch": 0.007359705611775529,
+      "max_steps": 1224,
+      "trainable_parameters": 8953803264,
+      "vision_frozen": true,
+      "language_model_frozen": false,
+      "sample_names": [
+        "model.language_model.layers.0.linear_attn.in_proj_a.weight",
+        "model.language_model.layers.0.linear_attn.in_proj_b.weight",
+        "model.language_model.layers.1.linear_attn.in_proj_a.weight"
+      ],
+      "initial_weight_sample_hash": "7ab0f0685971978bf92bca825b5bd2da630fc991c00d5eaae526202b9cc28733",
+      "optimizer": "DeepSpeedCPUAdam",
+      "optimizer_offload": "cpu",
+      "attention": "sdpa",
+      "flash_sdpa_enabled": true,
+      "optimized_linear_attention": true,
+      "microbatches_completed": 51,
+      "peak_gpu_gib": 25.538217067718506,
+      "first_update_verified": true,
+      "latest_metrics": {
+        "loss": 0.8372806906700134,
+        "grad_norm": 33.7401008605957,
+        "learning_rate": 1.5e-06,
+        "epoch": 0.007359705611775529
+      },
+      "latest_checkpoint": "/root/data/cys/baseline/campaigns/query_warmstart_full800_20261112/model/checkpoint-2",
+      "saved_weight_samples_match": true
+    }
+  },
+  "monitor": {
+    "loop_id": "query-training-hourly-20261112",
+    "interval_seconds": 3600,
+    "state_file": "/root/.codex/loops/query-training-hourly-20261112/state.json",
+    "read_only": true,
+    "chat_notifications": false
+  },
+  "startup_verified": true,
+  "startup_verification": "/root/reports/query_training_20261112/startup_verification.json"
+}

@@ -1,0 +1,116 @@
+{
+  "status": "complete",
+  "tasks": [
+    "pep_117",
+    "pep_219",
+    "pep_221",
+    "pep_575",
+    "pep_673",
+    "pep_921",
+    "pep_925",
+    "pep_967",
+    "pep_980",
+    "pep_999"
+  ],
+  "methods": [
+    {
+      "method": "Original frozen FSBO",
+      "mean_final_mic": 28.405395698547363
+    },
+    {
+      "method": "Online VAE + FSBO",
+      "mean_final_mic": 28.951193404197692
+    },
+    {
+      "method": "SemanticOPT with fallback",
+      "mean_final_mic": 14.28379213809967
+    },
+    {
+      "method": "Online VAE + FSBO + rollback (20 rounds, max2)",
+      "mean_final_mic": 27.153909039497375
+    }
+  ],
+  "paired": [
+    {
+      "reference": "Original frozen FSBO",
+      "wins": 9,
+      "losses": 1,
+      "ties": 0,
+      "mean_mic_reduction": 1.2514866590499878
+    },
+    {
+      "reference": "Online VAE + FSBO",
+      "wins": 7,
+      "losses": 3,
+      "ties": 0,
+      "mean_mic_reduction": 1.7972843647003174
+    },
+    {
+      "reference": "SemanticOPT with fallback",
+      "wins": 4,
+      "losses": 6,
+      "ties": 0,
+      "mean_mic_reduction": -12.870116901397704
+    }
+  ],
+  "execution": {
+    "host": "LLMOptimizer3",
+    "gpu_memory_fraction": 0.65,
+    "threads_per_worker": 2,
+    "workers": [
+      {
+        "slot": 0,
+        "gpu": 1,
+        "cpus": [
+          34,
+          35
+        ]
+      },
+      {
+        "slot": 1,
+        "gpu": 2,
+        "cpus": [
+          36,
+          37
+        ]
+      },
+      {
+        "slot": 2,
+        "gpu": 4,
+        "cpus": [
+          38,
+          39
+        ]
+      },
+      {
+        "slot": 3,
+        "gpu": 6,
+        "cpus": [
+          40,
+          41
+        ]
+      }
+    ],
+    "monitoring_seconds": 600,
+    "retries": 0,
+    "comparison": "same ten tasks/initial100/seed1/batch50/4000 caps; fixed-target rollback; independent20-round retrain patience and maximum2 attempts",
+    "hardware_caveat": "Previous online run used A800 GPUs; this run uses A16 GPUs. Runtime differences do not isolate the gate cost.",
+    "shared_gpu_services": "Existing RGPE VAE services retain their 20 percent allocator limits; new worker limit65 percent; no existing workloads stopped.",
+    "task_order": [
+      "pep_999",
+      "pep_117",
+      "pep_219",
+      "pep_221",
+      "pep_575",
+      "pep_673",
+      "pep_921",
+      "pep_925",
+      "pep_967",
+      "pep_980"
+    ]
+  },
+  "all_accepted_target_losses_nonworsening": true,
+  "all_rejected_weight_deltas_zero": true,
+  "single_seed": true,
+  "offline_training_reused": true
+}

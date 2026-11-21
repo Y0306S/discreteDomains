@@ -1,0 +1,102 @@
+{
+  "passed": true,
+  "stage": "component_and_target_production_scale_passed_before_wire_check",
+  "code_sha256": {
+    "/root/data/cys/llmoptimizer_benchmark/tools/peptide_rgpe_merged.py": "d1ff400e945ae11d73bc663d822a62d58f05baf187bb70dfe0492f4e1e122394",
+    "/root/data/cys/llmoptimizer_benchmark/tools/peptide_rgpe_merged_policy.py": "f192d1b95872d8ba21749ef6ddfc874031a0940d3a879de6bcbae8000a8e20af",
+    "/root/data/cys/llmoptimizer_benchmark/tools/peptide_rgpe_merged_launch.py": "9ef5418aec3a3a42c77779be22de8d14d72e8684a3ed0d650fcc5c885de78b0e",
+    "/root/data/cys/llmoptimizer_benchmark/tools/peptide_rgpe_merged_worker.py": "ba69f76b440744ccaeb31d107ba7ff3ea3fd506d6ff977bcf71dc9736095d47d"
+  },
+  "production_scale_passed": true,
+  "recovery_passed": true,
+  "unit_tests": 14,
+  "wrapper_tests": 17,
+  "rollout_guard_tests": 9,
+  "checks": {
+    "old5000": {
+      "mode": "old5000",
+      "oracle_calls": 0,
+      "vae_updates": false,
+      "merging": {
+        "contributing_models": 1,
+        "candidates": 5000,
+        "covariance_bytes": 200000000,
+        "covariance_mode": "full",
+        "independence_assumption": true,
+        "source_output": "standardized"
+      },
+      "sampling": {
+        "samples": 50,
+        "seed": 1102,
+        "covariance_jitter": 0.0,
+        "score_direction": "negative_MIC"
+      },
+      "merge_seconds": 2.8615576392039657,
+      "sample_seconds": 1.6865031253546476,
+      "draw_shape": [
+        50,
+        5000
+      ],
+      "passed": true,
+      "seconds": 4.573266540654004,
+      "peak_rss_gib": 0.863861083984375
+    },
+    "new5000": {
+      "mode": "new5000",
+      "oracle_calls": 0,
+      "vae_updates": false,
+      "merging": {
+        "implementation": "tiled-independent-rgpe-v1",
+        "contributing_models": 1,
+        "candidates": 5000,
+        "covariance_bytes": 200000000,
+        "covariance_mode": "full",
+        "independence_assumption": true,
+        "source_output": "standardized",
+        "block_size": 256,
+        "source_covariance_modes": [
+          "tiled_exact"
+        ],
+        "retained_source_covariances": 0
+      },
+      "sampling": {
+        "samples": 50,
+        "seed": 1102,
+        "covariance_jitter": 0.0,
+        "covariance_factorizations": 1,
+        "cholesky_attempts": 1,
+        "score_direction": "negative_MIC"
+      },
+      "merge_seconds": 4.88700973149389,
+      "sample_seconds": 3.2414260199293494,
+      "draw_shape": [
+        50,
+        5000
+      ],
+      "passed": true,
+      "seconds": 8.16572011820972,
+      "peak_rss_gib": 0.5862083435058594
+    },
+    "equivalence5000": {
+      "passed": true,
+      "max_absolute_errors": {
+        "mean": 0.0,
+        "covariance_probe": 4.737793490861009e-12,
+        "draws": 1.1962129065068439e-09
+      }
+    },
+    "recovery": {
+      "mode": "recovery",
+      "oracle_calls": 0,
+      "vae_updates": false,
+      "snapshot_bytes": 290058,
+      "compact_restore_passed": true,
+      "weights_unchanged": true,
+      "passed": true,
+      "seconds": 0.0825041439384222,
+      "peak_rss_gib": 0.18791961669921875
+    }
+  },
+  "full_bank_stress_pending": true,
+  "authorized_for_rollout": false
+}

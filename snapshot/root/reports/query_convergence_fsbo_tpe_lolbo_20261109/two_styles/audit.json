@@ -1,0 +1,81 @@
+{
+  "generated_at": "2026-11-09T21:47:36.616024+08:00",
+  "methods": [
+    "FSBO",
+    "TPE",
+    "LOLBO"
+  ],
+  "tasks": 200,
+  "proposals_per_query": 1000,
+  "final_scores": [
+    {
+      "method": "FSBO",
+      "summed_runtime_score": 0.4399138258458707,
+      "mean_minmax_score": 0.9777165185171871,
+      "initial_mean_minmax_score": 0.7917918416644939
+    },
+    {
+      "method": "TPE",
+      "summed_runtime_score": 0.2688961289520603,
+      "mean_minmax_score": 0.8909400037513541,
+      "initial_mean_minmax_score": 0.7917918416644939
+    },
+    {
+      "method": "LOLBO",
+      "summed_runtime_score": 0.25713508864345014,
+      "mean_minmax_score": 0.9027284138416646,
+      "initial_mean_minmax_score": 0.7917918416644939
+    }
+  ],
+  "summed_score": "1 - sum_q incumbent_runtime_q(n) / sum_q initial_Bao_best_runtime_q",
+  "minmax_score": "mean_q clip((H_q - incumbent_runtime_q(n)) / (H_q - L_q), 0, 1)",
+  "bounds": "L_q is pooled minimum uncensored runtime; H_q is pooled maximum after dropping the largest floor(20%) runtimes. Fixed across all budgets and methods.",
+  "pool": "All uncensored recorded observations, including 49 initial Bao observations in each method and cached results. Censored timeout bounds excluded.",
+  "smoothing": "Same ML/TaskSet PCHIP helper, 16 subdivisions per interval, every integer score preserved, no overshoot.",
+  "styling": "Shared ML/TaskSet palette, dimensions, labels, solid transfer and dotted no-transfer lines.",
+  "degenerates": [],
+  "axes": {
+    "summed": [
+      0,
+      0.5
+    ],
+    "mean_minmax": [
+      0.5,
+      1
+    ]
+  },
+  "caveats": [
+    "SQL caps, seeds and execution environments differ across the original runs.",
+    "Minmax bounds are retrospective and depend on the selected methods. This is a different score from workload runtime reduction.",
+    "All 200 queries retained; no observations or tasks removed from score curves. Worst-20% trimming only sets normalization bounds.",
+    "The actual observations and endpoints are preserved; interpolation cannot remove real large jumps without changing the reported scores."
+  ],
+  "validation": {
+    "all_600_source_hashes_verified": true,
+    "minmax_matches_ml_reference": true,
+    "all_curves_finite_monotone": true,
+    "equal_query_aggregation_reproduced": true,
+    "observed_scores_preserved": true
+  },
+  "input_sha256": {
+    "/root/reports/query_convergence_fsbo_tpe_lolbo_20261109/audit.json": "fbac9e09c274c32fe5f8a9bdb963550a970b31a250e0bc921710ecb2eab36e84",
+    "/root/reports/query_convergence_fsbo_tpe_lolbo_20261109/per_task_curves.npz": "f900d0e74a23b72e58dcb63ba32983f239e6db7b393a232bdd4fde8c23da9e79",
+    "/root/reports/query_convergence_fsbo_tpe_lolbo_20261109/two_styles/pooled_uncensored_runtimes.npz": "b1523b528db3e3545bb13f19d32de255c913003bae801f9ff2d28f1fd10db235",
+    "/root/reports/standardized_convergence_20261101/build_plots.py": "69c9a6e9fc62f79fe1a67e5331aabf6b0079d666043178bd7df8948b3e7db596",
+    "/root/data/cys/llmoptimizer_benchmark/examples/benchmark/plot_mltest20_algo40_avg_rank.py": "f47a1235cbbf1e4f73318465507bc4c42a9ab0b38900da7c852b10258ea60135",
+    "/root/reports/query_convergence_fsbo_tpe_lolbo_20261109/plot_two_styles.py": "bc95feeae510416316630ef252bf484ca4e0f147f28a1929dc2660735bebeaef"
+  },
+  "output_sha256": {
+    "convergence.csv": "52d9366fcd61526fb3e698074d1d8ac9720a2d0b7654c2ac465ed167b3d8b820",
+    "pooled_uncensored_runtimes.npz": "b1523b528db3e3545bb13f19d32de255c913003bae801f9ff2d28f1fd10db235",
+    "query_summed_runtime_score_y05_smoothed.pdf": "fe0bf2272105aa7836310500ee34710944059ce2854d51bc8b036d2676fde95f",
+    "query_mean_minmax_score_smoothed.png": "edd79b524f2c115b1ac059b1cc51038e7a6f8e9b605773dbe141fb8edaf1b3df",
+    "query_mean_minmax_score_smoothed.svg": "c00b9c08074ff6bfdca6c24261311bf026dd4eaf267f2c87628a722fa21a5c66",
+    "query_mean_minmax_score_smoothed.pdf": "a8a33e54ed22814eb98d64dfbda9a65f486016a679ea618b8ab3e0a17f6be78b",
+    "normalization_scales.csv": "b801f026169ca6b87b13b88c053b9f3ca5df322b56688753871b162d4b099f94",
+    "query_summed_runtime_score_y05_smoothed.png": "5a6cc0f53a9cb607686aac12765f6e60ad7ffd2ccc6ddfbccc4250f0817df5c7",
+    "per_query_minmax_scores.npz": "2be1e9e87a4f3a2ec065f93c814e82c5b2fc113855049d7285398df41e4ffef0",
+    "query_summed_runtime_score_y05_smoothed.svg": "e5fb2e725ceb9499b5024117a87626797196bbee5398af3f95bd54a0fe3e0ee1",
+    "final_scores.csv": "5cff39960c59380d007310760b79dcb7f4007b68085f546ed803eba27e46d1e7"
+  }
+}

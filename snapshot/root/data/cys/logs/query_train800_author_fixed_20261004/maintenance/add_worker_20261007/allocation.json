@@ -1,0 +1,65 @@
+{
+  "worker": {
+    "name": "LLMOptimizer2.w05",
+    "host": "LLMOptimizer2",
+    "bo_cpu": 32,
+    "db_cpus": [
+      33,
+      34,
+      35
+    ],
+    "gpu": 2,
+    "pgdata": "/root/blockdata/queryopt_pg_20261004/pg_imdb_d",
+    "port": 5440,
+    "source_pgdata": "/root/data/cys/logs/query_train800_author_fixed_20261004/maintenance/LLMOptimizer3_gpu_change_20261005/pg_imdb_d.clean_shutdown.tar",
+    "volatile_database": false
+  },
+  "time": 1791342497.831137,
+  "reused_resources": "OptFormer training GPU2 and CPUs32-35",
+  "reservations": [
+    {
+      "name": "RL_v14_and_queued_ORPO",
+      "cpus": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        23,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ]
+    },
+    {
+      "name": "Schedulers",
+      "cpus": [
+        22
+      ]
+    }
+  ],
+  "management_sha_before": "7450ea46578e62d02feda92ea07d8ab5a117d57027dc595b576577a31611b644",
+  "management_sha_after": "7450ea46578e62d02feda92ea07d8ab5a117d57027dc595b576577a31611b644",
+  "algorithm_changed": false,
+  "cpu_quota": 40,
+  "configured_distinct_cores": 47,
+  "quota_policy": {
+    "mode": "measured_headroom",
+    "headroom_cores": 4,
+    "sample_seconds": 10,
+    "reason": "Disjoint worker affinities; admit only with four cores of measured quota headroom and no throttling"
+  }
+}

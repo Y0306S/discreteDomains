@@ -1,0 +1,132 @@
+{
+  "generated_at": "2026-11-17T16:39:14.916958+08:00",
+  "paper": "/root/21295_Scaling_Multi_Task_Bayes.pdf",
+  "paper_sha256": "e34c68aa60aa82c2c97d03cc0fddac617a72b784fb85bbc49914e899f69dd659",
+  "metric_reference": "Figure 2, PDF page 8; units PDF pages 3 and 6",
+  "notes": [
+    "Metric reference: BOLT paper Figure 2, PDF page 8: summed query runtime and average predicted MIC. Units: seconds and micromol/L (paper pages 3/6). Figure 1 on PDF page 7 instead uses normalized summed objectives; these additional figures intentionally show raw objective units.",
+    "Query curve = sum across 200 tasks of best uncensored query-plan runtime in seconds; it is not cumulative optimization wall time.",
+    "Peptide curve = arithmetic mean across 200 tasks of best feasible APEX bacteria_0 predicted MIC, in micromol/L (equivalently micromolar, \u00b5M). These are predictions, not laboratory MIC measurements.",
+    "APEX_predict.py explicitly applies 10 ** (6 - model_prediction) before averaging its eight models; saved objective values already have MIC units. No extra logarithm or back-transform is applied.",
+    "Peptide summed-MIC alternative is also exported, following the aggregate used by Figure 1 / Table 11 without normalization.",
+    "X preserves the requested new-acquisition-proposal accounting: query 0\u20131000, peptide 0\u20135000. This differs from the paper Figure 1 oracle-call x-axis when cache hits/recentering occur. Initialization: query49, peptide100, excluded from x.",
+    "SemanticOPT measured endpoints are held flat after query200 / peptide1000. Other completed runs retain final incumbents after exhausting their proposal or fresh-oracle budget. No new observations are fabricated.",
+    "Shared palette and PCHIP helper are reused exactly, with checkpoints every 50 proposals. Raw integer-budget values and aggregate sums/means are exported; smoothing is display interpolation.",
+    "No per-task min\u2013max normalization or geometric mean is used in these new physical-unit figures. Aggregation differs from the previous normalized-score plots and can change method ordering.",
+    "All200 tasks are included with identical starting pools. FSBO is the frozen-VAE local/recenter run; TPE is the completed global variant. Historical campaign device/date/seed/timeout differences remain.",
+    "SemanticOPT includes constrained random fallback: query32690/40000; peptide136255/200000. Refer to source audits for full method provenance.",
+    "No uncertainty bands added: one optimizer seed per method/task. The paper Figure 1 includes standard-error bands, but this request changes objective units only."
+  ],
+  "endpoints": [
+    {
+      "domain": "query",
+      "method": "FSBO",
+      "aggregate": "sum",
+      "unit": "seconds",
+      "initial": 617.204758197,
+      "final": 345.68785168828225,
+      "mean_initial": 3.086023790985,
+      "mean_final": 1.7284392584414112,
+      "sum_initial": 617.204758197,
+      "sum_final": 345.68785168828225
+    },
+    {
+      "domain": "query",
+      "method": "LOLBO",
+      "aggregate": "sum",
+      "unit": "seconds",
+      "initial": 617.204758197,
+      "final": 458.49975798685523,
+      "mean_initial": 3.086023790985,
+      "mean_final": 2.292498789934276,
+      "sum_initial": 617.204758197,
+      "sum_final": 458.4997579868552
+    },
+    {
+      "domain": "query",
+      "method": "TPE",
+      "aggregate": "sum",
+      "unit": "seconds",
+      "initial": 617.204758197,
+      "final": 451.24078794703433,
+      "mean_initial": 3.086023790985,
+      "mean_final": 2.256203939735171,
+      "sum_initial": 617.204758197,
+      "sum_final": 451.2407879470342
+    },
+    {
+      "domain": "query",
+      "method": "SemanticOPT",
+      "aggregate": "sum",
+      "unit": "seconds",
+      "initial": 617.204758197,
+      "final": 443.7756476170622,
+      "mean_initial": 3.086023790985,
+      "mean_final": 2.2188782380853103,
+      "sum_initial": 617.204758197,
+      "sum_final": 443.7756476170621
+    },
+    {
+      "domain": "peptide",
+      "method": "FSBO",
+      "aggregate": "mean",
+      "unit": "micromol/L",
+      "initial": 63.218382450342176,
+      "final": 29.745680304765703,
+      "mean_initial": 63.218382450342176,
+      "mean_final": 29.745680304765703,
+      "sum_initial": 12643.676490068436,
+      "sum_final": 5949.13606095314
+    },
+    {
+      "domain": "peptide",
+      "method": "LOLBO",
+      "aggregate": "mean",
+      "unit": "micromol/L",
+      "initial": 63.218382450342176,
+      "final": 34.14289862513542,
+      "mean_initial": 63.218382450342176,
+      "mean_final": 34.14289862513542,
+      "sum_initial": 12643.676490068436,
+      "sum_final": 6828.579725027084
+    },
+    {
+      "domain": "peptide",
+      "method": "TPE",
+      "aggregate": "mean",
+      "unit": "micromol/L",
+      "initial": 63.218382450342176,
+      "final": 63.120064531564715,
+      "mean_initial": 63.218382450342176,
+      "mean_final": 63.120064531564715,
+      "sum_initial": 12643.676490068436,
+      "sum_final": 12624.012906312943
+    },
+    {
+      "domain": "peptide",
+      "method": "SemanticOPT",
+      "aggregate": "mean",
+      "unit": "micromol/L",
+      "initial": 63.218382450342176,
+      "final": 25.7931596159935,
+      "mean_initial": 63.218382450342176,
+      "mean_final": 25.7931596159935,
+      "sum_initial": 12643.676490068436,
+      "sum_final": 5158.6319231987
+    }
+  ],
+  "sources": {
+    "query": {
+      "path": "/root/reports/query_convergence_four_methods_20261117/standardized_1000/per_task_curves.npz",
+      "sha256": "b55a69506b4078729acc5b4cf9d032a5684ebf84c56e93adfe934606b8257de2",
+      "audit": "/root/reports/query_convergence_four_methods_20261117/standardized_1000/audit.json"
+    },
+    "peptide": {
+      "path": "/root/reports/peptide_convergence_four_methods_20261117/standardized_5000/per_task_curves.npz",
+      "sha256": "abf9518937a34fa08340fb20fab293b140be3e07fbb22529f060ab2fa5206818",
+      "audit": "/root/reports/peptide_convergence_four_methods_20261117/standardized_5000/audit.json"
+    }
+  },
+  "style_source": "/root/reports/standardized_convergence_20261101/build_plots.py",
+  "style_sha256": "69c9a6e9fc62f79fe1a67e5331aabf6b0079d666043178bd7df8948b3e7db596"
+}

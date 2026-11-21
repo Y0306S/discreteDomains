@@ -1,0 +1,28 @@
+{
+  "id": "P5plusA5T50X50R_vs_P5plusA5T50X50",
+  "status": "awaiting_go_ahead",
+  "variants": ["P5plusA5T50X50", "P5plusA5T50X50R"],
+  "seed": 1,
+  "n_trials": 80,
+  "budget_note": "Same trial budget and one seed for both arms. Do not spawn X50R-L / X50R-nested variants.",
+  "tasks_json": "benchmark_data/real_hpo_v2_mltest20_algo40/tasks_40.json",
+  "n_declared_slots": 40,
+  "slot_key": "task_type/dataset/algorithm",
+  "unique_slot_rule": "Score only unique (task_type, dataset, algorithm) slots. find_traj must filter traj CSVs by the majority 'algorithm' column; do not pick the best best_so_far across algorithms on the same dataset.",
+  "experience_bank": "history_data/experience_bank_v2.jsonl",
+  "frozen_weights": "history_data/experience_bank_v2.weights.json",
+  "rerank_after": 24,
+  "retrieve_k": 3,
+  "decision_rule": {
+    "written_before_launch": true,
+    "primary": "Mean rank of each variant across unique slots where BOTH X50 and X50R have a complete 80-trial traj. Lower mean rank wins.",
+    "secondary": "Head-to-head on those same unique slots: count slots where X50R final best_so_far > X50 (higher-is-better scores, rgs already negated).",
+    "adopt_X50R_if": "mean_rank(X50R) < mean_rank(X50) AND h2h_wins > h2h_losses",
+    "keep_X50_if": "tie on mean rank, or X50R loses mean rank, or h2h_wins <= h2h_losses",
+    "no_followup_variants": true
+  },
+  "reporting": {
+    "script": "examples/benchmark/report_x50r_unique_slots.py",
+    "require_algorithm_filter": true
+  }
+}

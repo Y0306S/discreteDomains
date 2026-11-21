@@ -1,0 +1,79 @@
+{
+  "new_fsbo_archives_validated": 200,
+  "new_run_recipe": "/root/data/logs/peptide_batch50_gpu_test200_20261102_v1/fsbo/recipe.json",
+  "new_run_checks": [
+    "all archive member SHA256 checksums",
+    "complete status and frozen recipe identity",
+    "same task list and common initialization",
+    "each recorded feasible label recomputed from edit-distance similarity >= 0.75",
+    "fresh/cache/recenter/proposal accounting",
+    "5000 fresh evaluations or 5000 acquisition proposals per task",
+    "terminal incumbent matches history and curves are nonincreasing"
+  ],
+  "new_fsbo": {
+    "settings": {
+      "batch_size": 50,
+      "initialization": 100,
+      "proposals": 5000,
+      "fresh_budget": 5000,
+      "similarity": 0.75,
+      "seed": 1,
+      "vae_policy": "frozen_author",
+      "e2e_every": 0,
+      "recenter_policy": "native_posterior_reconstruction_frozen_vae"
+    },
+    "summary": {
+      "tasks": 200,
+      "initial_mean_best_mic": 63.218382450342176,
+      "final_mean_best_mic": 29.745680304765703,
+      "mean_relative_improvement_percent": 45.26329425196585,
+      "final_mean_mic_ci95": [
+        25.496338849037883,
+        34.57525955301523
+      ],
+      "mean_fresh_evaluations": 4664.835,
+      "tasks_with_any_improvement": 196,
+      "mean_acquisition_fresh_rate": 0.909847785960959,
+      "fresh_evaluations_range": [
+        3682,
+        5000
+      ]
+    }
+  },
+  "methods": {
+    "FSBO": {
+      "tasks": 200,
+      "final_mean_best_mic": 20.90090664803982,
+      "mean_relative_improvement_percent": 59.05776139004625
+    },
+    "FSBO-local": {
+      "tasks": 200,
+      "initial_mean_best_mic": 63.218382450342176,
+      "final_mean_best_mic": 29.745680304765703,
+      "mean_relative_improvement_percent": 45.26329425196585,
+      "final_mean_mic_ci95": [
+        25.496338849037883,
+        34.57525955301523
+      ],
+      "mean_fresh_evaluations": 4664.835,
+      "tasks_with_any_improvement": 196,
+      "mean_acquisition_fresh_rate": 0.909847785960959
+    },
+    "LOLBO": {
+      "tasks": 200,
+      "final_mean_best_mic": 34.14289862513542,
+      "mean_relative_improvement_percent": 39.5062021697792
+    },
+    "TPE": {
+      "tasks": 200,
+      "final_mean_best_mic": 63.120064531564715,
+      "mean_relative_improvement_percent": 0.10271484454991742
+    }
+  },
+  "previous_baseline_source": "/root/reports/peptide_convergence_20261101/per_task_curves.npz",
+  "uncertainty": "Pointwise percentile bootstrap 95% CI; paired task resamples (2000); one optimizer seed per task.",
+  "terminal_policy": "Carry forward the last measured feasible incumbent after 5000 proposals or 5000 shared fresh evaluations; no simulated measurements.",
+  "analysis_code": "/root/reports/peptide_convergence_20261101/plot_updated_fsbo.py",
+  "new_recipe_sha256": "7a9318ee04cdb27a677b7b2be993948a29f7ea90bf8179370aee66aa1e1732c0",
+  "baseline_validation": "/root/reports/peptide_convergence_20261101/audit.json"
+}

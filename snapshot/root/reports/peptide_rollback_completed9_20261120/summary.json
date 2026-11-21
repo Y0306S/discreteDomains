@@ -1,0 +1,88 @@
+{
+  "created_utc": "2026-11-20T09:38:44.984687+00:00",
+  "status": "partial_cohort_9_of_10",
+  "tasks": [
+    "pep_117",
+    "pep_219",
+    "pep_221",
+    "pep_575",
+    "pep_673",
+    "pep_921",
+    "pep_925",
+    "pep_980",
+    "pep_999"
+  ],
+  "excluded": [
+    "pep_967"
+  ],
+  "methods": [
+    {
+      "method": "Original frozen FSBO",
+      "mean_mic": 20.98320876227485,
+      "median_mic": 20.86147117614746,
+      "average_rank": 3.2222222222222223,
+      "first_places": 0
+    },
+    {
+      "method": "Online VAE + FSBO",
+      "mean_mic": 25.41728483306037,
+      "median_mic": 14.261491775512695,
+      "average_rank": 3.0,
+      "first_places": 1
+    },
+    {
+      "method": "SemanticOPT with fallback",
+      "mean_mic": 12.103764454523722,
+      "median_mic": 11.004670143127441,
+      "average_rank": 1.8888888888888888,
+      "first_places": 4
+    },
+    {
+      "method": "Online VAE + FSBO + rollback (20 rounds, max2)",
+      "mean_mic": 21.13511628574795,
+      "median_mic": 13.435352325439453,
+      "average_rank": 1.8888888888888888,
+      "first_places": 4
+    }
+  ],
+  "paired": [
+    {
+      "reference": "Original frozen FSBO",
+      "new_wins": 8,
+      "new_losses": 1,
+      "ties": 0,
+      "mean_mic_reduction_pct": -0.7239480157401585
+    },
+    {
+      "reference": "Online VAE + FSBO",
+      "new_wins": 7,
+      "new_losses": 2,
+      "ties": 0,
+      "mean_mic_reduction_pct": 16.84746649942162
+    },
+    {
+      "reference": "SemanticOPT with fallback",
+      "new_wins": 4,
+      "new_losses": 5,
+      "ties": 0,
+      "mean_mic_reduction_pct": -74.6160573857566
+    }
+  ],
+  "accepted_updates": 11,
+  "rolled_back_updates": 7,
+  "new_wall_hours_mean": 9.187757660899553,
+  "source_sha256": {
+    "/root/data/logs/peptide_target_loss_gate_20round_max2_test10_20261119/evaluation/adapted_online/pep_117/result.json": "fb139d8754848ef3f1538b0f0d3f921c62f128c863c0e2014b825b1650b3cfe2",
+    "/root/data/logs/peptide_target_loss_gate_20round_max2_test10_20261119/evaluation/adapted_online/pep_219/result.json": "b51de5e6757cfafed02e01747a02a3084681474949c6b68c1ed2992370d92eb6",
+    "/root/data/logs/peptide_target_loss_gate_20round_max2_test10_20261119/evaluation/adapted_online/pep_221/result.json": "0f5707eed8ce471fa97003376468cda76eb5f2fcfa111aea74a7f80025e57342",
+    "/root/data/logs/peptide_target_loss_gate_20round_max2_test10_20261119/evaluation/adapted_online/pep_575/result.json": "817834fe1baec9d18f09db5a79fa6722dd4be0bbf1d469d322a2cd0717082953",
+    "/root/data/logs/peptide_target_loss_gate_20round_max2_test10_20261119/evaluation/adapted_online/pep_673/result.json": "cb52824eb7fc7221011a3cc844e6512c1dd45fa6065328503b104edd31efb1bf",
+    "/root/data/logs/peptide_target_loss_gate_20round_max2_test10_20261119/evaluation/adapted_online/pep_921/result.json": "cdcbee5e926ffc8897c78251cd973a7166fd67f519afba886b6ed901489eac68",
+    "/root/data/logs/peptide_target_loss_gate_20round_max2_test10_20261119/evaluation/adapted_online/pep_925/result.json": "8dc90f12a9943e5419cc97b09929588bfd5c3758186a6acfedae79fbc23f7645",
+    "/root/data/logs/peptide_target_loss_gate_20round_max2_test10_20261119/evaluation/adapted_online/pep_980/result.json": "fec70c4cd6b3ed52a0d2e31c3f42ce4f0f45e4b3d6ebfa46dd86595cd6bb76ab",
+    "/root/data/logs/peptide_target_loss_gate_20round_max2_test10_20261119/evaluation/adapted_online/pep_999/result.json": "1f3a3a066cdc8b731c61582c81810f6d7248d0ccd8095cd30053945f0858964f",
+    "/root/data/logs/peptide_target_loss_gate_20round_max2_test10_20261119/comparison_inputs/capped_convergence.csv": "3cffaa876c948f7838e4f24338d5cbea10538e82fbc727b9944e0d8c8c846e35"
+  },
+  "budget_note": "Each history capped at 4000 acquisition proposals OR 4000 fresh evaluations, whichever first. Frozen retrospective cut uses last full batch within both caps. Endpoints may be earlier than 4000; carried incumbents are not new measurements.",
+  "limitations": "Nine completed tasks selected by completion, not the final ten-task cohort. One seed per task/method. Predicted MIC, not wet-lab MIC. Hardware/contention differ; runtime is not a controlled method comparison. SemanticOPT includes its original random fallback policy."
+}

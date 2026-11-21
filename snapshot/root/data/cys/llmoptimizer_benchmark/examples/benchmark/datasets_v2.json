@@ -1,0 +1,39 @@
+{
+  "description": "Phase 0 v2 benchmark tasks: 9 cls (no porto-seguro) + 5 rgs.",
+  "classification": {
+    "metric": "bal_acc",
+    "datasets": [
+      "yeast",
+      "car",
+      "christine",
+      "adult",
+      "nomao",
+      "PhishingWebsites",
+      "Fashion-MNIST",
+      "MiniBooNE",
+      "covertype"
+    ]
+  },
+  "regression": {
+    "metric": "mse",
+    "datasets": [
+      "boston",
+      "socmob",
+      "elevators",
+      "tecator",
+      "pol"
+    ]
+  },
+  "pilot": {
+    "description": "3 cls + 2 rgs with size spread for prompt/hybrid tuning before full rollout.",
+    "classification": ["yeast", "adult", "covertype"],
+    "regression": ["boston", "elevators"],
+    "size_notes": {
+      "yeast": "~1.5k rows (small cls)",
+      "adult": "~49k rows (medium cls)",
+      "covertype": "~581k rows (large cls)",
+      "boston": "~500 rows (small rgs)",
+      "elevators": "~17k rows (medium rgs)"
+    }
+  }
+}

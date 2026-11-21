@@ -1,0 +1,145 @@
+{
+  "at": 1795086123.5550025,
+  "status": "running; allocation complete",
+  "stopped": {
+    "BORA": {
+      "fresh_evaluations": 3783,
+      "live_workers": 0,
+      "checkpoints_retained": true
+    },
+    "RGPE": {
+      "fresh_evaluations": 191,
+      "proposals": 200,
+      "live_workers": 0,
+      "checkpoints_retained": true
+    }
+  },
+  "before": {
+    "evaluators": 24,
+    "private_databases": 24,
+    "LLM_replicas": 8,
+    "VAE_services": 16
+  },
+  "live": {
+    "evaluators": 37,
+    "private_databases": 37,
+    "LLM_replicas": 20,
+    "VAE_services": 24,
+    "worker_hosts": {
+      "LLMOptimizer2": 10,
+      "LLMOptimizer4": 23,
+      "LLMOptimizer3": 4
+    },
+    "A800_LLMs": 12,
+    "A16_LLMs": 8
+  },
+  "progress": {
+    "stages": {
+      "warm30": {
+        "complete_tasks": 200,
+        "started_tasks": 200,
+        "measurements": 6000,
+        "generation_attempts_or_optimization_attempts": 9526
+      },
+      "orpo_batch10": {
+        "complete_tasks": 56,
+        "started_tasks": 93,
+        "measurements": 54147,
+        "generation_attempts_or_optimization_attempts": 54147
+      }
+    },
+    "total_rounds": 80,
+    "batch_size": 10,
+    "evaluations_per_task": 800,
+    "total_tasks": 200,
+    "measurement_target": 160000,
+    "counted_measurements": 60147,
+    "paused": false,
+    "rl_enabled": false,
+    "at": 1795086116.8839,
+    "status": "running",
+    "stage": "orpo_batch10",
+    "worker_launchers": [
+      656886,
+      656887,
+      656888,
+      656889,
+      656890,
+      656891,
+      656892,
+      656919,
+      656956,
+      657375,
+      658188,
+      658222,
+      658257,
+      658300,
+      658331,
+      658448,
+      658505,
+      658535,
+      658580,
+      658606,
+      658636,
+      658677,
+      658706,
+      658754,
+      658783,
+      658831,
+      658873,
+      658918,
+      658973,
+      659017,
+      659018,
+      659019,
+      659020,
+      659021,
+      660315,
+      660965,
+      661786
+    ],
+    "worker_count": 37,
+    "worker_hosts": {
+      "LLMOptimizer2": 10,
+      "LLMOptimizer4": 23,
+      "LLMOptimizer3": 4
+    },
+    "resources_sha256": "81fde459b88ecdba87fb0cef1ef3f198474e6f5bf8a1fdcc13e3fe028231fe91"
+  },
+  "validation": {
+    "unit_tests": 63,
+    "passed": true,
+    "vae_health_checks": 24,
+    "databases_ready": 37,
+    "workers_alive": 37,
+    "unresolved_SQL_at_handoff": 0,
+    "unfinished_journals_audited": 37,
+    "LLMs_ready": 20,
+    "vae_processes_alive": 24,
+    "pins_verified": 345,
+    "recovery_enabled": true,
+    "final_evidence": "/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117/operations/reallocate_20261119/final_verification.json"
+  },
+  "unchanged": [
+    "ORPO adapter weights",
+    "VAE checkpoint",
+    "FSBO method",
+    "prompts and sampling settings",
+    "SQL timeout of 50 seconds",
+    "800 measurements per task; 200 tasks"
+  ],
+  "caveats": [
+    "Throughput gain is not yet a measured speedup.",
+    "Two A16 servers share peptide GPUs: requests over 16384 tokens are forwarded intact to verified full-context A800 servers.",
+    "An observed terminal PostgreSQL temporary-spill read EIO was audited; exactly one unscored SELECT may be retried with its selected plan unchanged."
+  ],
+  "storage_recovery": {
+    "at": 1795085738.4094517,
+    "audit": {
+      "saved_rows": 53900,
+      "audited_operations": 1
+    },
+    "incident": "/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117/operations/reallocate_20261119/temp_spill_io/1795085702455020773",
+    "disposition": "One terminal unscored SELECT is replayable; retain the exact selected plan."
+  }
+}

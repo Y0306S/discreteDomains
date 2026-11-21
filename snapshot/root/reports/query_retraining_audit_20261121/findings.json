@@ -1,0 +1,215 @@
+{
+  "at": 1795221845.6018982,
+  "current_optimization_result_at200": {
+    "versus_frozen_FSBO": {
+      "queries": 123,
+      "geomean_new_over_comparator": 0.6927096288567757,
+      "runtime_reduction_percent": 30.729037114322434,
+      "geomean_speedup": 1.4436063226815048,
+      "median_ratio": 0.7564901979037612,
+      "wins_over_5pct": 96,
+      "losses_over_5pct": 12,
+      "within_5pct": 15,
+      "descriptive_task_bootstrap_95pct_ratio_interval": [
+        0.6433044466870316,
+        0.7444974388882681
+      ]
+    },
+    "versus_SemanticOPT": {
+      "queries": 123,
+      "geomean_new_over_comparator": 0.6874722384710266,
+      "runtime_reduction_percent": 31.252776152897344,
+      "geomean_speedup": 1.4546041920529782,
+      "median_ratio": 0.7776158717652806,
+      "wins_over_5pct": 97,
+      "losses_over_5pct": 10,
+      "within_5pct": 16,
+      "descriptive_task_bootstrap_95pct_ratio_interval": [
+        0.635229075400224,
+        0.7416470859997584
+      ]
+    },
+    "versus_BOLT_initialization": {
+      "queries": 123,
+      "geomean_new_over_comparator": 0.7572183806335413,
+      "runtime_reduction_percent": 24.27816193664587,
+      "geomean_speedup": 1.3206229874707094,
+      "median_ratio": 0.795026637259968,
+      "wins_over_5pct": 91,
+      "losses_over_5pct": 0,
+      "within_5pct": 32,
+      "descriptive_task_bootstrap_95pct_ratio_interval": [
+        0.7226822499676394,
+        0.7905136719411221
+      ]
+    },
+    "versus_previous_hybrid": {
+      "queries": 21,
+      "geomean_new_over_comparator": 0.9935973879886942,
+      "runtime_reduction_percent": 0.6402612011305764,
+      "geomean_speedup": 1.006443869608259,
+      "median_ratio": 0.9941893877762362,
+      "wins_over_5pct": 4,
+      "losses_over_5pct": 2,
+      "within_5pct": 15,
+      "descriptive_task_bootstrap_95pct_ratio_interval": [
+        0.9700700548852912,
+        1.0159698013819471
+      ]
+    }
+  },
+  "same21queries_matched_shared_rounds": {
+    "queries": 21,
+    "geomean_new_over_comparator": 1.0025667140066705,
+    "runtime_reduction_percent": -0.2566714006670523,
+    "geomean_speedup": 0.9974398571478472,
+    "median_ratio": 0.9970948671217583,
+    "wins_over_5pct": 2,
+    "losses_over_5pct": 3,
+    "within_5pct": 16,
+    "descriptive_task_bootstrap_95pct_ratio_interval": [
+      0.9793588888923652,
+      1.026084846255451
+    ]
+  },
+  "retrained_diagnostics": {
+    "counts": {
+      "timeouts_llm": 1583,
+      "incumbent_improvements_llm": 635,
+      "timeouts_fsbo": 20344,
+      "fsbo_requested": 65917,
+      "fsbo_accepted": 54344,
+      "fsbo_decode_rejections": 120374,
+      "timeouts_random": 6257,
+      "incumbent_improvements_fsbo": 65
+    },
+    "proposal_sources": {
+      "llm": 24563,
+      "fsbo": 54344,
+      "random": 11573
+    },
+    "best_sources": {
+      "llm": 97,
+      "fsbo": 24,
+      "bolt_new": 15
+    },
+    "fsbo_slot_fill_percent": 82.44307234855955,
+    "fsbo_returned_decode_acceptance_percent": 31.103835895557413
+  },
+  "vae_training_validation": {
+    "original": {
+      "loss": 0.06613672499828627,
+      "recon_loss": 0.0393177717442918,
+      "kldiv": 1.3409476099281188,
+      "recon_token_acc": 0.9889822622161635,
+      "recon_string_acc": 0.7534983870287629
+    },
+    "selected": {
+      "loss": 0.03560002963785463,
+      "recon_loss": 0.007276687748024422,
+      "kldiv": 1.4161671475778996,
+      "recon_token_acc": 0.9971004420384139,
+      "recon_string_acc": 0.9289558685762633
+    },
+    "best_epoch": 8
+  },
+  "decoder": {
+    "original": {
+      "sha256": "83a4942701bffaaf8311887e530e3157b6843134e52e9f53d59f957c24aebab1",
+      "regimes": {
+        "encoded_mean": {
+          "draws": 240,
+          "strict_raw_valid": 219,
+          "non_crossjoin": 219,
+          "canonical_valid": 240,
+          "production_valid_before_retries": 219,
+          "novel_vs_bolt30": 10,
+          "same_as_input": 203
+        },
+        "local_005_span": {
+          "draws": 240,
+          "non_crossjoin": 138,
+          "canonical_valid": 240,
+          "production_valid_before_retries": 138,
+          "novel_vs_bolt30": 52,
+          "same_as_input": 74,
+          "strict_raw_valid": 75
+        },
+        "local_020_span": {
+          "draws": 240,
+          "non_crossjoin": 22,
+          "canonical_valid": 240,
+          "production_valid_before_retries": 22,
+          "novel_vs_bolt30": 20,
+          "same_as_input": 1
+        },
+        "native_initial_candidate": {
+          "draws": 240,
+          "non_crossjoin": 23,
+          "canonical_valid": 240,
+          "production_valid_before_retries": 23,
+          "novel_vs_bolt30": 20,
+          "same_as_input": 2,
+          "strict_raw_valid": 1
+        }
+      },
+      "seconds": 68.04689168930054
+    },
+    "retrained": {
+      "sha256": "eebbe1ee70209aec6b8236d3c01d43c0d3591e52f9bbc23e311c610712e0204d",
+      "regimes": {
+        "encoded_mean": {
+          "draws": 240,
+          "strict_raw_valid": 240,
+          "non_crossjoin": 239,
+          "canonical_valid": 240,
+          "production_valid_before_retries": 239,
+          "novel_vs_bolt30": 2,
+          "same_as_input": 237
+        },
+        "local_005_span": {
+          "draws": 240,
+          "non_crossjoin": 201,
+          "canonical_valid": 240,
+          "production_valid_before_retries": 201,
+          "novel_vs_bolt30": 58,
+          "same_as_input": 137,
+          "strict_raw_valid": 153
+        },
+        "local_020_span": {
+          "draws": 240,
+          "non_crossjoin": 32,
+          "canonical_valid": 240,
+          "production_valid_before_retries": 32,
+          "novel_vs_bolt30": 28,
+          "same_as_input": 3
+        },
+        "native_initial_candidate": {
+          "draws": 240,
+          "non_crossjoin": 28,
+          "canonical_valid": 240,
+          "production_valid_before_retries": 28,
+          "novel_vs_bolt30": 25,
+          "same_as_input": 3,
+          "strict_raw_valid": 1
+        }
+      },
+      "seconds": 75.24544668197632
+    }
+  },
+  "key_confound": "original788usabletasks,631train/157validation;retrained80tasks,64train/16validation; combined VAE+surrogate corpus+normalization change",
+  "coordinate_equivalence": {
+    "fsbo": {
+      "task": "CEB_10A44",
+      "max_absolute_difference": 1.1920928955078125e-06,
+      "passed": true
+    },
+    "retrieval": {
+      "task": "CEB_10A19",
+      "max_absolute_difference": 6.556510925292969e-07,
+      "passed": true
+    }
+  },
+  "production_changes": false,
+  "sql_calls_for_diagnostics": 0
+}

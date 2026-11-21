@@ -1,0 +1,1322 @@
+{
+  "job_identity": {
+    "task_id": "CEB_5A502",
+    "phase": "cycle1_01_similar",
+    "scenario": "retrieval",
+    "prefix_k": 5,
+    "prefix_end_exclusive": 99,
+    "repeat": 0,
+    "group_id": "cycle1_01_similar/CEB_5A502/k5"
+  },
+  "cards": [
+    {
+      "task": {
+        "task_id": "CEB_5A374",
+        "description": "Optimize 10-alias CEB SQL join tree.",
+        "objective": "minimize PostgreSQL wall runtime seconds",
+        "constraints": {
+          "preserve_SQL_and_predicates": true,
+          "aliases": [
+            {
+              "table": "title",
+              "table_id": 20,
+              "alias": 1
+            },
+            {
+              "table": "movie_info",
+              "table_id": 13,
+              "alias": 1
+            },
+            {
+              "table": "kind_type",
+              "table_id": 10,
+              "alias": 1
+            },
+            {
+              "table": "info_type",
+              "table_id": 8,
+              "alias": 1
+            },
+            {
+              "table": "info_type",
+              "table_id": 8,
+              "alias": 2
+            },
+            {
+              "table": "info_type",
+              "table_id": 8,
+              "alias": 3
+            },
+            {
+              "table": "movie_info_idx",
+              "table_id": 14,
+              "alias": 1
+            },
+            {
+              "table": "movie_info_idx",
+              "table_id": 14,
+              "alias": 2
+            },
+            {
+              "table": "movie_keyword",
+              "table_id": 15,
+              "alias": 1
+            },
+            {
+              "table": "keyword",
+              "table_id": 9,
+              "alias": 1
+            }
+          ],
+          "joins": 9,
+          "operators": {
+            "1": "NestLoop",
+            "2": "HashJoin",
+            "3": "MergeJoin"
+          },
+          "no_implicit_codec_repairs": true
+        },
+        "query_text": "SELECT COUNT(*)\nFROM title as t,\nmovie_info as mi1,\nkind_type as kt,\ninfo_type as it1,\ninfo_type as it3,\ninfo_type as it4,\nmovie_info_idx as mii1,\nmovie_info_idx as mii2,\nmovie_keyword as mk,\nkeyword as k\nWHERE\nt.id = mi1.movie_id\nAND t.id = mii1.movie_id\nAND t.id = mii2.movie_id\nAND t.id = mk.movie_id\nAND mii2.movie_id = mii1.movie_id\nAND mi1.movie_id = mii1.movie_id\nAND mk.movie_id = mi1.movie_id\nAND mk.keyword_id = k.id\nAND mi1.info_type_id = it1.id\nAND mii1.info_type_id = it3.id\nAND mii2.info_type_id = it4.id\nAND t.kind_id = kt.id\nAND (kt.kind IN ('episode','movie','video movie'))\nAND (t.production_year <= 2015)\nAND (t.production_year >= 1925)\nAND (mi1.info IN ('Action','Adventure','Drama','Horror','Musical'))\nAND (it1.id IN ('1','15','3'))\nAND it3.id = '100'\nAND it4.id = '101'\nAND (mii2.info ~ '^(?:[1-9]\\d*|0)?(?:\\.\\d+)?$' AND mii2.info::float <= 7.0)\nAND (mii2.info ~ '^(?:[1-9]\\d*|0)?(?:\\.\\d+)?$' AND 3.0 <= mii2.info::float)\nAND (mii1.info ~ '^(?:[1-9]\\d*|0)?(?:\\.\\d+)?$' AND 0.0 <= mii1.info::float)\nAND (mii1.info ~ '^(?:[1-9]\\d*|0)?(?:\\.\\d+)?$' AND mii1.info::float <= 500.0)\n",
+        "search_space": {
+          "representation": "AliasesCodec integer groups of five",
+          "table_ids": "zero based",
+          "alias_ids": "one based",
+          "component_merge": "Each operand names an alias inside an active component; merge distinct components."
+        }
+      },
+      "top": [
+        {
+          "candidate": {
+            "plan": [
+              14,
+              1,
+              13,
+              1,
+              1,
+              14,
+              1,
+              14,
+              2,
+              2,
+              8,
+              1,
+              14,
+              1,
+              2,
+              8,
+              1,
+              8,
+              2,
+              2,
+              8,
+              1,
+              15,
+              1,
+              1,
+              20,
+              1,
+              8,
+              1,
+              2,
+              20,
+              1,
+              9,
+              1,
+              2,
+              20,
+              1,
+              10,
+              1,
+              2,
+              20,
+              1,
+              8,
+              3,
+              2
+            ]
+          },
+          "measured_value": 2.1799894282594323
+        },
+        {
+          "candidate": {
+            "plan": [
+              14,
+              1,
+              13,
+              1,
+              3,
+              14,
+              1,
+              14,
+              2,
+              1,
+              14,
+              1,
+              20,
+              1,
+              1,
+              8,
+              1,
+              14,
+              1,
+              1,
+              8,
+              1,
+              8,
+              2,
+              1,
+              8,
+              3,
+              8,
+              1,
+              3,
+              8,
+              3,
+              15,
+              1,
+              1,
+              8,
+              3,
+              10,
+              1,
+              1,
+              8,
+              3,
+              9,
+              1,
+              3
+            ]
+          },
+          "measured_value": 2.4553249971941113
+        },
+        {
+          "candidate": {
+            "plan": [
+              14,
+              1,
+              13,
+              1,
+              1,
+              14,
+              1,
+              14,
+              2,
+              1,
+              14,
+              1,
+              20,
+              1,
+              1,
+              14,
+              1,
+              8,
+              1,
+              1,
+              14,
+              1,
+              8,
+              2,
+              1,
+              8,
+              3,
+              14,
+              1,
+              1,
+              8,
+              3,
+              15,
+              1,
+              3,
+              8,
+              3,
+              10,
+              1,
+              1,
+              8,
+              3,
+              9,
+              1,
+              3
+            ]
+          },
+          "measured_value": 3.076443223282695
+        }
+      ],
+      "bottom": [
+        {
+          "candidate": {
+            "plan": [
+              14,
+              1,
+              14,
+              2,
+              3,
+              15,
+              1,
+              20,
+              1,
+              1,
+              15,
+              1,
+              13,
+              1,
+              3,
+              14,
+              1,
+              15,
+              1,
+              3,
+              14,
+              1,
+              8,
+              1,
+              3,
+              14,
+              1,
+              8,
+              2,
+              2,
+              14,
+              1,
+              8,
+              3,
+              2,
+              14,
+              1,
+              9,
+              1,
+              2,
+              14,
+              1,
+              10,
+              1,
+              2
+            ]
+          },
+          "measured_value": 14.787034505978227
+        },
+        {
+          "candidate": {
+            "plan": [
+              15,
+              1,
+              9,
+              1,
+              3,
+              15,
+              1,
+              13,
+              1,
+              3,
+              15,
+              1,
+              8,
+              1,
+              3,
+              14,
+              1,
+              15,
+              1,
+              3,
+              14,
+              2,
+              14,
+              1,
+              3,
+              14,
+              2,
+              8,
+              2,
+              3,
+              14,
+              2,
+              20,
+              1,
+              3,
+              14,
+              2,
+              10,
+              1,
+              3,
+              14,
+              2,
+              8,
+              3,
+              3
+            ]
+          },
+          "measured_value": 15.770909992046654
+        },
+        {
+          "candidate": {
+            "plan": [
+              13,
+              1,
+              14,
+              1,
+              1,
+              13,
+              1,
+              15,
+              1,
+              3,
+              13,
+              1,
+              8,
+              1,
+              3,
+              20,
+              1,
+              14,
+              2,
+              3,
+              20,
+              1,
+              13,
+              1,
+              3,
+              20,
+              1,
+              9,
+              1,
+              3,
+              20,
+              1,
+              8,
+              3,
+              3,
+              20,
+              1,
+              8,
+              2,
+              2,
+              20,
+              1,
+              10,
+              1,
+              1
+            ]
+          },
+          "measured_value": 16.315209697000682
+        }
+      ]
+    },
+    {
+      "task": {
+        "task_id": "CEB_5A131",
+        "description": "Optimize 10-alias CEB SQL join tree.",
+        "objective": "minimize PostgreSQL wall runtime seconds",
+        "constraints": {
+          "preserve_SQL_and_predicates": true,
+          "aliases": [
+            {
+              "table": "title",
+              "table_id": 20,
+              "alias": 1
+            },
+            {
+              "table": "movie_info",
+              "table_id": 13,
+              "alias": 1
+            },
+            {
+              "table": "kind_type",
+              "table_id": 10,
+              "alias": 1
+            },
+            {
+              "table": "info_type",
+              "table_id": 8,
+              "alias": 1
+            },
+            {
+              "table": "info_type",
+              "table_id": 8,
+              "alias": 2
+            },
+            {
+              "table": "info_type",
+              "table_id": 8,
+              "alias": 3
+            },
+            {
+              "table": "movie_info_idx",
+              "table_id": 14,
+              "alias": 1
+            },
+            {
+              "table": "movie_info_idx",
+              "table_id": 14,
+              "alias": 2
+            },
+            {
+              "table": "movie_keyword",
+              "table_id": 15,
+              "alias": 1
+            },
+            {
+              "table": "keyword",
+              "table_id": 9,
+              "alias": 1
+            }
+          ],
+          "joins": 9,
+          "operators": {
+            "1": "NestLoop",
+            "2": "HashJoin",
+            "3": "MergeJoin"
+          },
+          "no_implicit_codec_repairs": true
+        },
+        "query_text": "SELECT COUNT(*)\nFROM title as t,\nmovie_info as mi1,\nkind_type as kt,\ninfo_type as it1,\ninfo_type as it3,\ninfo_type as it4,\nmovie_info_idx as mii1,\nmovie_info_idx as mii2,\nmovie_keyword as mk,\nkeyword as k\nWHERE\nt.id = mi1.movie_id\nAND t.id = mii1.movie_id\nAND t.id = mii2.movie_id\nAND t.id = mk.movie_id\nAND mii2.movie_id = mii1.movie_id\nAND mi1.movie_id = mii1.movie_id\nAND mk.movie_id = mi1.movie_id\nAND mk.keyword_id = k.id\nAND mi1.info_type_id = it1.id\nAND mii1.info_type_id = it3.id\nAND mii2.info_type_id = it4.id\nAND t.kind_id = kt.id\nAND (kt.kind IN ('episode','movie','video movie'))\nAND (t.production_year <= 2015)\nAND (t.production_year >= 1925)\nAND (mi1.info IN ('English','French','German','Japanese','OFM:Video','PFM:35 mm','RAT:1.33 : 1','RAT:1.37 : 1','RAT:1.78 : 1','RAT:16:9 HD','Spanish'))\nAND (it1.id IN ('17','4','7'))\nAND it3.id = '100'\nAND it4.id = '101'\nAND (mii2.info ~ '^(?:[1-9]\\d*|0)?(?:\\.\\d+)?$' AND mii2.info::float <= 8.3)\nAND (mii2.info ~ '^(?:[1-9]\\d*|0)?(?:\\.\\d+)?$' AND 5.5 <= mii2.info::float)\nAND (mii1.info ~ '^(?:[1-9]\\d*|0)?(?:\\.\\d+)?$' AND 10000.0 <= mii1.info::float)\nAND (mii1.info ~ '^(?:[1-9]\\d*|0)?(?:\\.\\d+)?$' AND mii1.info::float <= 20000.0)\n",
+        "search_space": {
+          "representation": "AliasesCodec integer groups of five",
+          "table_ids": "zero based",
+          "alias_ids": "one based",
+          "component_merge": "Each operand names an alias inside an active component; merge distinct components."
+        }
+      },
+      "top": [
+        {
+          "candidate": {
+            "plan": [
+              14,
+              1,
+              20,
+              1,
+              1,
+              14,
+              1,
+              10,
+              1,
+              1,
+              14,
+              1,
+              13,
+              1,
+              1,
+              14,
+              1,
+              14,
+              2,
+              1,
+              14,
+              1,
+              8,
+              1,
+              1,
+              14,
+              1,
+              8,
+              2,
+              1,
+              8,
+              3,
+              14,
+              1,
+              1,
+              8,
+              3,
+              15,
+              1,
+              1,
+              8,
+              3,
+              9,
+              1,
+              3
+            ]
+          },
+          "measured_value": 0.2940684175118804
+        },
+        {
+          "candidate": {
+            "plan": [
+              14,
+              1,
+              20,
+              1,
+              1,
+              14,
+              1,
+              13,
+              1,
+              1,
+              14,
+              1,
+              14,
+              2,
+              1,
+              14,
+              1,
+              8,
+              2,
+              1,
+              14,
+              1,
+              8,
+              1,
+              1,
+              14,
+              1,
+              8,
+              3,
+              1,
+              14,
+              1,
+              10,
+              1,
+              1,
+              14,
+              1,
+              15,
+              1,
+              1,
+              14,
+              1,
+              9,
+              1,
+              3
+            ]
+          },
+          "measured_value": 0.30644056759774685
+        },
+        {
+          "candidate": {
+            "plan": [
+              14,
+              1,
+              20,
+              1,
+              1,
+              14,
+              1,
+              13,
+              1,
+              1,
+              14,
+              1,
+              8,
+              1,
+              1,
+              14,
+              1,
+              8,
+              2,
+              1,
+              10,
+              1,
+              14,
+              1,
+              1,
+              10,
+              1,
+              14,
+              2,
+              1,
+              10,
+              1,
+              15,
+              1,
+              1,
+              10,
+              1,
+              9,
+              1,
+              3,
+              10,
+              1,
+              8,
+              3,
+              2
+            ]
+          },
+          "measured_value": 0.3284928062930703
+        }
+      ],
+      "bottom": [
+        {
+          "candidate": {
+            "plan": [
+              14,
+              2,
+              20,
+              1,
+              1,
+              14,
+              2,
+              13,
+              1,
+              1,
+              14,
+              2,
+              15,
+              1,
+              1,
+              14,
+              2,
+              8,
+              1,
+              1,
+              14,
+              2,
+              10,
+              1,
+              1,
+              14,
+              2,
+              14,
+              1,
+              1,
+              14,
+              2,
+              8,
+              2,
+              1,
+              14,
+              2,
+              9,
+              1,
+              3,
+              14,
+              2,
+              8,
+              3,
+              2
+            ]
+          },
+          "measured_value": 11.404203779064119
+        },
+        {
+          "candidate": {
+            "plan": [
+              14,
+              1,
+              20,
+              1,
+              1,
+              14,
+              1,
+              15,
+              1,
+              1,
+              14,
+              1,
+              13,
+              1,
+              1,
+              14,
+              1,
+              14,
+              2,
+              1,
+              14,
+              1,
+              8,
+              1,
+              1,
+              8,
+              2,
+              14,
+              1,
+              3,
+              8,
+              2,
+              8,
+              3,
+              2,
+              8,
+              2,
+              9,
+              1,
+              2,
+              8,
+              2,
+              10,
+              1,
+              2
+            ]
+          },
+          "measured_value": 13.11289034690708
+        },
+        {
+          "candidate": {
+            "plan": [
+              15,
+              1,
+              20,
+              1,
+              1,
+              15,
+              1,
+              13,
+              1,
+              3,
+              15,
+              1,
+              14,
+              2,
+              1,
+              15,
+              1,
+              14,
+              1,
+              1,
+              15,
+              1,
+              8,
+              1,
+              1,
+              15,
+              1,
+              8,
+              2,
+              3,
+              15,
+              1,
+              10,
+              1,
+              1,
+              15,
+              1,
+              8,
+              3,
+              2,
+              15,
+              1,
+              9,
+              1,
+              2
+            ]
+          },
+          "measured_value": 14.021121236495674
+        }
+      ]
+    },
+    {
+      "task": {
+        "task_id": "CEB_5A2",
+        "description": "Optimize 10-alias CEB SQL join tree.",
+        "objective": "minimize PostgreSQL wall runtime seconds",
+        "constraints": {
+          "preserve_SQL_and_predicates": true,
+          "aliases": [
+            {
+              "table": "title",
+              "table_id": 20,
+              "alias": 1
+            },
+            {
+              "table": "movie_info",
+              "table_id": 13,
+              "alias": 1
+            },
+            {
+              "table": "kind_type",
+              "table_id": 10,
+              "alias": 1
+            },
+            {
+              "table": "info_type",
+              "table_id": 8,
+              "alias": 1
+            },
+            {
+              "table": "info_type",
+              "table_id": 8,
+              "alias": 2
+            },
+            {
+              "table": "info_type",
+              "table_id": 8,
+              "alias": 3
+            },
+            {
+              "table": "movie_info_idx",
+              "table_id": 14,
+              "alias": 1
+            },
+            {
+              "table": "movie_info_idx",
+              "table_id": 14,
+              "alias": 2
+            },
+            {
+              "table": "movie_keyword",
+              "table_id": 15,
+              "alias": 1
+            },
+            {
+              "table": "keyword",
+              "table_id": 9,
+              "alias": 1
+            }
+          ],
+          "joins": 9,
+          "operators": {
+            "1": "NestLoop",
+            "2": "HashJoin",
+            "3": "MergeJoin"
+          },
+          "no_implicit_codec_repairs": true
+        },
+        "query_text": "SELECT COUNT(*)\nFROM title as t,\nmovie_info as mi1,\nkind_type as kt,\ninfo_type as it1,\ninfo_type as it3,\ninfo_type as it4,\nmovie_info_idx as mii1,\nmovie_info_idx as mii2,\nmovie_keyword as mk,\nkeyword as k\nWHERE\nt.id = mi1.movie_id\nAND t.id = mii1.movie_id\nAND t.id = mii2.movie_id\nAND t.id = mk.movie_id\nAND mii2.movie_id = mii1.movie_id\nAND mi1.movie_id = mii1.movie_id\nAND mk.movie_id = mi1.movie_id\nAND mk.keyword_id = k.id\nAND mi1.info_type_id = it1.id\nAND mii1.info_type_id = it3.id\nAND mii2.info_type_id = it4.id\nAND t.kind_id = kt.id\nAND (kt.kind IN ('episode','movie'))\nAND (t.production_year <= 1975)\nAND (t.production_year >= 1925)\nAND (mi1.info IN ('Finland:K-16','USA:Approved'))\nAND (it1.id IN ('18','5'))\nAND it3.id = '100'\nAND it4.id = '101'\nAND (mii2.info ~ '^(?:[1-9]\\d*|0)?(?:\\.\\d+)?$' AND mii2.info::float <= 9.0)\nAND (mii2.info ~ '^(?:[1-9]\\d*|0)?(?:\\.\\d+)?$' AND 4.0 <= mii2.info::float)\nAND (mii1.info ~ '^(?:[1-9]\\d*|0)?(?:\\.\\d+)?$' AND 0.0 <= mii1.info::float)\nAND (mii1.info ~ '^(?:[1-9]\\d*|0)?(?:\\.\\d+)?$' AND mii1.info::float <= 1000.0)\n",
+        "search_space": {
+          "representation": "AliasesCodec integer groups of five",
+          "table_ids": "zero based",
+          "alias_ids": "one based",
+          "component_merge": "Each operand names an alias inside an active component; merge distinct components."
+        }
+      },
+      "top": [
+        {
+          "candidate": {
+            "plan": [
+              20,
+              1,
+              14,
+              1,
+              1,
+              14,
+              2,
+              20,
+              1,
+              1,
+              14,
+              2,
+              13,
+              1,
+              1,
+              8,
+              2,
+              14,
+              2,
+              1,
+              8,
+              2,
+              15,
+              1,
+              1,
+              8,
+              2,
+              8,
+              1,
+              1,
+              8,
+              3,
+              8,
+              2,
+              1,
+              8,
+              3,
+              10,
+              1,
+              2,
+              8,
+              3,
+              9,
+              1,
+              3
+            ]
+          },
+          "measured_value": 1.141687635332346
+        },
+        {
+          "candidate": {
+            "plan": [
+              20,
+              1,
+              14,
+              1,
+              1,
+              14,
+              2,
+              20,
+              1,
+              1,
+              14,
+              2,
+              13,
+              1,
+              1,
+              14,
+              2,
+              8,
+              2,
+              1,
+              14,
+              2,
+              8,
+              1,
+              1,
+              14,
+              2,
+              8,
+              3,
+              1,
+              14,
+              2,
+              10,
+              1,
+              3,
+              14,
+              2,
+              15,
+              1,
+              1,
+              14,
+              2,
+              9,
+              1,
+              2
+            ]
+          },
+          "measured_value": 1.2966285487636924
+        },
+        {
+          "candidate": {
+            "plan": [
+              13,
+              1,
+              14,
+              2,
+              1,
+              13,
+              1,
+              14,
+              1,
+              1,
+              13,
+              1,
+              20,
+              1,
+              1,
+              8,
+              2,
+              13,
+              1,
+              1,
+              10,
+              1,
+              8,
+              2,
+              1,
+              8,
+              1,
+              10,
+              1,
+              3,
+              8,
+              1,
+              15,
+              1,
+              1,
+              8,
+              1,
+              9,
+              1,
+              1,
+              8,
+              1,
+              8,
+              3,
+              3
+            ]
+          },
+          "measured_value": 1.4853645507246256
+        }
+      ],
+      "bottom": [
+        {
+          "candidate": {
+            "plan": [
+              14,
+              2,
+              14,
+              1,
+              1,
+              14,
+              2,
+              15,
+              1,
+              3,
+              14,
+              2,
+              13,
+              1,
+              1,
+              14,
+              2,
+              8,
+              2,
+              1,
+              14,
+              2,
+              20,
+              1,
+              1,
+              14,
+              2,
+              8,
+              1,
+              2,
+              14,
+              2,
+              9,
+              1,
+              1,
+              14,
+              2,
+              8,
+              3,
+              1,
+              14,
+              2,
+              10,
+              1,
+              2
+            ]
+          },
+          "measured_value": 16.59734531212598
+        },
+        {
+          "candidate": {
+            "plan": [
+              14,
+              2,
+              14,
+              1,
+              1,
+              14,
+              2,
+              15,
+              1,
+              3,
+              14,
+              2,
+              13,
+              1,
+              1,
+              14,
+              2,
+              8,
+              2,
+              1,
+              14,
+              2,
+              20,
+              1,
+              1,
+              14,
+              2,
+              9,
+              1,
+              1,
+              14,
+              2,
+              8,
+              1,
+              1,
+              14,
+              2,
+              8,
+              3,
+              1,
+              14,
+              2,
+              10,
+              1,
+              2
+            ]
+          },
+          "measured_value": 17.6190922036767
+        },
+        {
+          "candidate": {
+            "plan": [
+              20,
+              1,
+              13,
+              1,
+              1,
+              14,
+              1,
+              15,
+              1,
+              1,
+              14,
+              2,
+              14,
+              1,
+              3,
+              8,
+              3,
+              14,
+              2,
+              3,
+              8,
+              3,
+              9,
+              1,
+              1,
+              8,
+              3,
+              20,
+              1,
+              2,
+              8,
+              3,
+              10,
+              1,
+              1,
+              8,
+              3,
+              8,
+              1,
+              1,
+              8,
+              3,
+              8,
+              2,
+              2
+            ]
+          },
+          "measured_value": 17.94354341737926
+        }
+      ]
+    }
+  ],
+  "ranking": {
+    "method": "table_Jaccard_alias_count_shortlist16_then_exact_source_GP_Spearman",
+    "scores": [
+      {
+        "task": "CEB_5A374",
+        "spearman": 1.0,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "93d9a2df8bdf10d17bd67c24051a0916104dedc5ad6a23ff54b9af4d2a621218"
+      },
+      {
+        "task": "CEB_5A131",
+        "spearman": 0.7999999999999999,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "3cdcbffa49b4f49f5c44b3297814b253f0ef429da02359655b878b14a8a9dbd4"
+      },
+      {
+        "task": "CEB_5A2",
+        "spearman": 0.7999999999999999,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "17725f2c937054ebfe8d994945cd5a69c6f078a02a94dd264a95d9f16e9de35f"
+      },
+      {
+        "task": "CEB_5A287",
+        "spearman": 0.7999999999999999,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "5d196cbe2bd453d4f2248347a598c5720a9cba2742057e30377b74d9894c0ed6"
+      },
+      {
+        "task": "CEB_5A382",
+        "spearman": 0.7999999999999999,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "398d7b2c68b0c5c5a2749bc5d77f1131fb437f59c85ae4665743c5533b34d9cd"
+      },
+      {
+        "task": "CEB_5A180",
+        "spearman": 0.6000000000000001,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "8fab329a96e796bfb1b9becfb0bd933562c5f3f854eef3466161326a464e40da"
+      },
+      {
+        "task": "CEB_5A237",
+        "spearman": 0.6000000000000001,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "a6e44b4d5fed2c7ae963dd7cb06b0c7b511102e22321bcd7975fcaccb8c0e87c"
+      },
+      {
+        "task": "CEB_5A410",
+        "spearman": 0.6000000000000001,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "e272356093e6171aa3f6d11e277330e867ab8bbfc8b035dae30aa5ac5d2322d1"
+      },
+      {
+        "task": "CEB_5A140",
+        "spearman": 0.39999999999999997,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "f1c809a518c217aa262b2c2db4b498769fd42f188f8d62b3d44e56a968fbfe03"
+      },
+      {
+        "task": "CEB_5A438",
+        "spearman": 0.39999999999999997,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "441c57dd0807eecbb9376f9aa66ee797b594e867b4ee825c059351baf5fadc31"
+      },
+      {
+        "task": "CEB_5A442",
+        "spearman": 0.19999999999999998,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "4b5947edfc4be704d9f632637d7e5dc812b942edf36646ba3bc44ba15d4e739c"
+      },
+      {
+        "task": "CEB_5A435",
+        "spearman": -0.19999999999999998,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "4290250680300db98870637a2234f8cbf7ebcd895185b3d6252e35552aaaa5b5"
+      },
+      {
+        "task": "CEB_5A164",
+        "spearman": -0.39999999999999997,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "403c85a6725deedc23855532475fc42de2d0a6aa4eb22df8ac0284dd1413bd7b"
+      },
+      {
+        "task": "CEB_5A310",
+        "spearman": -0.6000000000000001,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "113c3df102c55797a1122c0488cb905f054bcb5da5f982ecdeafc72d47cfd598"
+      },
+      {
+        "task": "CEB_5A134",
+        "spearman": -0.7999999999999999,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "24c3d25ad9cb8f248e3462595f0740006665f31e5fa270807f92183da5359caa"
+      },
+      {
+        "task": "CEB_5A291",
+        "spearman": -0.7999999999999999,
+        "table_jaccard": 1.0,
+        "alias_count_difference": 0,
+        "source_gp_sha256": "993665d73cf27340b0e86750b6df5ad0424b841ca22c2b2a8a01b33f9b0aed33"
+      }
+    ],
+    "selected_source_ids": [
+      "CEB_5A374",
+      "CEB_5A131",
+      "CEB_5A2"
+    ],
+    "strong_agreement_count": 8,
+    "confidence": "rank_agreement_ge_0.5",
+    "floor": 0.5,
+    "target_evidence_indices": [
+      4,
+      26,
+      51,
+      85
+    ],
+    "target_future_labels_used": false,
+    "source_label_scope": "other training tasks only"
+  }
+}

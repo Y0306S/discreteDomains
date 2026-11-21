@@ -1,0 +1,206 @@
+{
+  "description": "Canonical ML algorithm and hyperparameter schema mined from the BOLT warm-start SFT data. KNN is intentionally excluded.",
+  "excluded_algorithms": [
+    "k_nearest_neighbors",
+    "knn"
+  ],
+  "algorithm_aliases": {
+    "adaboost": "adaboost",
+    "ada_boost": "adaboost",
+    "ada": "adaboost",
+    "catboost": "catboost",
+    "cat_boost": "catboost",
+    "extra_trees": "extra_trees",
+    "extratrees": "extra_trees",
+    "extra trees": "extra_trees",
+    "gradient_boosting": "gradient_boosting",
+    "gradientboosting": "gradient_boosting",
+    "gbdt": "gradient_boosting",
+    "lightgbm": "lightgbm",
+    "lgbm": "lightgbm",
+    "random_forest": "random_forest",
+    "randomforest": "random_forest",
+    "rf": "random_forest",
+    "xgboost": "xgboost",
+    "xgb": "xgboost"
+  },
+  "task_types": {
+    "classification": {
+      "metric_id": "bal_acc",
+      "metric_direction": "higher_is_better",
+      "algorithms": {
+        "adaboost": {
+          "parameters": [
+            {"name": "adaboost:algorithm", "short_name": "algorithm", "type": "str"},
+            {"name": "adaboost:learning_rate", "short_name": "learning_rate", "type": "float"},
+            {"name": "adaboost:max_depth", "short_name": "max_depth", "type": "int"},
+            {"name": "adaboost:n_estimators", "short_name": "n_estimators", "type": "int"}
+          ]
+        },
+        "catboost": {
+          "parameters": [
+            {"name": "catboost:depth", "short_name": "depth", "type": "int"},
+            {"name": "catboost:iterations", "short_name": "iterations", "type": "int"},
+            {"name": "catboost:l2_leaf_reg", "short_name": "l2_leaf_reg", "type": "float"},
+            {"name": "catboost:learning_rate", "short_name": "learning_rate", "type": "float"}
+          ]
+        },
+        "extra_trees": {
+          "parameters": [
+            {"name": "extra_trees:bootstrap", "short_name": "bootstrap", "type": "str"},
+            {"name": "extra_trees:criterion", "short_name": "criterion", "type": "str"},
+            {"name": "extra_trees:max_depth", "short_name": "max_depth", "type": "str"},
+            {"name": "extra_trees:max_features", "short_name": "max_features", "type": "float"},
+            {"name": "extra_trees:max_leaf_nodes", "short_name": "max_leaf_nodes", "type": "str"},
+            {"name": "extra_trees:min_impurity_decrease", "short_name": "min_impurity_decrease", "type": "float"},
+            {"name": "extra_trees:min_samples_leaf", "short_name": "min_samples_leaf", "type": "int"},
+            {"name": "extra_trees:min_samples_split", "short_name": "min_samples_split", "type": "int"},
+            {"name": "extra_trees:min_weight_fraction_leaf", "short_name": "min_weight_fraction_leaf", "type": "float"}
+          ]
+        },
+        "gradient_boosting": {
+          "parameters": [
+            {"name": "gradient_boosting:criterion", "short_name": "criterion", "type": "str"},
+            {"name": "gradient_boosting:learning_rate", "short_name": "learning_rate", "type": "float"},
+            {"name": "gradient_boosting:loss", "short_name": "loss", "type": "str"},
+            {"name": "gradient_boosting:max_depth", "short_name": "max_depth", "type": "int"},
+            {"name": "gradient_boosting:max_features", "short_name": "max_features", "type": "float"},
+            {"name": "gradient_boosting:max_leaf_nodes", "short_name": "max_leaf_nodes", "type": "str"},
+            {"name": "gradient_boosting:min_impurity_decrease", "short_name": "min_impurity_decrease", "type": "float"},
+            {"name": "gradient_boosting:min_samples_leaf", "short_name": "min_samples_leaf", "type": "int"},
+            {"name": "gradient_boosting:min_samples_split", "short_name": "min_samples_split", "type": "int"},
+            {"name": "gradient_boosting:min_weight_fraction_leaf", "short_name": "min_weight_fraction_leaf", "type": "float"},
+            {"name": "gradient_boosting:n_estimators", "short_name": "n_estimators", "type": "int"},
+            {"name": "gradient_boosting:subsample", "short_name": "subsample", "type": "float"}
+          ]
+        },
+        "lightgbm": {
+          "parameters": [
+            {"name": "lightgbm:colsample_bytree", "short_name": "colsample_bytree", "type": "float"},
+            {"name": "lightgbm:learning_rate", "short_name": "learning_rate", "type": "float"},
+            {"name": "lightgbm:max_depth", "short_name": "max_depth", "type": "int"},
+            {"name": "lightgbm:min_child_samples", "short_name": "min_child_samples", "type": "int"},
+            {"name": "lightgbm:n_estimators", "short_name": "n_estimators", "type": "int"},
+            {"name": "lightgbm:num_leaves", "short_name": "num_leaves", "type": "int"},
+            {"name": "lightgbm:subsample", "short_name": "subsample", "type": "float"}
+          ]
+        },
+        "random_forest": {
+          "parameters": [
+            {"name": "random_forest:bootstrap", "short_name": "bootstrap", "type": "str"},
+            {"name": "random_forest:criterion", "short_name": "criterion", "type": "str"},
+            {"name": "random_forest:max_depth", "short_name": "max_depth", "type": "str"},
+            {"name": "random_forest:max_features", "short_name": "max_features", "type": "float"},
+            {"name": "random_forest:max_leaf_nodes", "short_name": "max_leaf_nodes", "type": "str"},
+            {"name": "random_forest:min_impurity_decrease", "short_name": "min_impurity_decrease", "type": "float"},
+            {"name": "random_forest:min_samples_leaf", "short_name": "min_samples_leaf", "type": "int"},
+            {"name": "random_forest:min_samples_split", "short_name": "min_samples_split", "type": "int"},
+            {"name": "random_forest:min_weight_fraction_leaf", "short_name": "min_weight_fraction_leaf", "type": "float"}
+          ]
+        },
+        "xgboost": {
+          "parameters": [
+            {"name": "xgboost:colsample_bytree", "short_name": "colsample_bytree", "type": "float"},
+            {"name": "xgboost:gamma", "short_name": "gamma", "type": "float"},
+            {"name": "xgboost:learning_rate", "short_name": "learning_rate", "type": "float"},
+            {"name": "xgboost:max_depth", "short_name": "max_depth", "type": "int"},
+            {"name": "xgboost:min_child_weight", "short_name": "min_child_weight", "type": "int"},
+            {"name": "xgboost:n_estimators", "short_name": "n_estimators", "type": "int"},
+            {"name": "xgboost:reg_alpha", "short_name": "reg_alpha", "type": "float"},
+            {"name": "xgboost:reg_lambda", "short_name": "reg_lambda", "type": "float"},
+            {"name": "xgboost:subsample", "short_name": "subsample", "type": "float"}
+          ]
+        }
+      }
+    },
+    "regression": {
+      "metric_id": "mse",
+      "metric_direction": "lower_is_better",
+      "algorithms": {
+        "adaboost": {
+          "parameters": [
+            {"name": "adaboost:learning_rate", "short_name": "learning_rate", "type": "float"},
+            {"name": "adaboost:max_depth", "short_name": "max_depth", "type": "int"},
+            {"name": "adaboost:n_estimators", "short_name": "n_estimators", "type": "int"}
+          ]
+        },
+        "catboost": {
+          "parameters": [
+            {"name": "catboost:depth", "short_name": "depth", "type": "int"},
+            {"name": "catboost:iterations", "short_name": "iterations", "type": "int"},
+            {"name": "catboost:l2_leaf_reg", "short_name": "l2_leaf_reg", "type": "float"},
+            {"name": "catboost:learning_rate", "short_name": "learning_rate", "type": "float"},
+            {"name": "catboost:loss_function", "short_name": "loss_function", "type": "str"}
+          ]
+        },
+        "extra_trees": {
+          "parameters": [
+            {"name": "extra_trees:bootstrap", "short_name": "bootstrap", "type": "str"},
+            {"name": "extra_trees:criterion", "short_name": "criterion", "type": "str"},
+            {"name": "extra_trees:max_depth", "short_name": "max_depth", "type": "str"},
+            {"name": "extra_trees:max_features", "short_name": "max_features", "type": "float"},
+            {"name": "extra_trees:max_leaf_nodes", "short_name": "max_leaf_nodes", "type": "str"},
+            {"name": "extra_trees:min_impurity_decrease", "short_name": "min_impurity_decrease", "type": "float"},
+            {"name": "extra_trees:min_samples_leaf", "short_name": "min_samples_leaf", "type": "int"},
+            {"name": "extra_trees:min_samples_split", "short_name": "min_samples_split", "type": "int"},
+            {"name": "extra_trees:min_weight_fraction_leaf", "short_name": "min_weight_fraction_leaf", "type": "float"}
+          ]
+        },
+        "gradient_boosting": {
+          "parameters": [
+            {"name": "gradient_boosting:criterion", "short_name": "criterion", "type": "str"},
+            {"name": "gradient_boosting:learning_rate", "short_name": "learning_rate", "type": "float"},
+            {"name": "gradient_boosting:loss", "short_name": "loss", "type": "str"},
+            {"name": "gradient_boosting:max_depth", "short_name": "max_depth", "type": "int"},
+            {"name": "gradient_boosting:max_features", "short_name": "max_features", "type": "float"},
+            {"name": "gradient_boosting:max_leaf_nodes", "short_name": "max_leaf_nodes", "type": "str"},
+            {"name": "gradient_boosting:min_impurity_decrease", "short_name": "min_impurity_decrease", "type": "float"},
+            {"name": "gradient_boosting:min_samples_leaf", "short_name": "min_samples_leaf", "type": "int"},
+            {"name": "gradient_boosting:min_samples_split", "short_name": "min_samples_split", "type": "int"},
+            {"name": "gradient_boosting:min_weight_fraction_leaf", "short_name": "min_weight_fraction_leaf", "type": "float"},
+            {"name": "gradient_boosting:n_estimators", "short_name": "n_estimators", "type": "int"},
+            {"name": "gradient_boosting:subsample", "short_name": "subsample", "type": "float"}
+          ]
+        },
+        "lightgbm": {
+          "parameters": [
+            {"name": "lightgbm:colsample_bytree", "short_name": "colsample_bytree", "type": "float"},
+            {"name": "lightgbm:learning_rate", "short_name": "learning_rate", "type": "float"},
+            {"name": "lightgbm:min_child_weight", "short_name": "min_child_weight", "type": "int"},
+            {"name": "lightgbm:n_estimators", "short_name": "n_estimators", "type": "int"},
+            {"name": "lightgbm:num_leaves", "short_name": "num_leaves", "type": "int"},
+            {"name": "lightgbm:reg_alpha", "short_name": "reg_alpha", "type": "float"},
+            {"name": "lightgbm:reg_lambda", "short_name": "reg_lambda", "type": "float"},
+            {"name": "lightgbm:subsample", "short_name": "subsample", "type": "float"}
+          ]
+        },
+        "random_forest": {
+          "parameters": [
+            {"name": "random_forest:bootstrap", "short_name": "bootstrap", "type": "str"},
+            {"name": "random_forest:criterion", "short_name": "criterion", "type": "str"},
+            {"name": "random_forest:max_depth", "short_name": "max_depth", "type": "str"},
+            {"name": "random_forest:max_features", "short_name": "max_features", "type": "float"},
+            {"name": "random_forest:max_leaf_nodes", "short_name": "max_leaf_nodes", "type": "str"},
+            {"name": "random_forest:min_impurity_decrease", "short_name": "min_impurity_decrease", "type": "float"},
+            {"name": "random_forest:min_samples_leaf", "short_name": "min_samples_leaf", "type": "int"},
+            {"name": "random_forest:min_samples_split", "short_name": "min_samples_split", "type": "int"},
+            {"name": "random_forest:min_weight_fraction_leaf", "short_name": "min_weight_fraction_leaf", "type": "float"}
+          ]
+        },
+        "xgboost": {
+          "parameters": [
+            {"name": "xgboost:colsample_bytree", "short_name": "colsample_bytree", "type": "float"},
+            {"name": "xgboost:gamma", "short_name": "gamma", "type": "float"},
+            {"name": "xgboost:learning_rate", "short_name": "learning_rate", "type": "float"},
+            {"name": "xgboost:max_depth", "short_name": "max_depth", "type": "int"},
+            {"name": "xgboost:min_child_weight", "short_name": "min_child_weight", "type": "float"},
+            {"name": "xgboost:n_estimators", "short_name": "n_estimators", "type": "int"},
+            {"name": "xgboost:reg_alpha", "short_name": "reg_alpha", "type": "float"},
+            {"name": "xgboost:reg_lambda", "short_name": "reg_lambda", "type": "float"},
+            {"name": "xgboost:subsample", "short_name": "subsample", "type": "float"}
+          ]
+        }
+      }
+    }
+  }
+}

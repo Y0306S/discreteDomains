@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "authorization": "User requested scoring peptide batches of 50 concurrently using one CPU at a time",
+  "base_recipe_sha256": "1c1d69f5693984527f42280b72f8b4cffdec5899d96ea93e4980483830fb0fec",
+  "enabled": true,
+  "maximum_batch_size": 50,
+  "cpu_cores_per_worker": 1,
+  "torch_threads": 1,
+  "implementation": "existing eight-model CPU APEX ensemble, one vectorized call for the remaining saved proposal batch",
+  "objective": "unchanged bacteria_0 mean MIC",
+  "recovery": "persist batch in-flight before scoring; insert all results and completion flag in one SQLite transaction; unresolved in-flight batches require audit",
+  "numeric_validation": "agrees with individual scoring at rtol=1e-5 and atol=1e-4; small floating-point differences are expected"
+}

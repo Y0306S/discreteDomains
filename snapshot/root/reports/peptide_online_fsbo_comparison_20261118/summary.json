@@ -1,0 +1,45 @@
+{
+  "snapshot_started_utc": "2026-11-18T06:59:07.906756+00:00",
+  "snapshot_finished_utc": "2026-11-18T06:59:24.078638+00:00",
+  "tasks": [
+    "pep_117",
+    "pep_219",
+    "pep_221",
+    "pep_575",
+    "pep_673",
+    "pep_921",
+    "pep_925",
+    "pep_967",
+    "pep_980",
+    "pep_999"
+  ],
+  "online_started": 4,
+  "online_completed": 0,
+  "paired_budget": 2500,
+  "paired_tasks": [
+    "pep_117",
+    "pep_219",
+    "pep_221",
+    "pep_575"
+  ],
+  "mean_best_mic": {
+    "Frozen VAE + FSBO": 17.537410855293274,
+    "Online VAE + retrained FSBO": 9.931518912315369,
+    "SemanticOPT (with fallback)": 7.023233234882355
+  },
+  "mean_task_improvement_percent": {
+    "Frozen VAE + FSBO": 1.3778135821345985,
+    "Online VAE + retrained FSBO": 41.8841473187056,
+    "SemanticOPT (with fallback)": 55.923581496535
+  },
+  "online_vs_frozen_wins": 4,
+  "online_vs_semantic_wins": 1,
+  "audits": "Passed: exact identical 100 initial sequences and MIC values, frozen archive hashes, SemanticOPT imported prefix hashes, constraints, cache/unique sequence accounting, finite scores, batch-causal curves.",
+  "limitations": [
+    "Only started online tasks contribute to the three-way mean; pending tasks are never flattened or imputed.",
+    "Fresh evaluations exclude the 100 initial observations, count infeasible proposals and recenter calls, and exclude cache hits. Batches are revealed only when fully within budget.",
+    "SemanticOPT includes labeled random fallback; this is a hybrid campaign result.",
+    "One seed per task/method; historical baseline hardware and software differ.",
+    "The full revised method changes offline VAE training and FSBO training as well as online updates; this does not isolate their individual effects."
+  ]
+}

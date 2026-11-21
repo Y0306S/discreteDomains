@@ -1,0 +1,66 @@
+{
+  "at": 1795076579.1212435,
+  "request": "Peptide method PUCB LLM 0.9->0.3; FSBO 0.3->0.9",
+  "previous_recipe_sha256": "879d0d766d22f40cc850733e32f9662ea39fc9256f8fb14967ff5422d8e2e006",
+  "recipe_sha256": "a12b00e716984efb4d9c3b6ec5e6d507e7c57d394561bf02f638054b7ec8cdce",
+  "optimization": {
+    "attempts": 80,
+    "selected_candidates_per_attempt": 1,
+    "initial_llm_attempts": 8,
+    "llm_generation_limit": 5,
+    "duplicate_or_invalid_fallback": "FSBO",
+    "fsbo_decode_limit": 5,
+    "exhausted_fsbo": "NO_VALID_PROPOSAL_consumes_attempt_no_fabricated_score",
+    "random_fallback": false,
+    "infrastructure_failure": "pause_same_task; no_attempt_consumed",
+    "selector": "PUCB_arm_best",
+    "pucb_c2": 1.4,
+    "llm_prior_start": 0.9,
+    "llm_prior_end": 0.3,
+    "schedule_budget": 100,
+    "schedule_index": "attempt-9",
+    "schedule_denominator": 91,
+    "cooldown": "attempts10..20: FSBO if previous selected_arm was LLM, including fallback",
+    "warm_starts_update_selector": false,
+    "orpo_prompt": "exact_ORPO_training_peptide_prompt: good5_bad5_recent50",
+    "rl_prompt": "training-compatible retrieval attempts1..10; normal afterwards; no region summaries",
+    "fsbo_prior_start": 0.3,
+    "fsbo_prior_end": 0.9,
+    "prior_weights_normalized": false
+  },
+  "scope": [
+    "orpo",
+    "orpo_rl"
+  ],
+  "execution": "prepared_not_queued",
+  "horizon": "Existing 100-attempt schedule retained pending optional user preference; 80-attempt evaluation cutoff retained.",
+  "verification": {
+    "offline_tests_passed": 14,
+    "config_validation": {
+      "passed": true,
+      "recipe_sha256": "a12b00e716984efb4d9c3b6ec5e6d507e7c57d394561bf02f638054b7ec8cdce",
+      "tasks": 200,
+      "initialization_count": 50,
+      "optimization_attempts_per_stage": 80,
+      "queue_armed": false,
+      "production_tasks_started": 0,
+      "warm_weights": "training_verified_hashes_pinned; current_size_and_mtime_match",
+      "real_end_to_end_preflight": "not_run; no_GPU_services_or_oracle_calls_started",
+      "at": 1795076583.4549613
+    },
+    "weights_by_attempt": {
+      "9": {
+        "llm": 0.9,
+        "fsbo": 0.3
+      },
+      "80": {
+        "llm": 0.43186813186813183,
+        "fsbo": 0.7681318681318682
+      },
+      "100": {
+        "llm": 0.29999999999999993,
+        "fsbo": 0.9000000000000001
+      }
+    }
+  }
+}

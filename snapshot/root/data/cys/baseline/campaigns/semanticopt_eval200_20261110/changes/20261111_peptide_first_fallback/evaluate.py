@@ -1,0 +1,219 @@
+"""Checkpointed direct discrete SemanticOPT; two candidates, one oracle call."""
+import argparse
+import json
+import math
+import os
+from pathlib import Path
+import sqlite3
+import sys
+import time
+from common import *
+from protocol import SYSTEM, peptide_measure, peptide_context, validate_query_plan, select_candidate, sig4
+
+def connect(directory):
+    directory.mkdir(parents=True, exist_ok=True)
+    db=sqlite3.connect(directory/'observations.sqlite',timeout=120)
+    db.execute('PRAGMA synchronous=FULL')
+    db.execute('PRAGMA journal_mode=TRUNCATE')
+    db.execute('CREATE TABLE IF NOT EXISTS records (n INTEGER PRIMARY KEY, value TEXT NOT NULL)')
+    db.execute('CREATE TABLE IF NOT EXISTS state (key TEXT PRIMARY KEY, value TEXT NOT NULL)')
+    db.commit()
+    return db
+
+def get(db,key,default=None):
+    row=db.execute('SELECT value FROM state WHERE key=?',(key,)).fetchone()
+    return json.loads(row[0]) if row else default
+
+def put(db,key,value):
+    db.execute('INSERT OR REPLACE INTO state VALUES (?,?)',(key,canonical(value)))
+
+def query_setup(task, settings, port):
+    sys.path.insert(0,str(QUERY_SOURCE/'code'))
+    import run_query_ceb_baselines as query
+    native=QUERY_SOURCE/'native'; query.native_path(native)
+    from workload.workloads import get_workload_set, WorkloadSpec, OracleCodec
+    from codec.codec import AliasesCodec
+    sql=query.sql_path(native,task)
+    definition=get_workload_set('CEB_3K').extract_query(sql.read_text(),task)
+    spec=WorkloadSpec.from_definition(definition,OracleCodec.Aliases)
+    codec=AliasesCodec(definition.all_tables)
+    raw=query.load_initializations(native/'initialization_data/ceb_3k_bao_initialization.csv',[task])[task]
+    initial=[]
+    for row in raw:
+        plan=codec.encode(codec.decode(definition.query_tables,row['plan'].copy()))
+        validate_query_plan(plan,definition,codec)
+        initial.append(dict(configuration=dict(plan=plan),objective=row['runtime'],
+            status='timeout' if row['censored'] else 'success',censored=bool(row['censored']),feasible=True))
+    context=dict(task_id=task,domain='postgres_query_plan_optimization',sql=sql.read_text(),
+        sql_sha256=digest(sql),query_tables=definition.query_tables,
+        table_symbols={str(i):t for i,t in enumerate(definition.all_tables)},
+        objective=dict(name='uncensored PostgreSQL runtime',unit='seconds',direction='minimize'),
+        configuration_schema=dict(plan='integer list; each join is [left_table_symbol,left_alias,right_table_symbol,right_alias,operator]'),
+        constraints=dict(operators={'1':'NestLoop','2':'HashJoin','3':'MergeJoin'},
+            preserve='all query tables, aliases, predicates and SQL semantics',canonical_alias_codec=True,
+            implicit_repair_allowed=False))
+    def validate(config):
+        try:
+            if not isinstance(config,dict) or set(config)!={'plan'}:
+                raise ValueError('Configuration must contain only plan')
+            validate_query_plan(config['plan'],definition,codec)
+        except Exception as exc:
+            raise ValueError('Invalid canonical query configuration: '+str(exc)) from exc
+    os.environ.update(DB_HOST='127.0.0.1',DB_PORT=str(port),DB_NAME='imdb',DB_USER='imdb',DB_PASSWORD='imdb')
+    oracle=query.RuntimeOracle(spec,max(r['objective'] for r in initial))
+    def evaluate(config):
+        result=oracle(config['plan'],settings['timeout_seconds'])
+        return dict(configuration=config,objective=result['runtime'],
+            status='success' if not result['censored'] else result['status'],
+            censored=bool(result['censored']),feasible=True,oracle=result)
+    return context,initial,validate,evaluate
+
+def peptide_setup(task, settings):
+    data=load(settings['pool'])[task]
+    reference=data['reference']
+    initial=[dict(configuration=dict(sequence=s),objective=-float(y),status='success',
+        censored=False,**peptide_measure(s,reference)) for s,y in zip(data['sequences'],data['scores'])]
+    if len(initial)!=100 or not all(r['feasible'] and math.isfinite(r['objective']) for r in initial):
+        raise ValueError('Invalid peptide initial pool')
+    def validate(config):
+        if not isinstance(config,dict) or set(config)!={'sequence'}:
+            raise ValueError('Configuration must contain only sequence')
+        if not peptide_measure(config['sequence'],reference)['feasible']:
+            raise ValueError('Peptide violates reference similarity')
+    # Same eight-model CPU APEX implementation as the audited baseline; no VAE needed.
+    sys.path.insert(0,settings['cpu_upstream'])
+    from apex_oracle.APEX_predict import apex_wrapper
+    import torch
+    def evaluate(config):
+        with torch.inference_mode():
+            mic=float(apex_wrapper([config['sequence']])[0,0])
+        if not math.isfinite(mic):
+            raise ValueError('Nonfinite APEX MIC')
+        return dict(configuration=config,objective=mic,status='success',censored=False,
+            **peptide_measure(config['sequence'],reference))
+    return peptide_context(task,reference),initial,validate,evaluate
+
+def prompt(context, initial, rows, total, errors, window=32):
+    # Match causal training windows; retain incumbent alongside recent observations.
+    successful=[r for r in initial+rows if not r.get('censored') and r['status']=='success']
+    best=min(successful,key=lambda r:r['objective'])
+    selected=(initial[:50]+rows[-window:]) if 'reference_sequence' in context else (initial+rows)[-window:]
+    def compact(row):
+        return {k:(sig4(v) if k=='objective' else v) for k,v in row.items() if k in
+            ('configuration','objective','status','censored','feasible','similarity')}
+    content=dict(**context,total_evaluations_including_initial_observations=len(initial)+total,
+        completed_proposals=len(rows),initial_evaluations=[compact(r) for r in selected],
+        best_observation=compact(best),recent_rejected_configurations=errors[-10:],
+        instruction='Output a distinct, valid next configuration. Do not repeat any evaluated configuration.')
+    # Replay measured decisions as the same assistant/action -> user/feedback
+    # conversation used for SFT. Imported observations remain user context.
+    replay=rows[-window:]
+    imported=[r for r in selected if 'prediction' not in r]
+    content['initial_evaluations']=[compact(r) for r in imported]
+    messages=[dict(role='system',content=SYSTEM),dict(role='user',content=canonical(content)+'\nOutput the next configuration.')]
+    for row in replay:
+        messages.append(dict(role='assistant',content=canonical(row['prediction'])))
+        feedback={k:v for k,v in compact(row).items() if k!='configuration'}
+        messages.append(dict(role='user',content=canonical(dict(evaluation=row['evaluation'],**feedback))+'\nOutput the next configuration.'))
+    return messages
+
+def parse_answer(text):
+    text=text.strip()
+    if text.startswith('```'):
+        text=text.split('\n',1)[1].rsplit('```',1)[0].strip()
+    value=json.loads(text)
+    if not isinstance(value,dict):raise ValueError('Expected a JSON object')
+    return value
+
+def run(domain, task, port, smoke=False):
+    recipe=verify();settings=recipe[domain]
+    allowed=settings['smoke_task'] if smoke else None
+    if task not in ([allowed] if smoke else settings['test']):raise ValueError('Task is outside allowed split')
+    directory=ROOT/domain/('smoke' if smoke else 'runs')/task
+    guard=lock(directory/'task.lock')
+    db=connect(directory)
+    identity=dict(recipe_sha256=digest(ROOT/'recipe.json'),domain=domain,task=task,smoke=smoke)
+    if get(db,'identity') not in (None,identity):raise ValueError('Resume identity mismatch')
+    with db:put(db,'identity',identity)
+    context,initial,validate,oracle=(query_setup(task,settings,port) if domain=='query' else peptide_setup(task,settings))
+    from qwen_inference_transport import SharedQwenClient
+    import torch
+    torch.manual_seed(recipe['seed'])
+    client=SharedQwenClient(ROOT/domain/'services/client.json',settings['base'],settings['adapter'])
+    os.environ['ML_QWEN_REQUEST_NAMESPACE']=str(directory)
+    os.environ['ML_RUN_ID']=ROOT.name
+    client.import_state(get(db,'inference_rng'))
+    client.ensure_loaded()
+    from transformers import AutoTokenizer
+    tokenizer=AutoTokenizer.from_pretrained(settings['adapter'],trust_remote_code=True,local_files_only=True)
+    total=1 if smoke else settings['proposals']
+    rows=[json.loads(r[0]) for r in db.execute('SELECT value FROM records ORDER BY n')]
+    seen={canonical(r['configuration']) for r in initial+rows}
+    with db:
+        if get(db,'initial') is None:put(db,'initial',initial)
+        elif get(db,'initial')!=initial:raise ValueError('Initial observations changed')
+    started=time.time()
+    while len(rows)<total:
+        if (ROOT/'PAUSE').exists():raise RuntimeError('Campaign paused')
+        yield_file=os.environ.get('SEMANTICOPT_YIELD_FILE')
+        if yield_file and Path(yield_file).exists():
+            status(directory/'status.json',status='yielded',domain=domain,task=task,evaluations=len(rows),
+                budget=total,recipe_sha256=identity['recipe_sha256'],adapter_sha256=settings['adapter_sha256'])
+            db.close();guard.close();return
+        pending=get(db,'pending')
+        if pending is None:
+            errors=[];chosen=None
+            best=min(r['objective'] for r in initial+rows if not r.get('censored') and r['status']=='success')
+            had_failure=any(r.get('censored') for r in rows)
+            def validate_fresh(config):
+                validate(config)
+                if canonical(config) in seen:raise ValueError('Duplicate configuration')
+            for retry in range(recipe['candidate_retries']):
+                # Persist each sample/RNG together; durable broker replays interrupted requests.
+                sample_key=f'samples_{len(rows)}_{retry}'
+                samples=get(db,sample_key,[])
+                window=32
+                messages=prompt(context,initial,rows,total,errors,window)
+                while len(tokenizer(tokenizer.apply_chat_template(messages,tokenize=False,
+                        add_generation_prompt=True,enable_thinking=False))['input_ids'])>15360:
+                    if window<=1:raise ValueError('Task definition exceeds the validated inference context')
+                    window=max(1,window//2)
+                    messages=prompt(context,initial,rows,total,errors,window)
+                while len(samples)<2:
+                    text=client.complete_messages(messages,use_s1b_template=False,settings=recipe['generation'])
+                    try:answer=parse_answer(text)
+                    except (ValueError,TypeError):answer={}
+                    samples.append(dict(answer=answer,text=text))
+                    with db:
+                        put(db,sample_key,samples);put(db,'inference_rng',client.state)
+                answers=[s['answer'] for s in samples]
+                try:
+                    chosen=select_candidate(answers,best,validate_fresh,had_failure=had_failure)
+                    break
+                except (ValueError,KeyError,TypeError) as exc:
+                    errors.extend(a.get('next_configuration',{}) for a in answers)
+                    with db:put(db,f'rejection_{len(rows)}_{retry}',dict(error=str(exc),answers=answers))
+            if chosen is None:raise RuntimeError('No valid distinct SemanticOPT proposal after five candidate pairs')
+            pending=dict(answer=chosen,number=len(rows),status='selected')
+            with db:put(db,'pending',pending)
+        if pending['status']=='in_flight':
+            raise RuntimeError('Unresolved oracle call; requires audit before replay')
+        pending['status']='in_flight'
+        with db:put(db,'pending',pending)
+        result=oracle(pending['answer']['next_configuration'])
+        result.update(prediction=pending['answer'],evaluation=len(rows)+1,at=time.time())
+        with db:
+            db.execute('INSERT INTO records VALUES (?,?)',(len(rows),canonical(result)))
+            put(db,'pending',None)
+        rows.append(result);seen.add(canonical(result['configuration']))
+        status(directory/'status.json',status='running',domain=domain,task=task,evaluations=len(rows),
+            budget=total,recipe_sha256=identity['recipe_sha256'],adapter_sha256=settings['adapter_sha256'],
+            best=min(r['objective'] for r in initial+rows if not r.get('censored') and r['status']=='success'))
+    status(directory/'status.json',status='complete',domain=domain,task=task,evaluations=len(rows),budget=total,
+        recipe_sha256=identity['recipe_sha256'],adapter_sha256=settings['adapter_sha256'],seconds_this_process=time.time()-started)
+    db.close();guard.close()
+
+if __name__=='__main__':
+    p=argparse.ArgumentParser();p.add_argument('domain',choices=['query','peptide']);p.add_argument('task')
+    p.add_argument('--port',type=int,default=0);p.add_argument('--smoke',action='store_true');args=p.parse_args()
+    run(args.domain,args.task,args.port,args.smoke)

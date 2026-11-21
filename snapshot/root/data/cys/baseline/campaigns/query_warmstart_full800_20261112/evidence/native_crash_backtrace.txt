@@ -1,0 +1,81 @@
+Thread 2 "python" received signal SIGSEGV, Segmentation fault.
+[Switching to Thread 0x7ffff6b416c0 (LWP 23503)]
+dump_frame (fd=3, frame=0x7ffe3106fe80) at /usr/local/src/conda/python-3.11.15/Python/traceback.c:1264
+warning: 1264	/usr/local/src/conda/python-3.11.15/Python/traceback.c: No such file or directory
+
+Thread 106 (Thread 0x7ffcd6fff6c0 (LWP 25204) "pt_autograd_0"):
+#0  0x00007fff30b95870 in ?? () from /lib/x86_64-linux-gnu/libcuda.so.1
+#1  0x00007fff30c3cd5a in ?? () from /lib/x86_64-linux-gnu/libcuda.so.1
+#2  0x00007fff30d896ce in ?? () from /lib/x86_64-linux-gnu/libcuda.so.1
+#3  0x00007fff30d91b8a in ?? () from /lib/x86_64-linux-gnu/libcuda.so.1
+
+#12 _io__Buffered_read_impl (self=0x7fff10d9b740, n=<optimized out>) at /usr/local/src/conda/python-3.11.15/Modules/_io/bufferedio.c:885
+#13 _io__Buffered_read (self=0x7fff10d9b740, args=<optimized out>, nargs=<optimized out>) at /usr/local/src/conda/python-3.11.15/Modules/_io/clinic/bufferedio.c.h:169
+#14 0x000055555576b7b1 in method_vectorcall_FASTCALL (func=0x7ffff7602d40, args=0x7fffa64342a0, nargsf=<optimized out>, kwnames=<optimized out>) at /usr/local/src/conda/python-3.11.15/Objects/descrobject.c:407
+#15 0x0000555555747a5c in _PyObject_VectorcallTstate (tstate=0x55555c67b7d0, callable=0x7ffff7602d40, args=<optimized out>, nargsf=<optimized out>, kwnames=<optimized out>) at /usr/local/src/conda/python-3.11.15/Include/internal/pycore_call.h:92
+#16 PyObject_Vectorcall (callable=0x7ffff7602d40, args=<optimized out>, nargsf=<optimized out>, kwnames=<optimized out>) at /usr/local/src/conda/python-3.11.15/Objects/call.c:299
+#17 0x000055555573baad in _PyEval_EvalFrameDefault (tstate=tstate@entry=0x55555c67b7d0, frame=<optimized out>, frame@entry=0x7fffa6434188, throwflag=throwflag@entry=0) at /usr/local/src/conda/python-3.11.15/Python/ceval.c:4769
+#18 0x0000555555781982 in _PyEval_EvalFrame (tstate=0x55555c67b7d0, frame=0x7fffa6434188, throwflag=0) at /usr/local/src/conda/python-3.11.15/Include/internal/pycore_ceval.h:73
+#19 _PyEval_Vector (tstate=0x55555c67b7d0, func=0x7fff10aef600, locals=0x0, args=0x7fff10aa6b98, argcount=<optimized out>, kwnames=<optimized out>) at /usr/local/src/conda/python-3.11.15/Python/ceval.c:6434
+
+Thread 3 (Thread 0x7fff1ec706c0 (LWP 23572) "cuda00001c00008"):
+#0  0x00007ffff7dc74cd in poll () from /lib/x86_64-linux-gnu/libc.so.6
+#1  0x00007fff30c91107 in ?? () from /lib/x86_64-linux-gnu/libcuda.so.1
+#2  0x00007fff30d80617 in ?? () from /lib/x86_64-linux-gnu/libcuda.so.1
+#3  0x00007fff30c7cc33 in ?? () from /lib/x86_64-linux-gnu/libcuda.so.1
+#4  0x00007ffff7d48aa4 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+#5  0x00007ffff7dd5c3c in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+
+Thread 2 (Thread 0x7ffff6b416c0 (LWP 23503) "python"):
+#0  dump_frame (fd=3, frame=0x7ffe3106fe80) at /usr/local/src/conda/python-3.11.15/Python/traceback.c:1264
+#1  dump_traceback (fd=fd@entry=3, tstate=tstate@entry=0x555555ace078 <_PyRuntime+166328>, write_header=write_header@entry=0) at /usr/local/src/conda/python-3.11.15/Python/traceback.c:1339
+#2  0x00005555556e377b in _Py_DumpTracebackThreads (fd=3, interp=<optimized out>, current_tstate=<optimized out>, current_tstate@entry=0x0) at /usr/local/src/conda/python-3.11.15/Python/traceback.c:1446
+#3  0x00005555556edbf1 in faulthandler_thread (unused=unused@entry=0x0) at /usr/local/src/conda/python-3.11.15/Modules/faulthandler.c:634
+#4  0x0000555555822e84 in pythread_wrapper (arg=<optimized out>) at /usr/local/src/conda/python-3.11.15/Python/thread_pthread.h:241
+#5  0x00007ffff7d48aa4 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+#6  0x00007ffff7dd5c3c in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+
+Thread 1 (Thread 0x7ffff7ca7740 (LWP 23496) "python"):
+#0  0x00007ffff7d44d71 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+#1  0x00007ffff7d477ed in pthread_cond_wait () from /lib/x86_64-linux-gnu/libc.so.6
+#2  0x00007ffff425ae78 in __gthread_cond_wait (__cond=<optimized out>, __mutex=<optimized out>) at /home/task_177920891980694/croot/gcc_compilers_1779209350299/work/build/x86_64-conda-linux-gnu/libstdc++-v3/include/x86_64-conda-linux-gnu/bits/gthr-default.h:911
+#3  std::__condvar::wait (this=<optimized out>, __m=...) at /home/task_177920891980694/croot/gcc_compilers_1779209350299/work/build/x86_64-conda-linux-gnu/libstdc++-v3/include/bits/std_mutex.h:173
+#4  __gnu_cxx::__nothrow_wait_cv::wait (this=<optimized out>, lock=...) at ../../../../libstdc++-v3/src/c++11/compatibility-condvar.cc:99
+#5  0x00007fffe098db83 in torch::autograd::ReadyQueue::pop() () from /root/data/cys/blockdata_archive/miniconda3/envs/llamafactory_qwen35/lib/python3.11/site-packages/torch/lib/libtorch_cpu.so
+#6  0x00007fffe09926fd in torch::autograd::Engine::thread_main(std::shared_ptr<torch::autograd::GraphTask> const&) () from /root/data/cys/blockdata_archive/miniconda3/envs/llamafactory_qwen35/lib/python3.11/site-packages/torch/lib/libtorch_cpu.so
+#7  0x00007fffe098d325 in torch::autograd::Engine::execute_with_graph_task(std::shared_ptr<torch::autograd::GraphTask> const&, std::shared_ptr<torch::autograd::Node>, torch::autograd::InputBuffer&&) () from /root/data/cys/blockdata_archive/miniconda3/envs/llamafactory_qwen35/lib/python3.11/site-packages/torch/lib/libtorch_cpu.so
+#8  0x00007ffff4c2c685 in torch::autograd::python::PythonEngine::execute_with_graph_task(std::shared_ptr<torch::autograd::GraphTask> const&, std::shared_ptr<torch::autograd::Node>, torch::autograd::InputBuffer&&) () from /root/data/cys/blockdata_archive/miniconda3/envs/llamafactory_qwen35/lib/python3.11/site-packages/torch/lib/libtorch_python.so
+#9  0x00007fffe099055c in torch::autograd::Engine::execute(std::vector<torch::autograd::Edge, std::allocator<torch::autograd::Edge> > const&, std::vector<at::Tensor, std::allocator<at::Tensor> > const&, bool, bool, bool, std::vector<torch::autograd::Edge, std::allocator<torch::autograd::Edge> > const&) () from /root/data/cys/blockdata_archive/miniconda3/envs/llamafactory_qwen35/lib/python3.11/site-packages/torch/lib/libtorch_cpu.so
+#10 0x00007ffff4c2c616 in torch::autograd::python::PythonEngine::execute(std::vector<torch::autograd::Edge, std::allocator<torch::autograd::Edge> > const&, std::vector<at::Tensor, std::allocator<at::Tensor> > const&, bool, bool, bool, std::vector<torch::autograd::Edge, std::allocator<torch::autograd::Edge> > const&) () from /root/data/cys/blockdata_archive/miniconda3/envs/llamafactory_qwen35/lib/python3.11/site-packages/torch/lib/libtorch_python.so
+#11 0x00007ffff4c2aa90 in THPEngine_run_backward(_object*, _object*, _object*) () from /root/data/cys/blockdata_archive/miniconda3/envs/llamafactory_qwen35/lib/python3.11/site-packages/torch/lib/libtorch_python.so
+#12 0x00005555557513b6 in cfunction_call (func=0x7ffe315c7600, args=<optimized out>, kwargs=<optimized out>) at /usr/local/src/conda/python-3.11.15/Objects/methodobject.c:542
+#13 0x000055555576bb6e in _PyObject_Call (tstate=0x555555ace078 <_PyRuntime+166328>, callable=0x7ffe315c7600, args=0x7ffe3104a7f0, kwargs=<optimized out>) at /usr/local/src/conda/python-3.11.15/Objects/call.c:343
+#14 PyObject_Call (callable=0x7ffe315c7600, args=0x7ffe3104a7f0, kwargs=<optimized out>) at /usr/local/src/conda/python-3.11.15/Objects/call.c:355
+#15 0x0000555555743917 in do_call_core (tstate=<optimized out>, func=0x7ffe315c7600, callargs=0x7ffe3104a7f0, kwdict=0x7ffe201dd580, use_tracing=<optimized out>) at /usr/local/src/conda/python-3.11.15/Python/ceval.c:7321
+#16 _PyEval_EvalFrameDefault (tstate=tstate@entry=0x555555ace078 <_PyRuntime+166328>, frame=<optimized out>, frame@entry=0x7ffff74f8c78, throwflag=throwflag@entry=0) at /usr/local/src/conda/python-3.11.15/Python/ceval.c:5376
+#17 0x0000555555781982 in _PyEval_EvalFrame (tstate=0x555555ace078 <_PyRuntime+166328>, frame=0x7ffff74f8c78, throwflag=0) at /usr/local/src/conda/python-3.11.15/Include/internal/pycore_ceval.h:73
+#18 _PyEval_Vector (tstate=0x555555ace078 <_PyRuntime+166328>, func=0x7fff75bdf7e0, locals=0x0, args=0x7ffe311893a0, argcount=<optimized out>, kwnames=<optimized out>) at /usr/local/src/conda/python-3.11.15/Python/ceval.c:6434
+#19 _PyFunction_Vectorcall (func=0x7fff75bdf7e0, stack=0x7ffe311893a0, nargsf=<optimized out>, kwnames=<optimized out>) at /usr/local/src/conda/python-3.11.15/Objects/call.c:393
+#0  dump_frame (fd=3, frame=0x7ffe3106fe80) at /usr/local/src/conda/python-3.11.15/Python/traceback.c:1264
+        code = 0x0
+        lineno = <optimized out>
+        code = <optimized out>
+        lineno = <optimized out>
+#1  dump_traceback (fd=fd@entry=3, tstate=tstate@entry=0x555555ace078 <_PyRuntime+166328>, write_header=write_header@entry=0) at /usr/local/src/conda/python-3.11.15/Python/traceback.c:1339
+        frame = 0x7ffe3106fe80
+        depth = <optimized out>
+#2  0x00005555556e377b in _Py_DumpTracebackThreads (fd=3, interp=<optimized out>, current_tstate=<optimized out>, current_tstate@entry=0x0) at /usr/local/src/conda/python-3.11.15/Python/traceback.c:1446
+        tstate = <optimized out>
+        nthreads = <optimized out>
+#3  0x00005555556edbf1 in faulthandler_thread (unused=unused@entry=0x0) at /usr/local/src/conda/python-3.11.15/Modules/faulthandler.c:634
+        st = <optimized out>
+        errmsg = <optimized out>
+        ok = <optimized out>
+        set = {__val = {18446744067267100671, 25, 140737488325424, 140737332383328, 140737351356105, 0, 18446744073709551496, 0, 93825000313600, 140737332383392, 140737351359918, 2322277832189568800, 93825000313616, 3611951134054380659, 93824993909606, 140737332385472}}
+#4  0x0000555555822e84 in pythread_wrapper (arg=<optimized out>) at /usr/local/src/conda/python-3.11.15/Python/thread_pthread.h:241
+        callback = <optimized out>
+        func = 0x5555556edb66 <faulthandler_thread>
+        func_arg = 0x0
+#5  0x00007ffff7d48aa4 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+No symbol table info available.
+#6  0x00007ffff7dd5c3c in ?? () from /lib/x86_64-linux-gnu/libc.so.6

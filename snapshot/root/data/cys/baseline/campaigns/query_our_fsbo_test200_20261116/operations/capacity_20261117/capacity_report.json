@@ -1,0 +1,229 @@
+{
+  "updated_at": 1794905439.102036,
+  "LLM_replicas": 8,
+  "VAE_workers": 16,
+  "optimizer_workers": 21,
+  "private_databases": 21,
+  "per_GPU": {
+    "0": {
+      "LLM": 2,
+      "VAE": 4
+    },
+    "1": {
+      "LLM": 2,
+      "VAE": 4
+    },
+    "2": {
+      "LLM": 2,
+      "VAE": 4
+    },
+    "3": {
+      "LLM": 2,
+      "VAE": 4
+    }
+  },
+  "LLM_allocator_cap_GiB_each": 30,
+  "prior_long_context_tokens": 29236,
+  "prior_long_context_peak_reserved_GiB": 24.8203125,
+  "four_vs_eight_benchmark": {
+    "at": 1794904348.7151556,
+    "four_replicas_per_hour": 2715.2688207266824,
+    "eight_replicas_per_hour": 4847.209436203617,
+    "eight_over_four": 1.7851674203316514,
+    "selected_llm": 8,
+    "criterion": "Keep eight only if identical training-only request throughput improves by more than 10%.",
+    "SQL_calls": 0
+  },
+  "VAE_smoke_passed": true,
+  "VAE_microbenchmark_caveat": "The simple training-only VAE benchmark is too short to establish end-to-end benefit. Retain 16 for capacity headroom; assess actual run rate separately.",
+  "changes": {
+    "changed_pins": [
+      "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/batch_code/resources.py",
+      "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/vae_pool.json",
+      "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/warm_start.resources.broker.json",
+      "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/orpo.resources.broker.json",
+      "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/resources.json"
+    ],
+    "new_pins": [
+      "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/warm_start.llm2.resources.json",
+      "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/warm_start.llm7.resources.json",
+      "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/orpo.llm4.resources.json",
+      "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/orpo.llm7.resources.json",
+      "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/orpo.llm5.resources.json",
+      "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/warm_start.llm6.resources.json",
+      "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/warm_start.llm4.resources.json",
+      "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/warm_start.llm5.resources.json",
+      "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/warm_start.llm3.resources.json",
+      "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/orpo.llm3.resources.json",
+      "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/orpo.llm2.resources.json",
+      "/root/data/cys/baseline/campaigns/query_our_fsbo_test200_20261116/services/orpo.llm6.resources.json"
+    ],
+    "algorithm_pins_unchanged": true,
+    "at": 1794904534.442799
+  },
+  "recovery_interval_seconds": 600,
+  "production_observation": "production_rate.json",
+  "production_rate": {
+    "at": 1794904999.3224866,
+    "elapsed_seconds": 299.94221591949463,
+    "measurements_before": 11326,
+    "measurements_after": 11431,
+    "new_evaluations": 105,
+    "evaluations_per_hour": 1260.2427398931277,
+    "baseline_evaluations_per_hour": 444.7468609132024,
+    "evaluation_speed_ratio": 2.833618066028529,
+    "new_generations": 238,
+    "per_replica_generations": {
+      "query_hybrid_orpo_llm0": 32,
+      "query_hybrid_orpo_llm1": 31,
+      "query_hybrid_orpo_llm2": 32,
+      "query_hybrid_orpo_llm3": 31,
+      "query_hybrid_orpo_llm4": 25,
+      "query_hybrid_orpo_llm5": 25,
+      "query_hybrid_orpo_llm6": 30,
+      "query_hybrid_orpo_llm7": 32
+    },
+    "generations_per_hour": 2856.550210424423,
+    "mean_queue_seconds": 2.798429247711887,
+    "mean_generation_seconds": 9.898250117021448,
+    "mean_input_tokens": 8711.70168067227,
+    "short_window": true
+  },
+  "final_VAE_health": {
+    "at": 1794905149.4663641,
+    "elapsed": 7.417892217636108,
+    "workers": [
+      {
+        "name": "vae4",
+        "port": 21824,
+        "ready": "ready",
+        "errors": 0,
+        "requests": 320,
+        "response_seconds": 0.5574951171875
+      },
+      {
+        "name": "vae1",
+        "port": 21821,
+        "ready": "ready",
+        "errors": 0,
+        "requests": 261,
+        "response_seconds": 0.5721573829650879
+      },
+      {
+        "name": "vae7",
+        "port": 21827,
+        "ready": "ready",
+        "errors": 0,
+        "requests": 38,
+        "response_seconds": 0.5710403919219971
+      },
+      {
+        "name": "vae5",
+        "port": 21825,
+        "ready": "ready",
+        "errors": 0,
+        "requests": 191,
+        "response_seconds": 0.5828728675842285
+      },
+      {
+        "name": "vae9",
+        "port": 21829,
+        "ready": "ready",
+        "errors": 0,
+        "requests": 122,
+        "response_seconds": 0.5848603248596191
+      },
+      {
+        "name": "vae12",
+        "port": 21832,
+        "ready": "ready",
+        "errors": 0,
+        "requests": 17,
+        "response_seconds": 0.584202766418457
+      },
+      {
+        "name": "vae3",
+        "port": 21823,
+        "ready": "ready",
+        "errors": 0,
+        "requests": 392,
+        "response_seconds": 0.5915932655334473
+      },
+      {
+        "name": "vae11",
+        "port": 21831,
+        "ready": "ready",
+        "errors": 0,
+        "requests": 4,
+        "response_seconds": 0.5911717414855957
+      },
+      {
+        "name": "vae8",
+        "port": 21828,
+        "ready": "ready",
+        "errors": 0,
+        "requests": 258,
+        "response_seconds": 0.5929765701293945
+      },
+      {
+        "name": "vae10",
+        "port": 21830,
+        "ready": "ready",
+        "errors": 0,
+        "requests": 11,
+        "response_seconds": 0.5927374362945557
+      },
+      {
+        "name": "vae2",
+        "port": 21822,
+        "ready": "ready",
+        "errors": 0,
+        "requests": 117,
+        "response_seconds": 0.5972363948822021
+      },
+      {
+        "name": "vae13",
+        "port": 21833,
+        "ready": "ready",
+        "errors": 0,
+        "requests": 9,
+        "response_seconds": 0.5933005809783936
+      },
+      {
+        "name": "vae15",
+        "port": 21835,
+        "ready": "ready",
+        "errors": 0,
+        "requests": 9,
+        "response_seconds": 0.5939397811889648
+      },
+      {
+        "name": "vae6",
+        "port": 21826,
+        "ready": "ready",
+        "errors": 0,
+        "requests": 135,
+        "response_seconds": 0.6020994186401367
+      },
+      {
+        "name": "vae0",
+        "port": 21820,
+        "ready": "ready",
+        "errors": 0,
+        "requests": 438,
+        "response_seconds": 0.6203806400299072
+      },
+      {
+        "name": "vae14",
+        "port": 21834,
+        "ready": "ready",
+        "errors": 0,
+        "requests": 11,
+        "response_seconds": 7.409441947937012
+      }
+    ],
+    "all_ready": true
+  },
+  "health_probe_grace_seconds": 90,
+  "tests_passed": 30
+}

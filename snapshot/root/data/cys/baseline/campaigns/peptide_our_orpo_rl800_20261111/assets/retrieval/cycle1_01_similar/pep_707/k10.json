@@ -1,0 +1,319 @@
+{
+  "job_identity": {
+    "task_id": "pep_707",
+    "phase": "cycle1_01_similar",
+    "scenario": "retrieval",
+    "prefix_k": 10,
+    "prefix_end_exclusive": 900,
+    "repeat": 0,
+    "group_id": "cycle1_01_similar/pep_707/k10"
+  },
+  "cards": [
+    {
+      "task": {
+        "task_id": "pep_569",
+        "description": "Minimize antimicrobial MIC near reference RYNKLRQSVIRIQAAFRGMR, length 20.",
+        "objective": "minimize APEX bacteria_0 MIC",
+        "reference_sequence": "RYNKLRQSVIRIQAAFRGMR",
+        "constraints": {
+          "alphabet": "ACDEFGHIKLMNPQRSTVWY",
+          "min_length": 1,
+          "max_length": 30,
+          "max_cysteine": 1,
+          "min_reference_similarity": 0.75,
+          "similarity_metric": "1-Levenshtein(candidate,reference)/len(reference)"
+        }
+      },
+      "top": [
+        {
+          "candidate": "WYNKLRARIRIQAAFRGWR",
+          "measured_value": 8.448277473449707
+        },
+        {
+          "candidate": "RYNKLRQSRIRFQAAFRYKW",
+          "measured_value": 13.235847473144531
+        },
+        {
+          "candidate": "RLNKLRLRFIRIQAAFRGR",
+          "measured_value": 13.911604881286621
+        }
+      ],
+      "bottom": [
+        {
+          "candidate": "TYNKLYQSVIMIAAFRGSMR",
+          "measured_value": 418.63763427734375
+        },
+        {
+          "candidate": "RYNKLRQSVICIAAFRGEA",
+          "measured_value": 439.4604797363281
+        },
+        {
+          "candidate": "RYNKLRQSVILDQADNCGMR",
+          "measured_value": 476.06170654
+        }
+      ]
+    },
+    {
+      "task": {
+        "task_id": "pep_212",
+        "description": "Minimize antimicrobial MIC near reference RKQIRREIQAAVKIQSAFRMAKA, length 23.",
+        "objective": "minimize APEX bacteria_0 MIC",
+        "reference_sequence": "RKQIRREIQAAVKIQSAFRMAKA",
+        "constraints": {
+          "alphabet": "ACDEFGHIKLMNPQRSTVWY",
+          "min_length": 1,
+          "max_length": 30,
+          "max_cysteine": 1,
+          "min_reference_similarity": 0.75,
+          "similarity_metric": "1-Levenshtein(candidate,reference)/len(reference)"
+        }
+      },
+      "top": [
+        {
+          "candidate": "RKQLRRWIQAAVKIQSAFRMAKF",
+          "measured_value": 10.58912563
+        },
+        {
+          "candidate": "RKQIRREIQAAVKIWKAFRMAKA",
+          "measured_value": 13.52305412
+        },
+        {
+          "candidate": "RKQLRRWIQAAVKIQSAFRMAKA",
+          "measured_value": 14.211206436157227
+        }
+      ],
+      "bottom": [
+        {
+          "candidate": "RKQIRDEIQAAVVITHAFRMANA",
+          "measured_value": 397.307861328125
+        },
+        {
+          "candidate": "RAQIHREIQAAVIQTAFRMAPA",
+          "measured_value": 407.209228515625
+        },
+        {
+          "candidate": "RKQIRRETQAPVKCQSAFRMAKQ",
+          "measured_value": 409.87628173828125
+        }
+      ]
+    },
+    {
+      "task": {
+        "task_id": "pep_838",
+        "description": "Minimize antimicrobial MIC near reference RLYLKTKTAVVILQSAYRSMRVRK, length 24.",
+        "objective": "minimize APEX bacteria_0 MIC",
+        "reference_sequence": "RLYLKTKTAVVILQSAYRSMRVRK",
+        "constraints": {
+          "alphabet": "ACDEFGHIKLMNPQRSTVWY",
+          "min_length": 1,
+          "max_length": 30,
+          "max_cysteine": 1,
+          "min_reference_similarity": 0.75,
+          "similarity_metric": "1-Levenshtein(candidate,reference)/len(reference)"
+        }
+      },
+      "top": [
+        {
+          "candidate": "RLWLKTKTARVILQSRAWSMRKRK",
+          "measured_value": 5.801016330718994
+        },
+        {
+          "candidate": "RLYLKTKTAVVIRAWAYRSMVRK",
+          "measured_value": 8.94124698638916
+        },
+        {
+          "candidate": "RLYLKTKAKVIFQSKARWSMRVRK",
+          "measured_value": 10.080498695373535
+        }
+      ],
+      "bottom": [
+        {
+          "candidate": "DLYLEEKTNVVILQSAYRSMGVRP",
+          "measured_value": 488.7917175292969
+        },
+        {
+          "candidate": "RLYLGTKDAVVILQSAYVSMHVPD",
+          "measured_value": 489.07522583
+        },
+        {
+          "candidate": "TLYLDTKTAVVILFDAYRSMVK",
+          "measured_value": 512.4808959960938
+        }
+      ]
+    }
+  ],
+  "ranking": {
+    "method": "reference_shortlist16_then_exact_source_GP_mean_Spearman",
+    "shortlist_count": 16,
+    "scores": [
+      {
+        "task": "pep_569",
+        "spearman": 0.7187240456488974,
+        "reference_edit_similarity": 0.29166666666666663,
+        "source_gp_sha256": "b19aefb137d6eeb5095c1733eae540359433719b9be830808a0fd6d1adaf69b3"
+      },
+      {
+        "task": "pep_212",
+        "spearman": 0.7154634101325787,
+        "reference_edit_similarity": 0.33333333333333337,
+        "source_gp_sha256": "7525c237c88811cc37becc39ba58950b066cced595430bd61fae78b7caae334d"
+      },
+      {
+        "task": "pep_838",
+        "spearman": 0.6819957550216864,
+        "reference_edit_similarity": 0.29166666666666663,
+        "source_gp_sha256": "955fb38844dfd277a5b32d5f0e27c1d5ed1fbd1ed55d37c485d542f9d6eadfb1"
+      },
+      {
+        "task": "pep_405",
+        "spearman": 0.6623704204989388,
+        "reference_edit_similarity": 0.41666666666666663,
+        "source_gp_sha256": "5d36d5ba4f9cee2de04302a195e885dcd35b16e07e1d1d04fe923c37251dc561"
+      },
+      {
+        "task": "pep_855",
+        "spearman": 0.6309944938324772,
+        "reference_edit_similarity": 0.31999999999999995,
+        "source_gp_sha256": "7df53beae076b271045bbce63b2f34002958fe3b440bed32a3517fb07a5c1e7d"
+      },
+      {
+        "task": "pep_308",
+        "spearman": 0.6175213017933496,
+        "reference_edit_similarity": 0.41666666666666663,
+        "source_gp_sha256": "7607249d75b707c56a3cce93fa16d1bc6f42cfe3532cb943060eec22880d5ad6"
+      },
+      {
+        "task": "pep_603",
+        "spearman": 0.5974037958719125,
+        "reference_edit_similarity": 0.31999999999999995,
+        "source_gp_sha256": "ee8b3c22349693277ec59ae570fcf7d287b03088033ccb3d6fc5db18a80eebe5"
+      },
+      {
+        "task": "pep_754",
+        "spearman": 0.5961733673751884,
+        "reference_edit_similarity": 0.33333333333333337,
+        "source_gp_sha256": "5577f689dcb0521ccb63694e43d4b117989c7038bde5bb9ba023c0abec5b5ffd"
+      },
+      {
+        "task": "pep_393",
+        "spearman": 0.5918668676366544,
+        "reference_edit_similarity": 0.29166666666666663,
+        "source_gp_sha256": "13a7d5040cb443b1ceaca09f6119e300b316d72024cad07bd0ba75fb7a8a0044"
+      },
+      {
+        "task": "pep_451",
+        "spearman": 0.5771632471008029,
+        "reference_edit_similarity": 0.29166666666666663,
+        "source_gp_sha256": "bcf8564afb8493ce20c300711b8bf0cb68486e1183a706238d1ba243048230ea"
+      },
+      {
+        "task": "pep_866",
+        "spearman": 0.5727952259374328,
+        "reference_edit_similarity": 0.33333333333333337,
+        "source_gp_sha256": "a8961c302ce572575b99c364dc84e1a2d631708a6f0ed1d39c4fce729a929f30"
+      },
+      {
+        "task": "pep_256",
+        "spearman": 0.5534159771140299,
+        "reference_edit_similarity": 0.41666666666666663,
+        "source_gp_sha256": "2683b2b3cba2635bd71f3adbc31eb3aadc366d01ace409ad3323220ff04cdc72"
+      },
+      {
+        "task": "pep_771",
+        "spearman": 0.5408040850226091,
+        "reference_edit_similarity": 0.29166666666666663,
+        "source_gp_sha256": "7711e6d71c3e52f4b2f13ed7a833ccbecfe33a0ced8ebbc5afb94eb000eceb08"
+      },
+      {
+        "task": "pep_476",
+        "spearman": 0.5097357654803286,
+        "reference_edit_similarity": 0.33333333333333337,
+        "source_gp_sha256": "99b256a95ebf026e34cd2656bc5c0f55ce5ac34f9416a6357cbe52749053ba0b"
+      },
+      {
+        "task": "pep_724",
+        "spearman": 0.47940570303608243,
+        "reference_edit_similarity": 0.33333333333333337,
+        "source_gp_sha256": "cc521c1e6fe8d1206c7d2daaaa2c79ddafe278a1e4d7708124f7d9aba9459aef"
+      },
+      {
+        "task": "pep_253",
+        "spearman": 0.4627949183303085,
+        "reference_edit_similarity": 0.33333333333333337,
+        "source_gp_sha256": "9a221cd302a8a71c7eb36e194cf9e393aaf3cac1850c41ea4f2d95500b3de4f3"
+      }
+    ],
+    "selected_source_ids": [
+      "pep_569",
+      "pep_212",
+      "pep_838"
+    ],
+    "strong_agreement_count": 14,
+    "confidence": "rank_agreement_ge_0.5",
+    "floor": 0.5,
+    "target_evidence_indices": [
+      3,
+      8,
+      19,
+      36,
+      47,
+      52,
+      54,
+      73,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      656,
+      657,
+      669,
+      688,
+      691,
+      701,
+      719,
+      721,
+      725,
+      730,
+      734,
+      736,
+      738,
+      739,
+      740,
+      742,
+      744,
+      802,
+      803,
+      811,
+      812,
+      823,
+      824,
+      826,
+      832,
+      836,
+      842,
+      862,
+      864,
+      869,
+      877,
+      884,
+      885,
+      888,
+      889
+    ],
+    "target_evidence_sha256": "7cd9065bf24dad827937d67499597b46648e2963d9935a6f3c36f959c90d6e5d",
+    "source_label_scope": "other training tasks only",
+    "target_future_labels_used": false,
+    "weak_evidence_instruction": "Reference or ranking agreement is tentative. Analyze the source/current task differences and prioritize measured current-task evidence; never blindly copy."
+  }
+}

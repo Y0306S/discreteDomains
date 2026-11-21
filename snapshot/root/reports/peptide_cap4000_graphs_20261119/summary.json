@@ -1,0 +1,40 @@
+{
+  "created_utc": "2026-11-19T02:40:14.887981+00:00",
+  "cap": 4000,
+  "batch_size": 50,
+  "max_rounds": 80,
+  "retrospective_frozen_cap": true,
+  "method_summary": {
+    "Original frozen FSBO": {
+      "mean_final_mic": 28.405395698547363,
+      "estimated_4000_hours_mean": 0.7457000962074062,
+      "estimated_4000_hours_min": 0.34013029855134663,
+      "estimated_4000_hours_max": 1.0583539958244368,
+      "actual_fresh_min": 3575,
+      "actual_fresh_max": 3990
+    },
+    "Online VAE + FSBO": {
+      "mean_final_mic": 28.951193404197692,
+      "estimated_4000_hours_mean": 5.119748653246126,
+      "estimated_4000_hours_min": 3.520651445988722,
+      "estimated_4000_hours_max": 6.639835763674897,
+      "actual_fresh_min": 3693,
+      "actual_fresh_max": 4000
+    },
+    "SemanticOPT with fallback": {
+      "mean_final_mic": 14.28379213809967,
+      "estimated_4000_hours_mean": 7.1105573967916,
+      "estimated_4000_hours_min": 4.693777468734317,
+      "estimated_4000_hours_max": 8.764948915463906,
+      "actual_fresh_min": 4000,
+      "actual_fresh_max": 4000
+    }
+  },
+  "semanticopt_estimated_hours_under_existing_queue_mean": 34.86974433119209,
+  "frozen_vs_online_wins": 5,
+  "semanticopt_wins": 7,
+  "smoothing": "Same causal trailing mean over 200 evaluation positions for every method; smoothing applies to displayed aggregate curves only; reported MIC values and per-task plots remain exact.",
+  "score_caveat": "All methods capped at 4,000 acquisition proposals or 4,000 fresh evaluations, whichever first. Frozen history uses the last fully measured batch within both caps; crossing batches excluded, so two tasks stop at 3,990 fresh. Stops after 80 rounds can leave fewer than 4,000 fresh. No fabricated extra observations.",
+  "runtime_caveat": "All 4,000-fresh runtimes are linear estimates using actual recorded timings, not fresh isolated benchmarks. Original/online historical hardware and contention differ; SemanticOPT estimates use 3,000 continuation measurements and the continuation request telemetry. Offline training/loading excluded.",
+  "offline_online_hours": 0.9884432326872936
+}

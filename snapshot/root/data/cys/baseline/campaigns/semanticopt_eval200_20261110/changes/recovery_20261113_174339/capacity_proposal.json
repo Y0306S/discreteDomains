@@ -1,0 +1,33 @@
+{
+  "extra_inference": {
+    "gpu": 0,
+    "port": 19369,
+    "cpus": [
+      5
+    ],
+    "memory_cap_gib": 21
+  },
+  "reason": "Query ORPO/RL completed and released GPU0; CPU5 is already excluded from evaluation worker groups",
+  "existing_local_worker_cpus_released": [
+    30,
+    31,
+    32,
+    33,
+    34,
+    35
+  ],
+  "postgres": "Reuse pre-existing isolated databases on released CPU groups 30-32 and 33-35; no extra data copies required",
+  "protect_full_sft": {
+    "gpu": 3,
+    "cpus": [
+      42,
+      43,
+      44,
+      45,
+      46,
+      47
+    ],
+    "memory_cap_gib": 32
+  },
+  "gate": "Launch additional capacity after successful SFT resume and advancing SemanticOPT evaluations"
+}

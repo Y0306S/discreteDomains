@@ -1,0 +1,2098 @@
+{
+  "at": "2026-11-20T16:31:24.510404+08:00",
+  "finding": "Intermittent replica health/transport timeouts; all 20 replicas currently healthy. No persistent GPU failure found. Original eight Optimizer3 process start identities verified unchanged via SSH.",
+  "historical_window": {
+    "degraded_at": "2026-11-20T15:34:21+08:00",
+    "healthy_again_at": "2026-11-20T15:36:21+08:00",
+    "later_intermittent_timeouts": true
+  },
+  "limitations": "Underlying trigger of transient timeouts not established. Broker probes serially with 2-second timeouts and suppresses exception details; eight slow probes can exceed the monitor 10-second timeout.",
+  "actions": "Read-only diagnosis, direct host and forwarded endpoint checks, process identity checks, six repeated health cycles, completion-counter verification. Recovery occurred automatically before investigation; no services restarted or experiment settings changed.",
+  "replicas": [
+    {
+      "name": "llm0",
+      "host": "LLMOptimizer2",
+      "port": 21800,
+      "health": {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": false,
+        "completed": 9230,
+        "error": null,
+        "gpu_admission": {
+          "lock_file": "/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117/services/gpu_admission/gpu0.lock",
+          "long_context": "exclusive",
+          "ordinary": "shared_up_to_three_resident_replicas",
+          "shared_max_input_tokens": 16384
+        },
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "name": "query_hybrid_orpo_llm0",
+        "placement": {
+          "embedding_device": "cuda:0",
+          "language_devices": [
+            "cuda:0"
+          ],
+          "visible_devices": "0"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      "elapsed_seconds": 0.5589495860040188
+    },
+    {
+      "name": "llm1",
+      "host": "LLMOptimizer2",
+      "port": 21803,
+      "health": {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": false,
+        "completed": 9477,
+        "error": null,
+        "gpu_admission": {
+          "lock_file": "/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117/services/gpu_admission/gpu3.lock",
+          "long_context": "exclusive",
+          "ordinary": "shared_up_to_three_resident_replicas",
+          "shared_max_input_tokens": 16384
+        },
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "name": "query_hybrid_orpo_llm1",
+        "placement": {
+          "embedding_device": "cuda:0",
+          "language_devices": [
+            "cuda:0"
+          ],
+          "visible_devices": "3"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      "elapsed_seconds": 0.560037937015295
+    },
+    {
+      "name": "llm2",
+      "host": "LLMOptimizer2",
+      "port": 21801,
+      "health": {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": false,
+        "completed": 9137,
+        "error": null,
+        "gpu_admission": {
+          "lock_file": "/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117/services/gpu_admission/gpu1.lock",
+          "long_context": "exclusive",
+          "ordinary": "shared_up_to_three_resident_replicas",
+          "shared_max_input_tokens": 16384
+        },
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "name": "query_hybrid_orpo_llm2",
+        "placement": {
+          "embedding_device": "cuda:0",
+          "language_devices": [
+            "cuda:0"
+          ],
+          "visible_devices": "1"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      "elapsed_seconds": 0.5346938334405422
+    },
+    {
+      "name": "llm3",
+      "host": "LLMOptimizer2",
+      "port": 21802,
+      "health": {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": true,
+        "completed": 9164,
+        "error": null,
+        "gpu_admission": {
+          "lock_file": "/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117/services/gpu_admission/gpu2.lock",
+          "long_context": "exclusive",
+          "ordinary": "shared_up_to_three_resident_replicas",
+          "shared_max_input_tokens": 16384
+        },
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "name": "query_hybrid_orpo_llm3",
+        "placement": {
+          "embedding_device": "cuda:0",
+          "language_devices": [
+            "cuda:0"
+          ],
+          "visible_devices": "2"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      "elapsed_seconds": 0.5381499584764242
+    },
+    {
+      "name": "llm4",
+      "host": "LLMOptimizer2",
+      "port": 21804,
+      "health": {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": false,
+        "completed": 8191,
+        "error": null,
+        "gpu_admission": {
+          "lock_file": "/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117/services/gpu_admission/gpu0.lock",
+          "long_context": "exclusive",
+          "ordinary": "shared_up_to_three_resident_replicas",
+          "shared_max_input_tokens": 16384
+        },
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "name": "query_hybrid_orpo_llm4",
+        "placement": {
+          "embedding_device": "cuda:0",
+          "language_devices": [
+            "cuda:0"
+          ],
+          "visible_devices": "0"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      "elapsed_seconds": 0.5610198304057121
+    },
+    {
+      "name": "llm5",
+      "host": "LLMOptimizer2",
+      "port": 21805,
+      "health": {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": true,
+        "completed": 7715,
+        "error": null,
+        "gpu_admission": {
+          "lock_file": "/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117/services/gpu_admission/gpu1.lock",
+          "long_context": "exclusive",
+          "ordinary": "shared_up_to_three_resident_replicas",
+          "shared_max_input_tokens": 16384
+        },
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "name": "query_hybrid_orpo_llm5",
+        "placement": {
+          "embedding_device": "cuda:0",
+          "language_devices": [
+            "cuda:0"
+          ],
+          "visible_devices": "1"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      "elapsed_seconds": 0.566247658804059
+    },
+    {
+      "name": "llm6",
+      "host": "LLMOptimizer2",
+      "port": 21806,
+      "health": {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": false,
+        "completed": 8626,
+        "error": null,
+        "gpu_admission": {
+          "lock_file": "/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117/services/gpu_admission/gpu2.lock",
+          "long_context": "exclusive",
+          "ordinary": "shared_up_to_three_resident_replicas",
+          "shared_max_input_tokens": 16384
+        },
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "name": "query_hybrid_orpo_llm6",
+        "placement": {
+          "embedding_device": "cuda:0",
+          "language_devices": [
+            "cuda:0"
+          ],
+          "visible_devices": "2"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      "elapsed_seconds": 0.5456857290118933
+    },
+    {
+      "name": "llm7",
+      "host": "LLMOptimizer2",
+      "port": 21807,
+      "health": {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": false,
+        "completed": 7361,
+        "error": null,
+        "gpu_admission": {
+          "lock_file": "/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117/services/gpu_admission/gpu3.lock",
+          "long_context": "exclusive",
+          "ordinary": "shared_up_to_three_resident_replicas",
+          "shared_max_input_tokens": 16384
+        },
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "name": "query_hybrid_orpo_llm7",
+        "placement": {
+          "embedding_device": "cuda:0",
+          "language_devices": [
+            "cuda:0"
+          ],
+          "visible_devices": "3"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      "elapsed_seconds": 0.5636748988181353
+    },
+    {
+      "name": "llm8",
+      "host": "LLMOptimizer2",
+      "port": 21808,
+      "health": {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": false,
+        "completed": 1467,
+        "error": null,
+        "gpu_admission": {
+          "lock_file": "/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117/services/gpu_admission/gpu0.lock",
+          "long_context": "exclusive",
+          "ordinary": "shared_up_to_three_resident_replicas",
+          "shared_max_input_tokens": 16384
+        },
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "name": "query_hybrid_orpo_llm8",
+        "placement": {
+          "embedding_device": "cuda:0",
+          "language_devices": [
+            "cuda:0"
+          ],
+          "visible_devices": "0"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      "elapsed_seconds": 0.5427342727780342
+    },
+    {
+      "name": "llm9",
+      "host": "LLMOptimizer2",
+      "port": 21809,
+      "health": {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": false,
+        "completed": 1374,
+        "error": null,
+        "gpu_admission": {
+          "lock_file": "/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117/services/gpu_admission/gpu1.lock",
+          "long_context": "exclusive",
+          "ordinary": "shared_up_to_three_resident_replicas",
+          "shared_max_input_tokens": 16384
+        },
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "name": "query_hybrid_orpo_llm9",
+        "placement": {
+          "embedding_device": "cuda:0",
+          "language_devices": [
+            "cuda:0"
+          ],
+          "visible_devices": "1"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      "elapsed_seconds": 0.5551944673061371
+    },
+    {
+      "name": "llm10",
+      "host": "LLMOptimizer2",
+      "port": 21812,
+      "health": {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": true,
+        "completed": 1369,
+        "error": null,
+        "gpu_admission": {
+          "lock_file": "/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117/services/gpu_admission/gpu2.lock",
+          "long_context": "exclusive",
+          "ordinary": "shared_up_to_three_resident_replicas",
+          "shared_max_input_tokens": 16384
+        },
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "name": "query_hybrid_orpo_llm10",
+        "placement": {
+          "embedding_device": "cuda:0",
+          "language_devices": [
+            "cuda:0"
+          ],
+          "visible_devices": "2"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      "elapsed_seconds": 0.5638847555965185
+    },
+    {
+      "name": "llm11",
+      "host": "LLMOptimizer2",
+      "port": 21813,
+      "health": {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": false,
+        "completed": 1417,
+        "error": null,
+        "gpu_admission": {
+          "lock_file": "/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117/services/gpu_admission/gpu3.lock",
+          "long_context": "exclusive",
+          "ordinary": "shared_up_to_three_resident_replicas",
+          "shared_max_input_tokens": 16384
+        },
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "name": "query_hybrid_orpo_llm11",
+        "placement": {
+          "embedding_device": "cuda:0",
+          "language_devices": [
+            "cuda:0"
+          ],
+          "visible_devices": "3"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      "elapsed_seconds": 0.5589177440851927
+    },
+    {
+      "name": "llm15",
+      "host": "LLMOptimizer3",
+      "port": 21943,
+      "health": {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": false,
+        "completed": 394,
+        "error": null,
+        "gpu_admission": null,
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "name": "query_hybrid_orpo_llm15",
+        "placement": {
+          "embedding_device": "cpu",
+          "language_devices": [
+            "cpu",
+            "cuda:0",
+            "cuda:1"
+          ],
+          "visible_devices": "14,15"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      "elapsed_seconds": 0.6196896750479937
+    },
+    {
+      "name": "llm16",
+      "host": "LLMOptimizer3",
+      "port": 21944,
+      "health": {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": false,
+        "completed": 471,
+        "context_forwarded": 471,
+        "error": null,
+        "gpu_admission": null,
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "local_max_input_tokens": 4096,
+        "name": "query_hybrid_orpo_llm16",
+        "placement": {
+          "embedding_device": "cpu",
+          "language_devices": [
+            "cpu",
+            "cuda:0",
+            "cuda:1"
+          ],
+          "visible_devices": "1,4"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      "elapsed_seconds": 0.6197106000036001
+    },
+    {
+      "name": "llm17",
+      "host": "LLMOptimizer3",
+      "port": 21945,
+      "health": {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": false,
+        "completed": 428,
+        "context_forwarded": 428,
+        "error": null,
+        "gpu_admission": null,
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "local_max_input_tokens": 4096,
+        "name": "query_hybrid_orpo_llm17",
+        "placement": {
+          "embedding_device": "cpu",
+          "language_devices": [
+            "cpu",
+            "cuda:0",
+            "cuda:1"
+          ],
+          "visible_devices": "2,6"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      "elapsed_seconds": 0.618690513074398
+    },
+    {
+      "name": "llm12",
+      "host": "LLMOptimizer3",
+      "port": 21940,
+      "health": {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": true,
+        "completed": 357,
+        "context_forwarded": 0,
+        "error": null,
+        "gpu_admission": null,
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "local_max_input_tokens": 32768,
+        "name": "query_hybrid_orpo_llm12",
+        "placement": {
+          "embedding_device": "cpu",
+          "language_devices": [
+            "cpu",
+            "cuda:0",
+            "cuda:1"
+          ],
+          "visible_devices": "0,3"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      "elapsed_seconds": 0.6185817085206509
+    },
+    {
+      "name": "llm13",
+      "host": "LLMOptimizer3",
+      "port": 21941,
+      "health": {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": true,
+        "completed": 368,
+        "context_forwarded": 0,
+        "error": null,
+        "gpu_admission": null,
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "local_max_input_tokens": 32768,
+        "name": "query_hybrid_orpo_llm13",
+        "placement": {
+          "embedding_device": "cpu",
+          "language_devices": [
+            "cpu",
+            "cuda:0",
+            "cuda:1"
+          ],
+          "visible_devices": "7,8"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      "elapsed_seconds": 0.6287487335503101
+    },
+    {
+      "name": "llm14",
+      "host": "LLMOptimizer3",
+      "port": 21942,
+      "health": {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": false,
+        "completed": 370,
+        "context_forwarded": 0,
+        "error": null,
+        "gpu_admission": null,
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "local_max_input_tokens": 32768,
+        "name": "query_hybrid_orpo_llm14",
+        "placement": {
+          "embedding_device": "cpu",
+          "language_devices": [
+            "cpu",
+            "cuda:0",
+            "cuda:1"
+          ],
+          "visible_devices": "9,10"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      "elapsed_seconds": 0.6171634066849947
+    },
+    {
+      "name": "llm18",
+      "host": "LLMOptimizer3",
+      "port": 21946,
+      "health": {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": true,
+        "completed": 386,
+        "context_forwarded": 0,
+        "error": null,
+        "gpu_admission": null,
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "local_max_input_tokens": 32768,
+        "name": "query_hybrid_orpo_llm18",
+        "placement": {
+          "embedding_device": "cpu",
+          "language_devices": [
+            "cpu",
+            "cuda:0",
+            "cuda:1"
+          ],
+          "visible_devices": "11,12"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      "elapsed_seconds": 0.627734798938036
+    },
+    {
+      "name": "llm19",
+      "host": "LLMOptimizer3",
+      "port": 21947,
+      "health": {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": true,
+        "completed": 343,
+        "context_forwarded": 0,
+        "error": null,
+        "gpu_admission": null,
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "local_max_input_tokens": 32768,
+        "name": "query_hybrid_orpo_llm19",
+        "placement": {
+          "embedding_device": "cpu",
+          "language_devices": [
+            "cpu",
+            "cuda:0",
+            "cuda:1"
+          ],
+          "visible_devices": "13,5"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      "elapsed_seconds": 0.6168258711695671
+    }
+  ],
+  "broker": {
+    "adapter_verifications": [
+      {
+        "all_tensors_exact": true,
+        "key_mapping": {},
+        "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+        "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+        "verified_tensors": 496
+      }
+    ],
+    "degraded": false,
+    "healthy_replicas": 20,
+    "identities": [
+      {
+        "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+        "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+        "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+        "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+        "tokenizer": {
+          "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+          "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+          "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+        }
+      }
+    ],
+    "queued": 0,
+    "ready": true,
+    "replica_health": [
+      {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": false,
+        "completed": 9230,
+        "error": null,
+        "gpu_admission": {
+          "lock_file": "/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117/services/gpu_admission/gpu0.lock",
+          "long_context": "exclusive",
+          "ordinary": "shared_up_to_three_resident_replicas",
+          "shared_max_input_tokens": 16384
+        },
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "name": "query_hybrid_orpo_llm0",
+        "placement": {
+          "embedding_device": "cuda:0",
+          "language_devices": [
+            "cuda:0"
+          ],
+          "visible_devices": "0"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": true,
+        "completed": 9476,
+        "error": null,
+        "gpu_admission": {
+          "lock_file": "/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117/services/gpu_admission/gpu3.lock",
+          "long_context": "exclusive",
+          "ordinary": "shared_up_to_three_resident_replicas",
+          "shared_max_input_tokens": 16384
+        },
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "name": "query_hybrid_orpo_llm1",
+        "placement": {
+          "embedding_device": "cuda:0",
+          "language_devices": [
+            "cuda:0"
+          ],
+          "visible_devices": "3"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": false,
+        "completed": 9137,
+        "error": null,
+        "gpu_admission": {
+          "lock_file": "/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117/services/gpu_admission/gpu1.lock",
+          "long_context": "exclusive",
+          "ordinary": "shared_up_to_three_resident_replicas",
+          "shared_max_input_tokens": 16384
+        },
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "name": "query_hybrid_orpo_llm2",
+        "placement": {
+          "embedding_device": "cuda:0",
+          "language_devices": [
+            "cuda:0"
+          ],
+          "visible_devices": "1"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": false,
+        "completed": 9164,
+        "error": null,
+        "gpu_admission": {
+          "lock_file": "/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117/services/gpu_admission/gpu2.lock",
+          "long_context": "exclusive",
+          "ordinary": "shared_up_to_three_resident_replicas",
+          "shared_max_input_tokens": 16384
+        },
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "name": "query_hybrid_orpo_llm3",
+        "placement": {
+          "embedding_device": "cuda:0",
+          "language_devices": [
+            "cuda:0"
+          ],
+          "visible_devices": "2"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": false,
+        "completed": 8191,
+        "error": null,
+        "gpu_admission": {
+          "lock_file": "/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117/services/gpu_admission/gpu0.lock",
+          "long_context": "exclusive",
+          "ordinary": "shared_up_to_three_resident_replicas",
+          "shared_max_input_tokens": 16384
+        },
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "name": "query_hybrid_orpo_llm4",
+        "placement": {
+          "embedding_device": "cuda:0",
+          "language_devices": [
+            "cuda:0"
+          ],
+          "visible_devices": "0"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": true,
+        "completed": 7715,
+        "error": null,
+        "gpu_admission": {
+          "lock_file": "/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117/services/gpu_admission/gpu1.lock",
+          "long_context": "exclusive",
+          "ordinary": "shared_up_to_three_resident_replicas",
+          "shared_max_input_tokens": 16384
+        },
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "name": "query_hybrid_orpo_llm5",
+        "placement": {
+          "embedding_device": "cuda:0",
+          "language_devices": [
+            "cuda:0"
+          ],
+          "visible_devices": "1"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": false,
+        "completed": 8626,
+        "error": null,
+        "gpu_admission": {
+          "lock_file": "/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117/services/gpu_admission/gpu2.lock",
+          "long_context": "exclusive",
+          "ordinary": "shared_up_to_three_resident_replicas",
+          "shared_max_input_tokens": 16384
+        },
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "name": "query_hybrid_orpo_llm6",
+        "placement": {
+          "embedding_device": "cuda:0",
+          "language_devices": [
+            "cuda:0"
+          ],
+          "visible_devices": "2"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": false,
+        "completed": 7361,
+        "error": null,
+        "gpu_admission": {
+          "lock_file": "/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117/services/gpu_admission/gpu3.lock",
+          "long_context": "exclusive",
+          "ordinary": "shared_up_to_three_resident_replicas",
+          "shared_max_input_tokens": 16384
+        },
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "name": "query_hybrid_orpo_llm7",
+        "placement": {
+          "embedding_device": "cuda:0",
+          "language_devices": [
+            "cuda:0"
+          ],
+          "visible_devices": "3"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": false,
+        "completed": 1467,
+        "error": null,
+        "gpu_admission": {
+          "lock_file": "/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117/services/gpu_admission/gpu0.lock",
+          "long_context": "exclusive",
+          "ordinary": "shared_up_to_three_resident_replicas",
+          "shared_max_input_tokens": 16384
+        },
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "name": "query_hybrid_orpo_llm8",
+        "placement": {
+          "embedding_device": "cuda:0",
+          "language_devices": [
+            "cuda:0"
+          ],
+          "visible_devices": "0"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": false,
+        "completed": 1374,
+        "error": null,
+        "gpu_admission": {
+          "lock_file": "/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117/services/gpu_admission/gpu1.lock",
+          "long_context": "exclusive",
+          "ordinary": "shared_up_to_three_resident_replicas",
+          "shared_max_input_tokens": 16384
+        },
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "name": "query_hybrid_orpo_llm9",
+        "placement": {
+          "embedding_device": "cuda:0",
+          "language_devices": [
+            "cuda:0"
+          ],
+          "visible_devices": "1"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": true,
+        "completed": 1369,
+        "error": null,
+        "gpu_admission": {
+          "lock_file": "/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117/services/gpu_admission/gpu2.lock",
+          "long_context": "exclusive",
+          "ordinary": "shared_up_to_three_resident_replicas",
+          "shared_max_input_tokens": 16384
+        },
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "name": "query_hybrid_orpo_llm10",
+        "placement": {
+          "embedding_device": "cuda:0",
+          "language_devices": [
+            "cuda:0"
+          ],
+          "visible_devices": "2"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": false,
+        "completed": 1417,
+        "error": null,
+        "gpu_admission": {
+          "lock_file": "/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117/services/gpu_admission/gpu3.lock",
+          "long_context": "exclusive",
+          "ordinary": "shared_up_to_three_resident_replicas",
+          "shared_max_input_tokens": 16384
+        },
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "name": "query_hybrid_orpo_llm11",
+        "placement": {
+          "embedding_device": "cuda:0",
+          "language_devices": [
+            "cuda:0"
+          ],
+          "visible_devices": "3"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": false,
+        "completed": 394,
+        "error": null,
+        "gpu_admission": null,
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "name": "query_hybrid_orpo_llm15",
+        "placement": {
+          "embedding_device": "cpu",
+          "language_devices": [
+            "cpu",
+            "cuda:0",
+            "cuda:1"
+          ],
+          "visible_devices": "14,15"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": false,
+        "completed": 471,
+        "context_forwarded": 471,
+        "error": null,
+        "gpu_admission": null,
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "local_max_input_tokens": 4096,
+        "name": "query_hybrid_orpo_llm16",
+        "placement": {
+          "embedding_device": "cpu",
+          "language_devices": [
+            "cpu",
+            "cuda:0",
+            "cuda:1"
+          ],
+          "visible_devices": "1,4"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": false,
+        "completed": 428,
+        "context_forwarded": 428,
+        "error": null,
+        "gpu_admission": null,
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "local_max_input_tokens": 4096,
+        "name": "query_hybrid_orpo_llm17",
+        "placement": {
+          "embedding_device": "cpu",
+          "language_devices": [
+            "cpu",
+            "cuda:0",
+            "cuda:1"
+          ],
+          "visible_devices": "2,6"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": true,
+        "completed": 357,
+        "context_forwarded": 0,
+        "error": null,
+        "gpu_admission": null,
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "local_max_input_tokens": 32768,
+        "name": "query_hybrid_orpo_llm12",
+        "placement": {
+          "embedding_device": "cpu",
+          "language_devices": [
+            "cpu",
+            "cuda:0",
+            "cuda:1"
+          ],
+          "visible_devices": "0,3"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": true,
+        "completed": 368,
+        "context_forwarded": 0,
+        "error": null,
+        "gpu_admission": null,
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "local_max_input_tokens": 32768,
+        "name": "query_hybrid_orpo_llm13",
+        "placement": {
+          "embedding_device": "cpu",
+          "language_devices": [
+            "cpu",
+            "cuda:0",
+            "cuda:1"
+          ],
+          "visible_devices": "7,8"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": false,
+        "completed": 370,
+        "context_forwarded": 0,
+        "error": null,
+        "gpu_admission": null,
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "local_max_input_tokens": 32768,
+        "name": "query_hybrid_orpo_llm14",
+        "placement": {
+          "embedding_device": "cpu",
+          "language_devices": [
+            "cpu",
+            "cuda:0",
+            "cuda:1"
+          ],
+          "visible_devices": "9,10"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": true,
+        "completed": 386,
+        "context_forwarded": 0,
+        "error": null,
+        "gpu_admission": null,
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "local_max_input_tokens": 32768,
+        "name": "query_hybrid_orpo_llm18",
+        "placement": {
+          "embedding_device": "cpu",
+          "language_devices": [
+            "cpu",
+            "cuda:0",
+            "cuda:1"
+          ],
+          "visible_devices": "11,12"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      },
+      {
+        "adapter_verifications": [
+          {
+            "all_tensors_exact": true,
+            "key_mapping": {},
+            "path": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103/adapter_model.safetensors",
+            "sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "verified_tensors": 496
+          }
+        ],
+        "busy": true,
+        "completed": 343,
+        "context_forwarded": 0,
+        "error": null,
+        "gpu_admission": null,
+        "identities": [
+          {
+            "adapter": "/root/data/cys/baseline/campaigns/query_our_orpo_rl800_20261112/models/orpo/checkpoint-103",
+            "adapter_sha256": "0b331b7c11f03717742aaf735c782ffe311079d2df6678c1e5cc7f7fa3690bf3",
+            "base": "/root/eb-public/huggingface-models/Qwen/Qwen3.5-9B",
+            "base_config_sha256": "d0883072e01861ed0b2d47be3c16c36a8e81c224c7ffaa310c6558fb3f932b05",
+            "tokenizer": {
+              "chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+              "tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+              "tokenizer_config.json": "1ec445f87ae14b966ca02c851bfc81a05979f05533ce5441be27915d49bb9cd9"
+            }
+          }
+        ],
+        "local_max_input_tokens": 32768,
+        "name": "query_hybrid_orpo_llm19",
+        "placement": {
+          "embedding_device": "cpu",
+          "language_devices": [
+            "cpu",
+            "cuda:0",
+            "cuda:1"
+          ],
+          "visible_devices": "13,5"
+        },
+        "prompt_cache": {
+          "enabled": false,
+          "max_bytes": 1610612736,
+          "min_tokens": 128
+        },
+        "ready": true
+      }
+    ],
+    "replicas": 20,
+    "task_affinity": false
+  },
+  "query_status": {
+    "stages": {
+      "warm30": {
+        "complete_tasks": 200,
+        "started_tasks": 200,
+        "measurements": 6000,
+        "generation_attempts_or_optimization_attempts": 9526
+      },
+      "orpo_batch10": {
+        "complete_tasks": 67,
+        "started_tasks": 104,
+        "measurements": 65908,
+        "generation_attempts_or_optimization_attempts": 65908
+      }
+    },
+    "total_rounds": 80,
+    "batch_size": 10,
+    "evaluations_per_task": 800,
+    "total_tasks": 200,
+    "measurement_target": 160000,
+    "counted_measurements": 71908,
+    "paused": false,
+    "rl_enabled": false,
+    "at": 1795163474.6089437,
+    "status": "running",
+    "stage": "orpo_batch10",
+    "worker_launchers": [
+      335501,
+      335502,
+      335503,
+      335504,
+      335505,
+      335506,
+      335507,
+      335534,
+      335601,
+      336865,
+      336941,
+      337006,
+      337056,
+      337100,
+      337135,
+      337174,
+      337213,
+      337267,
+      337305,
+      337351,
+      337400,
+      337433,
+      337497,
+      337520,
+      337576,
+      337635,
+      337678,
+      337745,
+      337773,
+      337812,
+      337813,
+      337814,
+      337815,
+      337816,
+      339773,
+      341188,
+      342495
+    ],
+    "worker_count": 37,
+    "worker_hosts": {
+      "LLMOptimizer2": 10,
+      "LLMOptimizer4": 23,
+      "LLMOptimizer3": 4
+    },
+    "resources_sha256": "81fde459b88ecdba87fb0cef1ef3f198474e6f5bf8a1fdcc13e3fe028231fe91"
+  }
+}

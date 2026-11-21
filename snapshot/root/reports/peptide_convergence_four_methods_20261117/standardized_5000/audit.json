@@ -1,0 +1,65 @@
+{
+  "generated_at": "2026-11-17T16:32:48.998840+08:00",
+  "domain": "peptide",
+  "semanticopt_display_cutoff": 1000,
+  "proposal_horizon": 5000,
+  "notes": [
+    "SemanticOPT is held at its proposal-1,000 result through 5,000; carried forward values are not new measurements.",
+    "Original SemanticOPT run: 136,255/200,000 random fallback proposals.\nBaselines retain measured incumbents after their proposal or fresh-call limit; recentering costs extra oracle calls.",
+    "Both domains use the exact shared STYLE entries and interpolate() PCHIP helper.",
+    "Checkpoints every 50 proposals through 5,000 use the same PCHIP smoothing. Interpolation preserves these checkpoint values and monotonicity, and never overshoots adjacent endpoints. Raw per-proposal values remain in the CSV; the smoothed line between checkpoints is a visual interpolation, not new measurements.",
+    "Per-task min\u2013max bounds retain the full-source normalization audit: pool feasible/uncensored full measurements, drop slowest floor(20%) for bounds only. Bounds are retrospective.",
+    "Peptide x now counts acquisition proposals, including cached proposals; extra recentering oracle calls do not increment this axis. This differs from the earlier fresh-evaluation plots.",
+    "Both normalized convergence figures display the requested 0.8\u20131.0 score-axis range; CSV scores retain the full [0,1] range. Source data are read-only."
+  ],
+  "actual_proposal_ranges": {
+    "FSBO": [
+      3112,
+      5000
+    ],
+    "LOLBO": [
+      2203,
+      5000
+    ],
+    "TPE": [
+      5000,
+      5000
+    ],
+    "SemanticOPT": [
+      1000,
+      1000
+    ]
+  },
+  "source_audit": "/root/reports/peptide_convergence_four_methods_20261117/audit.json",
+  "source_npz_sha256": "dfa0f2888dcb784c2ac6f7270940b31be16dc01a813bcdb24721f24684c26c56",
+  "style_source": "/root/reports/standardized_convergence_20261101/build_plots.py",
+  "style_sha256": "69c9a6e9fc62f79fe1a67e5331aabf6b0079d666043178bd7df8948b3e7db596",
+  "styles": {
+    "FSBO": {
+      "label": "FSBO",
+      "color": "#009E73",
+      "transfer": true
+    },
+    "LOLBO": {
+      "label": "LOLBO",
+      "color": "#E69F00",
+      "transfer": false
+    },
+    "TPE": {
+      "label": "TPE",
+      "color": "#0072B2",
+      "transfer": false
+    },
+    "SemanticOPT": {
+      "label": "SemanticOPT",
+      "color": "#00A6BF",
+      "transfer": true
+    }
+  },
+  "endpoints": {
+    "FSBO": 0.9711170768785143,
+    "LOLBO": 0.9607513504882603,
+    "TPE": 0.8911127322233671,
+    "SemanticOPT": 0.9805709220215177
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "domain": "peptide",
+  "cycles": 1,
+  "phases": [
+    {
+      "id": "cycle1_01_similar",
+      "scenario": "retrieval",
+      "prefixes": [
+        3,
+        5,
+        10
+      ],
+      "phase_kind": "01_similar",
+      "cycle": 1
+    },
+    {
+      "id": "cycle1_02_normal",
+      "scenario": "normal",
+      "prefixes": [
+        20,
+        30,
+        40
+      ],
+      "phase_kind": "02_normal",
+      "cycle": 1
+    },
+    {
+      "id": "cycle1_03_explore",
+      "scenario": "explore",
+      "prefixes": [
+        50,
+        70,
+        90
+      ],
+      "phase_kind": "03_explore",
+      "cycle": 1
+    },
+    {
+      "id": "cycle1_04_exploit",
+      "scenario": "exploit",
+      "prefixes": [
+        60,
+        80,
+        100
+      ],
+      "phase_kind": "04_exploit",
+      "cycle": 1
+    }
+  ],
+  "training": {
+    "algorithm": "clipped GRPO plus anchored duplicate rejection",
+    "learning_rate": 2.5e-07,
+    "kl_beta": 0.2,
+    "clip_epsilon": 0.2,
+    "grad_accum_groups": 4,
+    "max_grad_norm": 1.0,
+    "epochs_per_phase": 2,
+    "seed": 1,
+    "bf16": true,
+    "reference": "original ORPO parent remains frozen across all phases",
+    "phase_handoff": "policy and optimizer state carry forward; rollouts use the policy at the start of their phase",
+    "advantages": "Population-standardized rewards over exactly the four selected responses; extras are audit-only. Duplicates receive rejection loss and KL only; selected all-repeat groups retain rejection signal; measurement-failure pools excluded.",
+    "objective": "Exact ML delta-best + 0.1 absolute term, using perf=-measured APEX bacteria_0 MIC; invalid=-0.5; duplicates=-1.0 plus rejection objective.",
+    "duplicate_aux_weight": 1.0,
+    "observability": [
+      "per-step gradient norm",
+      "per-step and cumulative LoRA weight delta L2 and relative L2",
+      "token reference KL",
+      "clip fraction",
+      "duplicate rejection loss",
+      "adapter hash per checkpoint",
+      "fixed duplicate probes before and after each phase"
+    ],
+    "max_reference_kl": 0.1,
+    "weight_decay": 0.01,
+    "kl_guard": "Mean reference KL on the current update batch checked before and after each update; no checkpoint published on an overshoot. This is a sampled-token diagnostic, not an exact full-distribution KL.",
+    "backoff_attempts": 5,
+    "backoff_factor": 0.5,
+    "per_context_kl_guard": true,
+    "activation_offload": false
+  },
+  "data_split": "train800 only; heldout200 excluded",
+  "task_count": 800,
+  "job_counts": {
+    "retrieval": 2400,
+    "normal": 2400,
+    "explore": 1328,
+    "exploit": 972
+  },
+  "actual_prefix_semantics": "completed acquisition rounds; true terminal checkpoints admitted; unavailable requested prefixes excluded",
+  "retrieval": {
+    "method": "reference_shortlist16_then_source_GP_Spearman",
+    "shortlist": 16,
+    "top_k": 3,
+    "spearman_floor": 0.5,
+    "evidence_limit": 60,
+    "weak_source_policy": "Explicitly report low/undefined rank agreement and task differences; no claim of reliable transfer.",
+    "bank": "/root/data/logs/peptide_transfer_train800_20261027_v2/rgpe/models.sqlite",
+    "corpus": "/root/data/logs/peptide_transfer_train800_20261027_v2/corpus",
+    "python": "/root/data/cys/baseline/envs/bl_rgpe/bin/python"
+  },
+  "prompt_policy": "rl_prompt_policy.json",
+  "fresh_policy_each_phase": true,
+  "parent_sha256": "2eabb41148226e32eb8d60237067941c670b4924a7beb89864364e1640e77640"
+}

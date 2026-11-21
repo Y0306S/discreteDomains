@@ -1,0 +1,13 @@
+{
+  "at": 1794494228.8108811,
+  "files": [
+    "code/evaluate.py",
+    "code/protocol.py",
+    "code/test_query_initializations.py"
+  ],
+  "root_cause": "AliasesCodec uses a set and can encode independent join branches in different orders across processes",
+  "behavior": "On resume validate exact Bao metadata and decoded join trees against pinned source, then retain the exact saved initialization; fresh initializations and candidate validation unchanged",
+  "records_before": 116,
+  "proposal_validation": "Strictly replay component merges to reject codec repairs; compare canonical join groups permitting only the independent ordering produced by the upstream set iteration; submitted plans are preserved",
+  "saved_checkpoint_audit_passed": true
+}

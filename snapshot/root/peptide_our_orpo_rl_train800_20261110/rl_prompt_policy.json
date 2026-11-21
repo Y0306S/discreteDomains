@@ -1,0 +1,38 @@
+{
+  "version": "peptide_query_no_region_v1",
+  "method": "our_method",
+  "domains": ["peptide", "query"],
+  "status": "specified_and_prompt_helper_tested_not_connected_to_rollout_trainer",
+  "applies_to": ["RL rollout prompts", "matching evaluation prompts"],
+  "all_rl_phases": {
+    "good_bad_region_summaries": false,
+    "latent_region_bounds_or_labels_in_prompt": false,
+    "current_task_measured_good_bad_examples": true,
+    "current_task_recent50_valid_evaluations": true,
+    "current_task_rules_constraints_and_examples": true,
+    "single_discrete_candidate_per_response": true
+  },
+  "similar_task_information": {
+    "RS": "Measured top and bottom discrete candidates only, accompanied by source task description, objective, constraints, and explicit differences from the current task.",
+    "exploitation_after_round50": "Same restriction as RS. No Good/Bad Region information.",
+    "round_boundary": "after round 50 means rounds >= 51; do not change the existing phase schedule by this policy alone",
+    "source_split": "training tasks only; exclude current task and all held-out tasks",
+    "performance_scope": "Source-task scores are evidence about the source task only, never target-task measurements.",
+    "difference_analysis": "Prompt must require comparison of source and target objectives, constraints, peptide reference or query text/search space, including mismatches and unknowns. The model must adapt a candidate and check current-task feasibility rather than copy blindly.",
+    "analysis_output": "Perform difference analysis before proposing; keep response as the existing single-candidate JSON. Do not add a visible rationale or extra output keys.",
+    "peptide": "Show source reference sequence and current reference sequence; validate the proposed sequence against CURRENT reference similarity >= 0.75 and all current peptide constraints.",
+    "query": "Show source and current query descriptions/text, discrete configuration search spaces, objectives and constraints; do not assume a source configuration is valid or equally effective for the current query."
+  },
+  "optimizer_boundary": {
+    "FSBO_internal_trust_region": "Remains controlled by the optimizer and measured outcomes; omitting textual Good/Bad Region summaries does not disable the optimizer trust region.",
+    "LLM_action": "One discrete feasible candidate; no latent coordinates or region-control commands."
+  },
+  "ORPO": "The existing audited ORPO pairs and prompts remain intact: good/bad are concrete measured examples, not inferred Good/Bad Regions.",
+  "integration_gate": [
+    "Use the policy in both peptide and query rollout/evaluation builders before launching RL.",
+    "Verify source/target task descriptions and machine-generated differences using real task metadata.",
+    "Select top/bottom examples from verified feasible training observations only.",
+    "Run full prompt token checks after adding retrieval cards, preserving Recent50 and constraints.",
+    "Do not claim this policy file or helper is a running RL pipeline."
+  ]
+}
