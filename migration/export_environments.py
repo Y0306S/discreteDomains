@@ -17,6 +17,11 @@ ENVIRONMENTS = {
     'bl_bora': '/root/data/cys/baseline/envs/bl_bora',
     'bl_rgpe': '/root/data/cys/baseline/envs/bl_rgpe',
     'bl_semanticopt': '/root/data/cys/baseline/envs/bl_semanticopt',
+    'taskset_qwen35_fast_20261030': '/root/data/cys/baseline/envs/taskset_qwen35_fast_20261030',
+    'bl_tosfit': '/root/data/cys/baseline/envs/bl_tosfit',
+    'bl_optformer': '/root/data/cys/baseline/envs/bl_optformer',
+    'bl_lolbo_harness': '/root/data/cys/baseline/envs/bl_lolbo_harness',
+    'bl_lolbo_harness_cu118': '/root/data/cys/baseline/envs/bl_lolbo_harness_cu118',
     'bolt_qp': '/root/data/cys/envs/bolt_qp',
 }
 PROBE = r'''
@@ -78,6 +83,23 @@ def export(item):
 def main():
     with ThreadPoolExecutor(max_workers=4) as pool:
         records = list(pool.map(export, ENVIRONMENTS.items()))
+    # installed.json includes inherited distributions for --system-site-packages
+    # overlays. Only local overrides belong in a specification rebuild.
+    for record in records:
+        if record.get('error') or record['conda']:
+            continue
+        parent = next((r for r in records if r['prefix'] == record['base_prefix']), None)
+        if not parent or parent.get('error'):
+            continue
+        child_dir = REPO/'environments'/record['name']
+        child = json.loads((child_dir/'installed.json').read_text())
+        base = json.loads((REPO/'environments'/parent['name']/'installed.json').read_text())
+        inherited = {p['name'].lower(): p['version'] for p in base['packages']}
+        delta = [p for p in child['packages'] if p['installer'] == 'pip'
+                 and not p['direct_url']
+                 and inherited.get(p['name'].lower()) != p['version']]
+        (child_dir/'overlay-only.txt').write_text(
+            ''.join(f'{p["name"]}=={p["version"]}\n' for p in delta))
     (REPO/'environments/index.json').write_text(json.dumps(records, indent=2)+'\n')
     print(json.dumps(records, indent=2))
 

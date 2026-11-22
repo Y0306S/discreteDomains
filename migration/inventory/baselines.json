@@ -1,0 +1,113 @@
+[
+  {
+    "name": "TPE / random / GP / HEBO / SMAC peptide",
+    "status": "implemented; campaign recipes select variants",
+    "environments": [
+      "bolt_clean_venv",
+      "openbox_qwen_eval"
+    ],
+    "entrypoints": [
+      "/root/data/cys/llmoptimizer_benchmark/tools/peptide_test200.py",
+      "/root/data/cys/llmoptimizer_benchmark/tools/peptide_local_bo.py",
+      "/root/data/cys/llmoptimizer_benchmark/tools/peptide_tpe_tr.py"
+    ]
+  },
+  {
+    "name": "LOLBO / BOLT",
+    "status": "historical runners included; newer query BOLT30 continuation paused",
+    "environments": [
+      "bolt_clean_venv",
+      "openbox_qwen_eval"
+    ],
+    "entrypoints": [
+      "/root/data/cys/llmoptimizer_benchmark/examples/benchmark/domains/run_protein_bolt_lolbo.py",
+      "/root/data/cys/llmoptimizer_benchmark/examples/benchmark/domains/run_query_bolt_lolbo.py",
+      "/root/data/cys/llmoptimizer_benchmark/examples/benchmark/domains/run_query_bolt_tpe.py",
+      "/root/data/cys/baseline/campaigns/query_bolt_lolbo_test200_20261117/run_lolbo.py"
+    ]
+  },
+  {
+    "name": "FSBO",
+    "status": "legacy subprocess plus modern oracle/VAE",
+    "environments": [
+      "bl_fsbo_exact",
+      "bolt_clean_venv",
+      "openbox_qwen_eval"
+    ],
+    "entrypoints": [
+      "/root/data/cys/llmoptimizer_benchmark/tools/peptide_transfer_eval.py",
+      "/root/data/cys/llmoptimizer_benchmark/tools/query_fsbo_eval.py",
+      "/root/data/cys/llmoptimizer_benchmark/tools/query_fsbo_model.py",
+      "/root/data/cys/llmoptimizer_benchmark/tools/query_transfer.py",
+      "/root/data/cys/baseline/repos/FSBO/fsbo_modules.py"
+    ]
+  },
+  {
+    "name": "RGPE",
+    "status": "legacy reference and accelerated frozen-author-VAE campaign",
+    "environments": [
+      "bl_rgpe",
+      "bolt_clean_venv",
+      "openbox_qwen_eval"
+    ],
+    "entrypoints": [
+      "/root/data/cys/llmoptimizer_benchmark/tools/peptide_rgpe_exact.py",
+      "/root/data/cys/llmoptimizer_benchmark/tools/peptide_rgpe_merged_worker.py",
+      "/root/data/cys/baseline/campaigns/peptide_rgpe_screen200_test200_20261119/code/launch.py",
+      "/root/data/cys/baseline/campaigns/peptide_rgpe_screen200_test200_20261119/code/screening.py"
+    ]
+  },
+  {
+    "name": "BORA",
+    "status": "peptide adaptation uses untouched Qwen and frozen VAE",
+    "environments": [
+      "bl_bora",
+      "bolt_clean_venv",
+      "openbox_qwen_eval",
+      "taskset_qwen35_fast_20261030",
+      "llamafactory_qwen35"
+    ],
+    "entrypoints": [
+      "/root/data/cys/baseline/campaigns/peptide_bora_test200_20261118/code/scheduler.py",
+      "/root/data/cys/baseline/campaigns/peptide_bora_test200_20261118/code/worker.py"
+    ]
+  },
+  {
+    "name": "SemanticOPT",
+    "status": "discrete training, held-out evaluation and ten-task peptide continuation",
+    "environments": [
+      "bl_semanticopt",
+      "bolt_clean_venv",
+      "openbox_qwen_eval",
+      "taskset_qwen35_fast_20261030",
+      "llamafactory_qwen35"
+    ],
+    "entrypoints": [
+      "/root/data/cys/baseline/campaigns/semanticopt_discrete_20261109/code/train.py",
+      "/root/data/cys/baseline/campaigns/semanticopt_eval200_20261110/code/queue.py",
+      "/root/data/cys/baseline/campaigns/semanticopt_peptide_test10_5000_20261117/control/controller.py"
+    ]
+  },
+  {
+    "name": "ToSFiT",
+    "status": "upstream implementation; no peptide/query production campaign established here",
+    "environments": [
+      "bl_tosfit"
+    ],
+    "entrypoints": [
+      "/root/data/cys/baseline/repos/tosfit/scripts/run_tosfit.py",
+      "/root/data/cys/baseline/repos/tosfit/src/tosfit.py"
+    ]
+  },
+  {
+    "name": "OptFormer",
+    "status": "deferred discrete adaptation; era-matched upstream training code",
+    "environments": [
+      "bl_optformer"
+    ],
+    "entrypoints": [
+      "/root/data/cys/baseline/repos/optformer-neurips22/optformer/data/tasks.py",
+      "/root/data/cys/baseline/repos/t5x-2023-07/t5x/train.py"
+    ]
+  }
+]

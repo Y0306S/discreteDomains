@@ -62,7 +62,8 @@ def roots():
            CYS/'LLMOptimizer', CYS/'baseline', Path('/root/peptide_our_orpo_rl_train800_20261110'),
            Path('/root/data/env-packs')]
     vendor = CYS/'baseline/repos'
-    for name in ['BOLT', 'BayesQO', 'FSBO', 'bora-the-explorer', 'lolbo', 'transfer-hpo-framework']:
+    for name in ['BOLT', 'BayesQO', 'FSBO', 'bora-the-explorer', 'lolbo', 'transfer-hpo-framework',
+                 'tosfit', 'optformer', 'optformer-neurips22', 't5x', 't5x-2023-07']:
         out.append(vendor/name)
     campaigns = CYS/'baseline/campaigns'
     out.extend(p for p in campaigns.iterdir() if p.is_dir() and
@@ -116,7 +117,7 @@ def collect_tree(root):
             p = directory/name
             if p.is_symlink():
                 LINKS[str(p)] = str(p.resolve())
-        dirs[:] = sorted(d for d in dirs if d not in SKIP and
+        dirs[:] = sorted(d for d in dirs if d not in SKIP and not d.endswith('.egg-info') and
                          not d.startswith(('checkpoint-', '.')) and not (directory/d).is_symlink())
         for name in sorted(files):
             copy_file(directory/name)
@@ -139,7 +140,7 @@ def collect_package_sources(selected):
                  'site-packages', 'wandb', 'node_modules', 'unsloth_compiled_cache'}
     for root in sorted(set(packages)):
         for directory, dirs, files in os.walk(root, followlinks=False):
-            dirs[:] = [d for d in dirs if d not in hard_skip and not (Path(directory)/d).is_symlink()]
+            dirs[:] = [d for d in dirs if d not in hard_skip and not d.endswith('.egg-info') and not (Path(directory)/d).is_symlink()]
             for name in files:
                 p = Path(directory)/name
                 if p.suffix in {'.py','.sh','.sql','.c','.h','.cpp','.cu','.hpp'}:
@@ -181,8 +182,10 @@ def main():
             # Avoid exporting credential-bearing remotes.
             remote = git('remote', 'get-url', 'origin')
             remote = re.sub(r'(https?://)[^/@]+@', r'\1', remote)
+            status = '\n'.join(line for line in git('status', '--porcelain', '-uno').splitlines()
+                               if '__pycache__/' not in line and not line.endswith('.pyc'))
             upstream.append({'path': str(root), 'head': git('rev-parse', 'HEAD'),
-                             'origin': remote, 'status': git('status', '--porcelain', '-uno')})
+                             'origin': remote, 'status': status})
     (inventory/'upstream.json').write_text(json.dumps(upstream, indent=2)+'\n')
     print(f'Copied {len(COPIED)} files ({sum(r["bytes"] for r in COPIED.values())/1024**2:.1f} MiB) from {len(selected)} roots')
 

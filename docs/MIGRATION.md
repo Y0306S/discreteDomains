@@ -6,6 +6,10 @@ packed the current environments or restored a database. These operations are
 explicit steps below. Live experiments on the original machines were left
 running.
 
+For a method-by-method source, environment and scientific-input inventory,
+see [BASELINES.md](BASELINES.md). The baseline directory on the original host
+is `/root/data/cys/baseline` (singular).
+
 ## 1. Keep the original layout
 
 Use Linux x86_64 and retain the `/root/data/...` and `/root/eb-public/...`

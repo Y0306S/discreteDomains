@@ -17,6 +17,11 @@ Python imports. Each Python environment has `installed.json`, exact
 | `bl_rgpe` | Legacy RGPE reference environment | 3.7.16 | torch 1.5.0, gpytorch 1.1.1 |
 | `bl_semanticopt` | SemanticOPT baseline | 3.11.16 | torch 2.12.1, transformers 5.5.0 |
 | `bolt_qp` | Auxiliary native query baseline environment | 3.12.14 | torch 2.14.0+cu126 |
+| `taskset_qwen35_fast_20261030` | BORA/SemanticOPT Qwen inference overlay; parent is `llamafactory_qwen35` | 3.11.15 | Installed export in its directory |
+| `bl_tosfit` | ToSFiT upstream reference | 3.11.16 | torch 2.6.0, transformers 4.51.3 |
+| `bl_optformer` | OptFormer/older T5X upstream reference | 3.10.21 | JAX 0.4.23, TensorFlow 2.13.1 |
+| `bl_lolbo_harness` | CPU LOLBO harness reference | 3.10.20 | torch 2.0.1+cpu, botorch 0.9.2 |
+| `bl_lolbo_harness_cu118` | CUDA LOLBO harness reference | 3.10.20 | torch 2.0.1+cu118, botorch 0.9.2 |
 | `pg16` | PostgreSQL binaries | — | PostgreSQL 16.15 |
 
 Keep the modern and legacy stacks separate: their GPyTorch, NumPy, Torch and
@@ -36,16 +41,18 @@ python migration/pack_environments.py --output /root/data/discreteDomains-env-pa
 python migration/pack_environments.py --output /root/data/discreteDomains-env-packs --apply
 ```
 
-The default packs the modern parent, overlay, training, legacy FSBO and
-PostgreSQL environments. Add `--names ...` to include the optional baseline
-environments. Archives and their SHA256 manifest remain outside this repository.
+The default preview includes the deployed modern parent/overlay pairs,
+legacy FSBO/RGPE, selected baseline references and PostgreSQL. Use `--names`
+for auxiliary LOLBO harness or bolt_qp environments. See
+[BASELINES.md](../docs/BASELINES.md). Archives and their SHA256 manifest remain outside this repository.
 The older archives in `/root/data/env-packs` are from September; they are not
 an exact replacement for these November environments.
 
 On the new server, extract each archive into the **original prefix** recorded
 in its manifest. For each Conda environment, then run `PREFIX/bin/conda-unpack`.
-Extract the overlay after restoring its `openbox_qwen_eval` parent. The overlay
-uses `--system-site-packages`, and its executable depends on that parent path.
+Both `bolt_clean_venv` and `taskset_qwen35_fast_20261030` are
+`--system-site-packages` overlays. Extract each after its corresponding parent
+(`openbox_qwen_eval` or `llamafactory_qwen35`) at the recorded prefix.
 Packing ignores editable-project checks because those sources are restored
 from Git. Re-register LLaMA-Factory in the two parent environments after restore:
 

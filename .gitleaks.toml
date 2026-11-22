@@ -5,3 +5,12 @@ useDefault = true
 description = "SHA256 file identities in experiment manifests"
 regexTarget = "secret"
 regexes = ['''^[a-f0-9]{64}$''', '''^generation/[0-9]+/[0-9]+$''']
+
+[[allowlists]]
+description = "Vendored upstream vocabulary, test parameter and model-name literals"
+regexTarget = "match"
+regexes = [
+  '''token_to_id_initializer, num_oov_buckets=1''',
+  '''self\.key_len, bidirectional=True''',
+  '''tokenizer: nferruz/ProtGPT2''',
+]

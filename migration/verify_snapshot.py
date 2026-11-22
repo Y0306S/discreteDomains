@@ -27,13 +27,14 @@ def main():
         if not snapshot.is_file() or hashlib.sha256(snapshot.read_bytes()).hexdigest()!=record['sha256']:
             failures.append(path)
     failures.extend(path for path in REQUIRED if path not in inventory)
-    for env in json.loads((REPO/'environments/index.json').read_text()):
+    environments=json.loads((REPO/'environments/index.json').read_text())
+    for env in environments:
         if env.get('error') or not (REPO/'environments'/env['name']/'installed.json').exists():
             failures.append('environment: '+env['name'])
     if failures:
         raise SystemExit('Verification failed:\n'+'\n'.join(failures))
     print(f'PASS: {len(inventory)} source hashes, {len(REQUIRED)} required entry points, '
-          '9 Python environment exports and PostgreSQL specification.')
+          f'{len(environments)} Python environment exports and PostgreSQL specification.')
 
 
 if __name__=='__main__':

@@ -14,8 +14,11 @@ REPO = Path(__file__).resolve().parents[1]
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--names', nargs='+', default=['openbox_qwen_eval','bolt_clean_venv',
-                        'llamafactory_qwen35','bl_fsbo_exact','pg16'])
+    parser.add_argument('--names', nargs='+', default=[
+        'openbox_qwen_eval', 'bolt_clean_venv', 'llamafactory_qwen35',
+        'taskset_qwen35_fast_20261030', 'bl_fsbo_exact', 'bl_rgpe',
+        'bl_lolbo_exact', 'bl_bora', 'bl_semanticopt', 'bl_tosfit',
+        'bl_optformer', 'pg16'])
     parser.add_argument('--apply', action='store_true')
     args = parser.parse_args()
     output = args.output.resolve()
