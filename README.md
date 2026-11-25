@@ -15,6 +15,7 @@ plan. **A Git clone alone does not contain those experiment inputs.**
 | --- | --- |
 | Server migration steps | [docs/MIGRATION.md](docs/MIGRATION.md) |
 | Experiment versions and commands | [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md) |
+| Peptide initialization: 100 feasible measured samples per task | [docs/PEPTIDE_INITIALIZATION.md](docs/PEPTIDE_INITIALIZATION.md) |
 | Baseline methods, environments, payloads and acceptance gates | [docs/BASELINES.md](docs/BASELINES.md) |
 | Python/CUDA/PostgreSQL environments | [environments/README.md](environments/README.md) |
 | Original source layout | [snapshot/root](snapshot/root) |
