@@ -123,8 +123,11 @@ def main():
                 cached = prior.get(str(f), {})
                 sha = cached.get('sha256') if (cached.get('bytes'), cached.get('mtime_ns')) == (stat.st_size, stat.st_mtime_ns) else None
                 sha = sha or digest(f)
-                item['files'].append(dict(source=str(f), name=f.name if f == p else f.relative_to(p).as_posix(),
-                                          bytes=stat.st_size, mtime_ns=stat.st_mtime_ns, sha256=sha))
+                record = dict(source=str(f), name=f.name if f == p else f.relative_to(p).as_posix(),
+                              bytes=stat.st_size, mtime_ns=stat.st_mtime_ns, sha256=sha)
+                if str(f.resolve()) != str(f):
+                    record['canonical_source'] = str(f.resolve())
+                item['files'].append(record)
             item['bytes'] = sum(f['bytes'] for f in item['files'])
             item['hash_status'] = 'All listed file bytes SHA256 verified locally.'
         print(f"{item['id']}: {item['bytes']:,} bytes", flush=True)

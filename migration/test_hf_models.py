@@ -47,7 +47,7 @@ class ModelTransferTests(unittest.TestCase):
             folder.mkdir()
             payload = b'final model'
             (folder/'weights').write_bytes(payload)
-            item = dict(source='/root/models/weights', name='weights', bytes=len(payload),
+            item = dict(source='/root/models/weights', canonical_source='/root/shared/weights', name='weights', bytes=len(payload),
                         sha256=hashlib.sha256(payload).hexdigest())
             (folder/'payload-manifest.json').write_text(json.dumps(dict(model=dict(mode='file'), files=[item])))
             destination = root/'destination'
@@ -56,6 +56,7 @@ class ModelTransferTests(unittest.TestCase):
             restore(folder, destination, apply=True)
             target = destination/'root/models/weights'
             self.assertEqual(target.read_bytes(), payload)
+            self.assertEqual((destination/'root/shared/weights').read_bytes(), payload)
             target.write_bytes(b'different model')
             with self.assertRaises(FileExistsError):
                 restore(folder, destination, apply=True)

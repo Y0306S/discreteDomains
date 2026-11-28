@@ -201,7 +201,10 @@ def restore(folder, destination, apply=False):
             verify_payload(folder, manifest)
             restore_bank(folder, manifest, target)
         return
-    targets = [(f, safe_child(destination, f['source'].lstrip('/'))) for f in manifest['files']]
+    targets = []
+    for f in manifest['files']:
+        paths = list(dict.fromkeys([f.get('canonical_source', f['source']), f['source']]))
+        targets.extend((f, safe_child(destination, path.lstrip('/'))) for path in paths)
     for f, target in targets:
         print(f"RESTORE {f['name']} -> {target}")
         if target.exists() and (target.stat().st_size != f['bytes'] or digest(target) != f['sha256']):
@@ -231,6 +234,9 @@ def main():
     prep.add_argument('--stage', type=Path, default=Path('/root/data/discreteDomains-final-models/hf'))
     prep.add_argument('--id', action='append')
     prep.add_argument('--export-rgpe', action='store_true')
+    status = sub.add_parser('status')
+    status.add_argument('--catalog', type=Path, default=REPO/'migration/inventory/final-models.json')
+    status.add_argument('--stage', type=Path, default=Path('/root/data/discreteDomains-final-models/hf'))
     up = sub.add_parser('upload')
     up.add_argument('--stage', type=Path, default=Path('/root/data/discreteDomains-final-models/hf'))
     up.add_argument('--namespace', required=True)
@@ -244,7 +250,20 @@ def main():
     res.add_argument('--destination', type=Path, required=True)
     res.add_argument('--apply', action='store_true')
     args = parser.parse_args()
-    if args.action == 'prepare':
+    if args.action == 'status':
+        models = json.loads(args.catalog.read_text())['models']
+        records = []
+        for m in models:
+            folder = args.stage/m['id']
+            manifest = folder/'payload-manifest.json'
+            record = dict(id=m['id'], prepared=manifest.is_file(), bytes=m['bytes'])
+            if m['mode'] == 'sqlite':
+                record['source_models'] = len(m['rows'])
+                record['exported_models'] = sum((folder/r['name']).is_file() for r in m['rows'])
+            records.append(record)
+        print(json.dumps(dict(prepared=sum(r['prepared'] for r in records), expected=len(records),
+                              total_bytes=sum(r['bytes'] for r in records), models=records), indent=2))
+    elif args.action == 'prepare':
         models = json.loads(args.catalog.read_text())['models']
         if args.id and set(args.id) - {m['id'] for m in models}:
             parser.error('Unknown model id')

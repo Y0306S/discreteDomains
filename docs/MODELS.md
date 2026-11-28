@@ -53,6 +53,7 @@ OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 \
 python migration/model_catalog.py --reuse-hashes
 python migration/hf_models.py prepare
 python migration/hf_models.py prepare --id query-rgpe --id peptide-rgpe --export-rgpe
+python migration/hf_models.py status
 python -m unittest discover -s migration -p test_hf_models.py
 ```
 
@@ -111,6 +112,9 @@ python migration/hf_models.py restore \
 Repeat for each dependency in the manifest. Downloads require immutable commit
 revisions. Restore previews paths by default, hashes downloaded payloads before
 writing, accepts identical existing files and refuses conflicting files.
+For models selected through a symlinked campaign path, both that recorded path
+and its original canonical file path are restored. The general scientific-input
+transfer also preserves campaign dependency symlinks.
 RGPE restoration streams payloads into a fresh SQLite database and runs
 `PRAGMA quick_check`; it refuses to replace an existing bank. Hugging Face cache
 files and restored payloads may both occupy storage, so provision space for both.
