@@ -1,0 +1,906 @@
+--- /root/data/logs/peptide_target_loss_gate_20round_max2_test10_20261119/code/evaluate.py
++++ /root/data/logs/peptide_fsbo_feasible_search_20261122/code/evaluate.py
+@@ -13,7 +13,7 @@
+ sys.path.insert(0,'/root/data/cys/baseline/repos/FSBO')
+ from fsbo_modules import DeepKernelGP
+ from fsbo_target_refit import fit_target
+-import peptide_local_policy as policy
++import fsbo_search_policy as policy
+ import retrain_schedule
+ from lolbo.utils.bo_utils.turbo import TurboState,update_state
+ from lolbo.utils.bo_utils.constrained_max_posterior_sampling import MaxPosteriorSampling
+@@ -128,7 +128,11 @@
+     reference=source['references'][task]
+     assert pool['reference']==reference
+     recipe=read(BASE/'recipe.json')
+-    recipe.update(proposals=cfg['proposals'],fresh_budget=cfg['fresh_budget'])
++    recipe.update(proposals=cfg['proposals'],fresh_budget=cfg['fresh_budget'],
++                  n_candidates=cfg['candidates'],batch_size=cfg['batch_size'])
++    recipe['local']=dict(recipe['local'],top_k=cfg['recenter_top_k'],
++        recenter_epochs=cfg['recenter_epochs'],tr_length_min=cfg['tr_length_min'],
++        tr_length_max=cfg['tr_length_max'])
+     def constraints(seqs):
+         from Levenshtein import distance
+         return np.asarray([[.75-(1-distance(s,reference)/len(reference))] for s in seqs],dtype=np.float32)
+@@ -172,7 +176,7 @@
+                 acquisition_fresh=0,recenter_fresh=0,recenter_proposals=0,events=0,seconds=0.),
+             timing=dict(initialization=0.,target_refit=0.,constraint_fit=0.,acquisition=0.,
+                 decode=0.,oracle=0.,encoding=0.,joint_update=0.,reencoding=0.,source_meta_retraining=0.,checkpoint=0.),
+-            adaptation_events=[],fit_events=[],wall_seconds=0.)
++            adaptation_events=[],fit_events=[],search_events=[],wall_seconds=0.)
+         if not (state['constraints']<=0).all():
+             raise ValueError('Invalid starting peptide feasibility')
+         state['trust_region']=policy.new_region(rows,state['constraints'],50,recipe['local'],TurboState)
+@@ -200,6 +204,9 @@
+         result=dict(identity=identity,status='running',**state['progress'],timing=state['timing'],
+             wall_seconds=state['wall_seconds'],e2e_updates=len(state['adaptation_events']),
+             retrain_schedule=state['retrain_schedule'],
++            acquisition_feasible=sum(r['phase']=='acquisition' and r['feasible'] for r in state['rows']),
++            fresh_feasible_acquisition=sum(r['phase']=='acquisition' and r['feasible'] and not r['cached'] for r in state['rows']),
++            last_search=state['search_events'][-1] if state['search_events'] else None,
+             best_feasible_mic=state['rows'][policy.incumbent(state['rows'])]['mic'])
+         write(directory/'status.json',result)
+     if interrupted_updates:
+@@ -213,7 +220,7 @@
+             if force_update and not state['adaptation_events'] and state['progress']['events']==1:
+                 state['retrain_schedule']['rounds_without_improvement']=cfg['stagnation_rounds']
+             phase=policy.next_phase(state,recipe)
+-            if arm=='adapted_online' and retrain_schedule.due(state,cfg):
++            if phase=='acquisition' and arm=='adapted_online' and retrain_schedule.due(state,cfg):
+                 before=time.monotonic()
+                 y=np.asarray([r['score'] for r in state['rows']])
+                 fit=fsbo.fit(state['features'],y,1+state['progress']['events'])
+@@ -258,10 +265,13 @@
+                     attempt=reservation['attempt'],
+                     trigger_nonimproving_rounds=reservation['trigger_nonimproving_rounds'])
+                 state['adaptation_events'][attempt_index]=event
++                event['recenter_scheduled']=policy.after_retrain(state,event,recipe)
+                 # Publish all retained models, new coordinates and decision together.
+                 persist()
+                 write(update_dir/'decision.json',event)
++                phase=policy.next_phase(state,recipe)
+             extra={}
++            sequences=None
+             if phase=='recenter':
+                 plan=state['recenter_plan']
+                 end=min(len(plan['inputs']),plan['cursor']+plan['batch'])
+@@ -280,16 +290,33 @@
+                 state['fit_events'].append(dict(round=state['progress']['rounds'],**fit))
+                 before=time.monotonic()
+                 center=torch.as_tensor(state['constraint_z'][policy.incumbent(state['rows'])])
+-                candidates=policy.candidate_pool(center,state['trust_region'],recipe['n_candidates'],20.).cuda()
++                decode_before=state['timing']['decode']
++                def decode_candidates(batch):
++                    started_decode=time.monotonic()
++                    with torch.no_grad():
++                        decoded=objective.vae_decode(batch)
++                    torch.cuda.synchronize()
++                    state['timing']['decode']+=time.monotonic()-started_decode
++                    return decoded
++                candidates,pool_sequences,feasible,search=policy.adaptive_pool(
++                    center,state['trust_region'],recipe['n_candidates'],
++                    decode_candidates,constraints,
++                    lower=cfg['tr_feasibility_lower'],upper=cfg['tr_feasibility_upper'],
++                    max_adjustments=cfg['tr_max_adjustments'],decode_batch_size=cfg['decode_batch_size'])
++                candidates=candidates.cuda()
+                 count=min(50,recipe['proposals']-state['progress']['proposals'],recipe['fresh_budget']-state['progress']['fresh_evaluations'])
++                z,sequences,selection=policy.select_batch(
++                    candidates,pool_sequences,feasible,count,
++                    lambda pool,n:policy.thompson_indices(fsbo,pool,n,MaxPosteriorSampling))
++                z=z.cpu().numpy()
++                extra['search']=dict(search,**selection)
++                torch.cuda.synchronize()
++                state['timing']['acquisition']+=time.monotonic()-before-(state['timing']['decode']-decode_before)
++            if sequences is None:
++                before=time.monotonic()
+                 with torch.no_grad():
+-                    z=MaxPosteriorSampling(model=fsbo,constraint_models=[cm],constrained=True,replacement=False)(candidates,num_samples=count).cpu().numpy()
+-                torch.cuda.synchronize()
+-                state['timing']['acquisition']+=time.monotonic()-before
+-            before=time.monotonic()
+-            with torch.no_grad():
+-                sequences=objective.vae_decode(torch.as_tensor(z))
+-            state['timing']['decode']+=time.monotonic()-before
++                    sequences=objective.vae_decode(torch.as_tensor(z))
++                state['timing']['decode']+=time.monotonic()-before
+             cache={r['sequence']:r['score'] for r in state['rows']}
+             remaining=recipe['fresh_budget']-state['progress']['fresh_evaluations']
+             fresh=set()
+@@ -346,6 +373,9 @@
+             scored=dict(scores=[cache[s] for s in sequences],fresh_evaluations=len(new),cache_hits=hits))
+         before_score=state['rows'][policy.incumbent(state['rows'])]['score']
+         policy.commit(state,pending,recipe,update_state,TurboState)
++        if phase=='acquisition':
++            state['search_events'].append(dict(event=pending['event'],
++                round=state['progress']['rounds'],**pending['search']))
+         after_score=state['rows'][policy.incumbent(state['rows'])]['score']
+         retrain_schedule.observe(state,phase,before_score,after_score)
+         state['last_phase']=phase
+@@ -360,6 +390,7 @@
+     finished=(state['progress']['proposals']>=recipe['proposals'] or state['progress']['fresh_evaluations']>=recipe['fresh_budget'])
+     result=dict(read(directory/'status.json'),status='complete' if finished else 'smoke_complete',
+         observations=state['rows'],adaptation_events=state['adaptation_events'],fit_events=state['fit_events'],
++        search_events=state['search_events'],
+         phase_metrics=policy.phase_metrics(state['rows']),reference=reference,
+         initialization_best_mic=min(-float(y) for y in pool['scores']))
+     write(directory/'result.json',result)
+--- /root/data/cys/llmoptimizer_benchmark/tools/peptide_local_policy.py
++++ /root/data/logs/peptide_fsbo_feasible_search_20261122/code/fsbo_search_policy.py
+@@ -1,7 +1,8 @@
+-"""Frozen-VAE peptide policy, using BOLT's existing local/recenter mechanisms.
++"""FSBO peptide search with exact decoded feasibility and accepted-update recenter.
+ 
+ Coordinates here are absolute decoder inputs. Canonical transfer coordinates
+ belong to the objective backend, never to the constraint training data.
++Derived from tools/peptide_local_policy.py; isolated from historical campaigns.
+ """
+ from __future__ import annotations
+ 
+@@ -9,7 +10,7 @@
+ import torch
+ 
+ 
+-DEFAULTS = dict(recenter_every=10, recenter_epochs=2, top_k=1000,
++DEFAULTS = dict(recenter_epochs=1, top_k=200,
+                 tr_length=0.8, tr_length_min=0.5**7, tr_length_max=1.6,
+                 failure_tolerance=32, success_tolerance=10, perturb_dimensions=20.)
+ 
+@@ -58,6 +59,103 @@
+     candidates = center.expand(count, -1).clone()
+     candidates[mask] = perturbed[mask]
+     return candidates
++
++
++def adaptive_pool(center, region, count, decode, constraints, *,
++                  lower=.1, upper=.5, max_adjustments=3, decode_batch_size=128):
++    """Reuse one Sobol draw AND sparse mask across at most three rescalings.
++
++    Decode the final pool too, including after the last permitted adjustment.
++    Return those exact sequences for scoring, without a second stochastic decode.
++    No oracle calls are made here.
++    """
++    from torch.quasirandom import SobolEngine
++    if count < 1 or decode_batch_size < 1 or max_adjustments < 0:
++        raise ValueError('Invalid candidate pool budget')
++    if not 0 <= lower <= upper <= 1:
++        raise ValueError('Invalid feasibility thresholds')
++    unit = SobolEngine(len(center), scramble=True).draw(count).to(center)
++    mask = sparse_mask(count, len(center)).to(center.device)
++    region.length = min(region.length_max, max(region.length_min, region.length))
++    history = []
++    for attempt in range(max_adjustments+1):
++        low, high = bounds(center, region)
++        perturbed = low + (high-low)*unit
++        candidates = center.expand(count, -1).clone()
++        candidates[mask] = perturbed[mask]
++        sequences = []
++        with torch.no_grad():
++            for batch in candidates.split(decode_batch_size):
++                decoded = list(decode(batch))
++                if len(decoded) != len(batch):
++                    raise ValueError('Decoder returned a misaligned pool')
++                sequences.extend(decoded)
++        values = np.asarray(constraints(sequences)).reshape(count, -1)
++        if not np.isfinite(values).all():
++            raise ValueError('Nonfinite decoded constraints')
++        feasible = (values <= 0).all(axis=1)
++        rate = float(feasible.mean())
++        history.append(dict(length=float(region.length), feasible_rate=rate))
++        if attempt == max_adjustments:
++            break
++        length = region.length
++        if rate < lower:
++            length = max(region.length_min, length/2.)
++        elif rate > upper:
++            length = min(region.length_max, length*2.)
++        if length == region.length:
++            break
++        region.length = length
++    return candidates, sequences, feasible, dict(
++        adjustments=len(history)-1, probes=history, length=float(region.length),
++        feasible_rate=rate, decoded_candidates=count*len(history))
++
++
++def select_batch(candidates, sequences, feasible, count, rank_indices):
++    """Rank exact feasible candidates first; fill shortfalls from infeasible ones.
++
++    rank_indices(pool, count) returns local row indices without replacement.
++    Keep row identity even when distinct latent rows decode to the same peptide.
++    """
++    feasible = np.asarray(feasible, dtype=bool)
++    if len(sequences) != len(candidates) or feasible.shape != (len(candidates),):
++        raise ValueError('Misaligned candidate pool')
++    if not 0 < count <= len(candidates):
++        raise ValueError('Invalid selection count')
++    chosen = []
++    for valid in (True, False):
++        ids = np.flatnonzero(feasible == valid)
++        take = min(count-len(chosen), len(ids))
++        if take:
++            local = np.asarray(rank_indices(candidates[ids], take), dtype=int).reshape(-1)
++            if (len(local) != take or len(set(local)) != take or
++                    (local < 0).any() or (local >= len(ids)).any()):
++                raise ValueError('Ranking must return unique pool indices')
++            chosen.extend(ids[local].tolist())
++        if len(chosen) == count:
++            break
++    return candidates[chosen], [sequences[i] for i in chosen], dict(
++        feasible_selected=int(feasible[chosen].sum()),
++        infeasible_fill=int((~feasible[chosen]).sum()))
++
++
++def thompson_indices(model, candidates, count, sampler_class):
++    """Use native objective TS, sampling row IDs to preserve decoded identity.
++
++    Exact decoded constraints have already split the pool, so a predicted
++    constraint is not allowed to veto known feasible candidates.
++    """
++    class IndexedModel:
++        def posterior(self, ids, observation_noise=False):
++            return model.posterior(candidates[ids[..., 0].long()],
++                                   observation_noise=observation_noise)
++
++    ids = torch.arange(len(candidates), device=candidates.device,
++                       dtype=candidates.dtype).unsqueeze(-1)
++    with torch.no_grad():
++        selected = sampler_class(model=IndexedModel(), constrained=False,
++                                 replacement=False)(ids, num_samples=count)
++    return selected.flatten().long().cpu().numpy()
+ 
+ 
+ def recenter_plan(rows, recent, settings):
+@@ -82,10 +180,18 @@
+     plan = state['recenter_plan']
+     if plan is not None and plan['cursor'] >= len(plan['inputs']):
+         state['recenter_plan'] = None
+-    if state['recenter_plan'] is None and state['stagnation'] >= recipe['local']['recenter_every']:
+-        state['recenter_plan'] = recenter_plan(state['rows'], recipe['batch_size'], recipe['local'])
+-        state['stagnation'] = 0
+     return 'recenter' if state['recenter_plan'] is not None else 'acquisition'
++
++
++def after_retrain(state, event, recipe):
++    """Call before atomic publication of the retained VAE and new coordinates."""
++    if not event['accepted'] or event.get('rolled_back', False):
++        return False
++    if state['recenter_plan'] is not None:
++        raise ValueError('Cannot replace an unfinished recenter plan')
++    state['recenter_plan'] = recenter_plan(
++        state['rows'], recipe['batch_size'], recipe['local'])
++    return True
+ 
+ 
+ def constrain_indices(model, candidates):
+@@ -146,12 +252,14 @@
+     elif acquired:
+         state['stagnation'] += 1
+     if acquired:
++        # Retain native success/failure adaptation, but enforce the floor and
++        # remove region restarts. Decoder feasibility also adjusts length before
++        # acquisition; neither path may take it below the configured minimum.
+         update_region(state['trust_region'], torch.tensor(scored['scores']).reshape(-1, 1),
+                       torch.as_tensor(constraints))
+-        if state['trust_region'].restart_triggered:
+-            # Include the just-committed batch and the actual incumbent constraint.
+-            state['trust_region'] = new_region(state['rows'], state['constraints'],
+-                recipe['batch_size'], recipe['local'], turbo_class)
++        region = state['trust_region']
++        region.length = min(region.length_max, max(region.length_min, region.length))
++        region.restart_triggered = False
+     else:
+         state['recenter_plan']['cursor'] = pending['next_cursor']
+     state['last_event_size'] = n
+--- /dev/null
++++ /root/data/logs/peptide_fsbo_feasible_search_20261122/code/test_fsbo_search_policy.py
+@@ -0,0 +1,200 @@
++"""Behavioral regression tests; no MIC calls or VAE training."""
++import copy
++import json
++from pathlib import Path
++import sys
++from types import SimpleNamespace
++import unittest
++
++import numpy as np
++import torch
++
++import fsbo_search_policy as policy
++
++sys.path.insert(0, '/root/data/cys/BOLT/optimization/peptides')
++from lolbo.utils.bo_utils.turbo import TurboState, update_state
++from lolbo.utils.bo_utils.constrained_max_posterior_sampling import MaxPosteriorSampling
++
++
++def row(sequence, score, feasible=True):
++    return dict(sequence=sequence, score=score, feasible=feasible)
++
++
++def recipe():
++    return dict(local=dict(policy.DEFAULTS), batch_size=50)
++
++
++def region(length=.8):
++    return SimpleNamespace(length=length, length_min=.0078125, length_max=1.6)
++
++
++class RecenterTests(unittest.TestCase):
++    def state(self):
++        return dict(rows=[row(str(i), i) for i in range(300)],
++                    recenter_plan=None, stagnation=10000)
++
++    def test_stagnation_alone_never_recenters(self):
++        self.assertEqual(policy.next_phase(self.state(), recipe()), 'acquisition')
++
++    def test_rejected_or_rolled_back_update_does_not_recenter(self):
++        for event in (dict(accepted=False, rolled_back=True),
++                      dict(accepted=True, rolled_back=True)):
++            state = self.state()
++            self.assertFalse(policy.after_retrain(state, event, recipe()))
++            self.assertEqual(policy.next_phase(state, recipe()), 'acquisition')
++
++    def test_accepted_update_recent50_unique_feasible_top200_once(self):
++        state = self.state()
++        state['rows'].insert(0, row('infeasible', 1e9, False))
++        state['rows'].insert(1, row('299', 1e8))
++        self.assertTrue(policy.after_retrain(state, dict(accepted=True, rolled_back=False), recipe()))
++        self.assertEqual(policy.next_phase(state, recipe()), 'recenter')
++        plan = state['recenter_plan']
++        self.assertEqual(len(plan['inputs']), 250)
++        self.assertEqual(plan['inputs'][:50], [str(i) for i in range(250, 300)])
++        self.assertEqual(plan['inputs'][50:], [str(i) for i in range(299, 99, -1)])
++
++    def test_checkpointed_plan_resumes_and_finishes_without_retrigger(self):
++        state = self.state()
++        policy.after_retrain(state, dict(accepted=True), recipe())
++        state['recenter_plan']['cursor'] = 17
++        restored = json.loads(json.dumps(state))
++        self.assertEqual(policy.next_phase(restored, recipe()), 'recenter')
++        self.assertEqual(restored['recenter_plan']['cursor'], 17)
++        restored['recenter_plan']['cursor'] = len(restored['recenter_plan']['inputs'])
++        self.assertEqual(policy.next_phase(restored, recipe()), 'acquisition')
++        self.assertIsNone(restored['recenter_plan'])
++
++
++class PoolTests(unittest.TestCase):
++    def pool(self, rates, length=.8, count=100, batch=100):
++        calls = []
++        def decode(x):
++            calls.append(x.clone())
++            return [str(i) for i in range(len(x))]
++        def constraints(sequences):
++            rate = rates[min(len(calls)-1, len(rates)-1)]
++            return [-1 if i < round(rate*len(sequences)) else 1 for i in range(len(sequences))]
++        tr = region(length)
++        output = policy.adaptive_pool(torch.zeros(256), tr, count, decode, constraints,
++                                      decode_batch_size=batch)
++        return tr, calls, output
++
++    def test_halve_below_ten_percent(self):
++        tr, calls, output = self.pool([.09, .2])
++        self.assertEqual(tr.length, .4)
++        self.assertEqual(output[3]['adjustments'], 1)
++
++    def test_double_above_fifty_percent(self):
++        tr, calls, output = self.pool([.51, .2], length=.4)
++        self.assertEqual(tr.length, .8)
++
++    def test_exact_thresholds_do_not_adjust(self):
++        for rate in (.1, .5):
++            tr, calls, output = self.pool([rate])
++            self.assertEqual(tr.length, .8)
++            self.assertEqual(len(calls), 1)
++
++    def test_floor_and_ceiling_stop_adjustments(self):
++        for length, rate in ((.0078125, 0.), (1.6, 1.)):
++            tr, calls, output = self.pool([rate], length)
++            self.assertEqual(tr.length, length)
++            self.assertEqual(len(calls), 1)
++        tr, calls, output = self.pool([0.], length=.01)
++        self.assertEqual(tr.length, .0078125)
++
++    def test_oscillation_stops_after_three_changes_and_decodes_final_length(self):
++        tr, calls, output = self.pool([0., 1., 0., 1.])
++        self.assertEqual([v['length'] for v in output[3]['probes']], [.8, .4, .8, .4])
++        self.assertEqual(output[3]['adjustments'], 3)
++        self.assertEqual(len(calls), 4)
++        self.assertEqual(tr.length, .4)
++        self.assertTrue(output[2].all())
++        torch.testing.assert_close(output[0], calls[-1])
++
++    def test_reuses_sobol_points_and_mask(self):
++        _, calls, _ = self.pool([0., 0., .2])
++        torch.testing.assert_close(calls[1], calls[0]/2)
++        torch.testing.assert_close(calls[2], calls[0]/4)
++
++    def test_5000_candidates_are_decoded_in_bounded_batches(self):
++        calls = []
++        def decode(x):
++            calls.append(len(x))
++            return ['AC' for _ in x]
++        _, seqs, feasible, info = policy.adaptive_pool(
++            torch.zeros(256), region(.0078125), 5000, decode,
++            lambda seqs: np.ones((len(seqs), 1)))
++        self.assertEqual(sum(calls), 5000)
++        self.assertLessEqual(max(calls), 128)
++        self.assertEqual(len(seqs), 5000)
++        self.assertFalse(feasible.any())
++        self.assertEqual(info['decoded_candidates'], 5000)
++
++
++class SelectionTests(unittest.TestCase):
++    def select(self, feasible_count):
++        # Infeasible rows have higher objective values: feasibility still wins.
++        x = torch.arange(100.).reshape(-1, 1)
++        seqs = ['decoded-'+str(i) for i in range(100)]
++        valid = np.arange(100) < feasible_count
++        calls = []
++        def rank(pool, count):
++            calls.append(pool.clone())
++            return pool[:, 0].argsort(descending=True)[:count].numpy()
++        return policy.select_batch(x, seqs, valid, 50, rank), calls
++
++    def test_selects_only_feasible_when_at_least_fifty_exist(self):
++        for feasible_count in (50, 60, 100):
++            (z, seqs, info), calls = self.select(feasible_count)
++            self.assertEqual(info['feasible_selected'], 50)
++            self.assertEqual(info['infeasible_fill'], 0)
++            self.assertTrue((z[:, 0] < feasible_count).all())
++            self.assertEqual(len(calls), 1)
++            self.assertEqual(seqs, ['decoded-'+str(int(v)) for v in z[:, 0]])
++
++    def test_shortfall_filled_from_infeasible_pool(self):
++        for feasible_count in (0, 1, 23, 49):
++            (z, seqs, info), calls = self.select(feasible_count)
++            self.assertEqual(len(z), 50)
++            self.assertEqual(info['feasible_selected'], feasible_count)
++            self.assertEqual(info['infeasible_fill'], 50-feasible_count)
++            self.assertEqual(len(z.unique()), 50)
++
++    def test_native_TS_preserves_row_identity_with_duplicate_latents(self):
++        class Model:
++            def posterior(self, x, observation_noise=False):
++                class Posterior:
++                    def rsample(self, sample_shape):
++                        return torch.arange(len(x)).float().reshape(1, -1, 1).expand(*sample_shape, -1, -1)
++                return Posterior()
++        # Distinct stochastic decodes may share identical latent values.
++        candidates = torch.zeros(10, 256)
++        ids = policy.thompson_indices(Model(), candidates, 4, MaxPosteriorSampling)
++        self.assertEqual(set(ids), {6, 7, 8, 9})
++
++
++class CommitTests(unittest.TestCase):
++    def test_native_shrink_clamps_at_floor_without_restarting(self):
++        state = dict(rows=[row('AC', -5.)], constraint_z=np.zeros((1, 256)),
++            features=np.zeros((1, 256)), constraints=np.array([[-.1]]),
++            stagnation=0, recenter_plan=None,
++            progress=dict(events=0, rounds=0, proposals=0, fresh_evaluations=0,
++                acquisition_fresh=0, recenter_fresh=0, recenter_proposals=0,
++                cache_hits=0, seconds=0.))
++        tr = TurboState(dim=256, batch_size=50, length=.0078125,
++            failure_tolerance=1, best_value=-5., best_constraint_values=torch.tensor([-.1]))
++        state['trust_region'] = tr
++        for i in range(1, 5):
++            pending = dict(event=i, phase='acquisition', sequences=['CA'],
++                z=np.ones((1, 256)), canonical_z=np.ones((1, 256)), constraints=[[-.1]],
++                scored=dict(scores=[-6.], fresh_evaluations=0, cache_hits=[True]))
++            policy.commit(state, pending, recipe(), update_state, TurboState)
++            self.assertIs(state['trust_region'], tr)
++            self.assertEqual(tr.length, .0078125)
++            self.assertFalse(tr.restart_triggered)
++
++
++if __name__ == '__main__':
++    torch.set_num_threads(2)
++    unittest.main(verbosity=2)
+--- /dev/null
++++ /root/data/logs/peptide_fsbo_feasible_search_20261122/code/validate_search.py
+@@ -0,0 +1,71 @@
++"""Real VAE + FSBO search smoke check, with no MIC oracle constructed or called."""
++import argparse
++import time
++
++from common import *
++import numpy as np
++import torch
++from Levenshtein import distance
++import fsbo_search_policy as policy
++from evaluate import FSBO, MaxPosteriorSampling
++from lolbo.info_transformer_vae_objective import ApexConstrainedDiverseObjective
++from lolbo.utils.bo_utils.turbo import TurboState
++
++
++def main(count):
++    started = time.monotonic()
++    cfg = prepare()
++    setup(seed=cfg['seed'])
++    torch.cuda.set_per_process_memory_fraction(.06)
++    task = cfg['tasks'][0]
++    pool = read('/root/reports/peptide_train800_test200_audit_20261027/test200_revalidated_initialization.json')[task]
++    reference = pool['reference']
++    vae, data = load_vae(ROOT/'vae/weights.pt')
++    # Only bind the production decoding method. Deliberately omit oracle setup.
++    decoder = object.__new__(ApexConstrainedDiverseObjective)
++    decoder.vae, decoder.dataobj = vae, data
++    features = encode(vae, data, pool['sequences'])
++    center = torch.as_tensor(features[int(np.argmax(pool['scores']))])
++    fsbo = FSBO(ROOT/'fsbo/weights', read(ROOT/'corpus/manifest.json'), max_updates=16)
++    fit = fsbo.fit(features, pool['scores'], cfg['seed'])
++    def constraints(sequences):
++        return np.array([[.75-(1-distance(s, reference)/len(reference))] for s in sequences])
++    calls = []
++    def decode(x):
++        calls.append(len(x))
++        return decoder.vae_decode(x)
++    region = TurboState(dim=256, batch_size=50)
++    candidates, sequences, feasible, search = policy.adaptive_pool(
++        center, region, count, decode, constraints,
++        lower=cfg['tr_feasibility_lower'], upper=cfg['tr_feasibility_upper'],
++        max_adjustments=cfg['tr_max_adjustments'], decode_batch_size=cfg['decode_batch_size'])
++    before_select = len(calls)
++    selected, decoded, selection = policy.select_batch(
++        candidates.cuda(), sequences, feasible, 50,
++        lambda pool, n: policy.thompson_indices(fsbo, pool, n, MaxPosteriorSampling))
++    checks = dict(
++        full_pool_decoded=sum(calls) == count*len(search['probes']),
++        bounded_decoder_batches=max(calls) <= cfg['decode_batch_size'],
++        at_most_three_adjustments=search['adjustments'] <= 3,
++        length_within_limits=cfg['tr_length_min'] <= region.length <= cfg['tr_length_max'],
++        exact_batch50=len(selected) == len(decoded) == 50,
++        feasible_priority=int((constraints(decoded) <= 0).sum()) == min(50, int(feasible.sum())),
++        retained_decodes=len(calls) == before_select,
++        valid_peptides=all(s and len(s) <= 30 and s.count('C') <= 1 and
++                           not set(s)-set('ACDEFGHIKLMNPQRSTVWY') for s in decoded),
++        no_oracle_constructed=not hasattr(decoder, 'objective_function'))
++    value = dict(passed=all(checks.values()), checks=checks, task=task,
++        candidates=count, search=search, selection=selection, target_fit=fit,
++        gpu=torch.cuda.get_device_name(), gpu_peak_bytes=torch.cuda.max_memory_allocated(),
++        seconds=time.monotonic()-started, oracle_calls=0,
++        scope='real retained offline VAE/FSBO; 16-update target fit for integration only; no online training',
++        implementation_sha256={p.name: sha(p) for p in sorted((ROOT/'code').glob('*.py'))})
++    write(ROOT/'validation'/f'real_search_{count}.json', value)
++    print(json.dumps(value, indent=2))
++    assert value['passed'], checks
++
++
++if __name__ == '__main__':
++    parser = argparse.ArgumentParser()
++    parser.add_argument('--candidates', type=int, default=5000)
++    main(parser.parse_args().candidates)
+--- /root/data/logs/peptide_target_loss_gate_20round_max2_test10_20261119/code/pipeline.py
++++ /root/data/logs/peptide_fsbo_feasible_search_20261122/code/pipeline.py
+@@ -1,5 +1,5 @@
+-"""Durable four-worker launch of the same-ten peptide target-gate experiment."""
+-from concurrent.futures import ThreadPoolExecutor, as_completed
++"""Durable same-ten peptide FSBO rerun with matched-budget live comparisons."""
++from concurrent.futures import ThreadPoolExecutor, wait, FIRST_COMPLETED
+ import fcntl
+ import hashlib
+ import json
+@@ -82,6 +82,14 @@
+         write(ROOT/'timings'/(task+'.json'),dict(seconds=time.time()-started,gpu=slot['gpu'],cpus=slot['cpus']))
+ 
+ 
++def update_report():
++    env=dict(os.environ,CUDA_VISIBLE_DEVICES='',OMP_NUM_THREADS='2',
++        MKL_NUM_THREADS='2',OPENBLAS_NUM_THREADS='2')
++    with (ROOT/'report.log').open('ab') as log:
++        subprocess.run([PYTHON,str(ROOT/'code/report.py')],env=env,cwd=ROOT,
++            stdout=log,stderr=subprocess.STDOUT,check=True)
++
++
+ def main():
+     with (ROOT/'pipeline.lock').open('a') as lock:
+         fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+@@ -89,29 +97,36 @@
+         cfg=read(ROOT/'config.json'); execution=read(ROOT/'execution_policy.json')
+         assert len(cfg['tasks'])==10 and cfg['batch_size']==50 and cfg['proposals']==cfg['fresh_budget']==4000
+         assert cfg['stagnation_rounds']==20 and cfg['max_retrain_attempts']==2
+-        assert read(ROOT/'validation/retrain_schedule.json')['passed']
+-        assert read(ROOT/'validation/scheduling_gpu.json')['passed']
+-        assert read(ROOT/'validation/live_gpu.json')['passed']
+-        assert read(ROOT/'validation/saved_pep999_gate.json')['passed']
++        assert read(ROOT/'validation/tests.json')['passed']
++        assert read(ROOT/'validation/real_search_5000.json')['passed']
++        assert cfg['recenter_top_k']==200 and cfg['recenter_epochs']==1
++        assert cfg['tr_max_adjustments']==3 and not cfg['trust_region_restart']
++        assert cfg['tr_length_min']==.0078125 and cfg['candidates']==5000
+         workers=execution['workers']; order=execution.get('task_order',cfg['tasks'])
+         assert set(order)==set(cfg['tasks']) and len(order)==len(cfg['tasks'])
+         assignments=[order[i::len(workers)] for i in range(len(workers))]
+-        status(status='running',stage='same10_target_loss_rollback_evaluation',assignments=assignments,
++        status(status='running',stage='same10_feasible_search_evaluation',assignments=assignments,
+             reused_offline_assets=True)
+         errors=[]
+         with ThreadPoolExecutor(max_workers=len(workers)) as pool:
+             futures={pool.submit(launch_worker,slot,tasks):slot for slot,tasks in zip(workers,assignments)}
+-            for future in as_completed(futures):
+-                try:future.result()
+-                except Exception:
+-                    errors.append(dict(slot=futures[future],error=traceback.format_exc()))
+-                    write(ROOT/'worker_errors.json',errors)
++            pending=set(futures)
++            while pending:
++                completed,pending=wait(pending,timeout=execution['status_interval_seconds'],
++                    return_when=FIRST_COMPLETED)
++                for future in completed:
++                    try:future.result()
++                    except Exception:
++                        errors.append(dict(slot=futures[future],error=traceback.format_exc()))
++                        write(ROOT/'worker_errors.json',errors)
++                update_report()
++                status(status='running',stage='same10_feasible_search_evaluation',
++                    assignments=assignments,active_slots=len(pending),failed_slots=len(errors),
++                    completed_tasks=read(ROOT/'summary.json')['completed_tasks'])
+         if errors:raise RuntimeError('Worker failures; see worker_errors.json')
+         status(status='running',stage='paired_comparison_report')
+         verify_manifest()
+-        env=dict(os.environ,CUDA_VISIBLE_DEVICES='',OMP_NUM_THREADS='2',MKL_NUM_THREADS='2',OPENBLAS_NUM_THREADS='2')
+-        with (ROOT/'report.log').open('ab') as log:
+-            subprocess.run([PYTHON,str(ROOT/'code/report.py')],env=env,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT,check=True)
++        update_report()
+         status(status='complete',stage='complete',results=str(ROOT/'RESULTS.md'))
+ 
+ 
+--- /root/data/logs/peptide_target_loss_gate_20round_max2_test10_20261119/code/report.py
++++ /root/data/logs/peptide_fsbo_feasible_search_20261122/code/report.py
+@@ -1,124 +1,151 @@
+-"""Paired MIC/retention report at the unchanged proposal4000 cap."""
++"""Live and final comparisons against the previous same-ten rollback run."""
++import bisect
+ import csv
+-from collections import defaultdict
+ import json
+ from pathlib import Path
+-import math
++import statistics
++import time
+ 
+-import matplotlib
+-matplotlib.use('Agg')
+-import matplotlib.pyplot as plt
+-import numpy as np
+-from common import ROOT,read,write
+-
+-PREVIOUS_CURVES=ROOT/'comparison_inputs/capped_convergence.csv'
+-METHOD='Online VAE + FSBO + rollback (20 rounds, max2)'
+-COLORS={'Original frozen FSBO':'#1f77b4','Online VAE + FSBO':'#d62728',
+-        'SemanticOPT with fallback':'#9467bd',METHOD:'#009E73'}
++ROOT = Path(__file__).resolve().parents[1]
+ 
+ 
+-def csv_write(name, rows):
+-    with (ROOT/name).open('w',newline='') as stream:
+-        writer=csv.DictWriter(stream,fieldnames=list(rows[0]));writer.writeheader();writer.writerows(rows)
++def read(path):
++    return json.loads(path.read_text())
++
++
++def write(path, value):
++    tmp = path.with_name(path.name+'.tmp')
++    tmp.write_text(json.dumps(value, indent=2, allow_nan=False)+'\n')
++    tmp.replace(path)
++
++
++def curve(result):
++    best = result['initialization_best_mic']
++    proposals = 0
++    points = [(0, best)]
++    for row in result['observations']:
++        if row['phase'] == 'initialization':
++            continue
++        proposals += row['phase'] == 'acquisition'
++        if row['feasible']:
++            best = min(best, row['mic'])
++        points.append((proposals, best))
++    assert proposals == result['proposals']
++    return points
++
++
++def at(points, proposals):
++    index = bisect.bisect_right([p for p, _ in points], proposals)-1
++    return points[max(index, 0)][1]
+ 
+ 
+ def main():
+-    cfg=read(ROOT/'config.json');tasks=cfg['tasks']
+-    old=defaultdict(list)
+-    for row in csv.DictReader(PREVIOUS_CURVES.open()):
+-        if row['task'] in tasks:
+-            old[row['method'],row['task']].append({k:float(row[k]) for k in ('fresh','mic','time','proposals')})
+-    records=[];new=defaultdict(list)
+-    for task in tasks:
+-        result=read(ROOT/'evaluation/adapted_online'/task/'result.json')
+-        assert result['status']=='complete' and result['proposals']<=4000 and result['fresh_evaluations']<=4000
+-        assert result['proposals']==4000 or result['fresh_evaluations']==4000
+-        best=result['initialization_best_mic'];fresh=0;proposals=0
+-        new[METHOD,task].append(dict(fresh=0.,mic=best,time=0.,proposals=0.))
+-        groups=[];group=[];key=None
+-        for row in result['observations']:
+-            if row['phase']=='initialization':continue
+-            current=(row['phase'],row['elapsed'])
+-            if key is not None and current!=key:groups.append(group);group=[]
+-            key=current;group.append(row)
+-        if group:groups.append(group)
+-        for group in groups:
+-            fresh+=sum(not r['cached'] for r in group)
+-            proposals+=sum(r['phase']=='acquisition' for r in group)
+-            best=min([best]+[r['mic'] for r in group if r['feasible']])
+-            new[METHOD,task].append(dict(fresh=float(fresh),mic=best,
+-                time=group[-1].get('wall_elapsed',group[-1]['elapsed']),proposals=float(proposals)))
+-        assert fresh==result['fresh_evaluations']
+-        events=result['adaptation_events']
+-        assert len(events)<=cfg['max_retrain_attempts']
+-        assert all(e['trigger_nonimproving_rounds']>=cfg['stagnation_rounds'] for e in events)
+-        for event in events:
+-            if event['accepted']:
+-                after=event['target_loss_after']['mean_target_loss']
+-                assert after<=event['target_loss_before']['mean_target_loss']+1e-12
+-                assert after<=event['target_loss_initial_baseline']['mean_target_loss']+1e-12
+-            else:assert event['vae_change_l2']==0
+-        records.append(dict(task=task,final_mic=best,initial_mic=result['initialization_best_mic'],
+-            proposals=proposals,fresh_evaluations=fresh,wall_seconds=result['wall_seconds'],
+-            update_attempts=len(events),updates_accepted=sum(e['accepted'] for e in events),
+-            updates_rolled_back=sum(not e['accepted'] for e in events)))
+-    curves={**old,**new};methods=[m for m in COLORS if all((m,t) in curves for t in tasks)]
+-    assert len(methods)==4
+-    export=[];summary=[]
+-    x=np.arange(0,4001)
+-    fig,ax=plt.subplots(figsize=(11,6.5))
+-    for method in methods:
+-        values=[]
+-        for task in tasks:
+-            c=curves[method,task]
+-            assert all(v['proposals']<=4000 for v in c)
+-            arr=np.asarray([[v['fresh'],v['mic']] for v in c])
+-            y=arr[np.maximum(0,np.searchsorted(arr[:,0],x,side='right')-1),1]
+-            values.append(y)
+-            export.extend(dict(method=method,task=task,**r) for r in c)
+-        mean=np.asarray(values).mean(0)
+-        # Use the same causal trailing200 smoothing for every method.
+-        cumulative=np.r_[0,np.cumsum(mean)];start=np.maximum(0,np.arange(len(mean))-199)
+-        smooth=(cumulative[1:]-cumulative[start])/(np.arange(len(mean))-start+1)
+-        ax.plot(x,smooth,label=method,color=COLORS[method],linewidth=2.4)
+-        summary.append(dict(method=method,mean_final_mic=float(np.mean([curves[method,t][-1]['mic'] for t in tasks]))))
+-    ax.set(xlabel='Fresh evaluations (shared initialization100 excluded)',ylabel='Mean best feasible MIC (µM, lower is better)',
+-        title='Same 10 peptides · target-loss rollback comparison',xlim=(0,4000))
+-    ax.grid(alpha=.2);ax.legend(fontsize=9)
+-    fig.text(.5,.01,'Same seed1, initialization100 and proposal4000 cap. All methods use trailing200 smoothing.\nFinished incumbents carry forward after proposal exhaustion; actual fresh support is exported.',ha='center',fontsize=9)
+-    fig.tight_layout(rect=(0,.06,1,1))
+-    for ext in ('png','pdf','svg'):fig.savefig(ROOT/f'comparison.{ext}',dpi=180)
+-    plt.close(fig)
+-    paired=[]
+-    for method in methods[:-1]:
+-        differences=[curves[method,t][-1]['mic']-curves[METHOD,t][-1]['mic'] for t in tasks]
+-        paired.append(dict(reference=method,wins=sum(d>1e-8 for d in differences),
+-            losses=sum(d < -1e-8 for d in differences),ties=sum(abs(d)<=1e-8 for d in differences),
+-            mean_mic_reduction=float(np.mean(differences))))
+-    csv_write('task_results.csv',records);csv_write('capped_convergence.csv',export);csv_write('paired_comparison.csv',paired)
+-    write(ROOT/'summary.json',dict(status='complete',tasks=tasks,methods=summary,paired=paired,
+-        execution=read(ROOT/'execution_policy.json'),all_accepted_target_losses_nonworsening=True,
+-        all_rejected_weight_deltas_zero=True,single_seed=True,offline_training_reused=True))
+-    table='\n'.join(f"| {r['method']} | {r['mean_final_mic']:.4f} |" for r in summary)
+-    (ROOT/'RESULTS.md').write_text(f'''# Target-loss rollback comparison
++    cfg = read(ROOT/'config.json')
++    execution = read(ROOT/'execution_policy.json')
++    baseline = Path(execution['comparison_baseline'])
++    records, curves = [], {}
++    for task in cfg['tasks']:
++        previous = read(baseline/'evaluation/adapted_online'/task/'result.json')
++        old_curve = curve(previous)
++        directory = ROOT/'evaluation/adapted_online'/task
++        final = directory/'result.json'
++        source = final if final.exists() else directory/'status.json'
++        value = read(source) if source.exists() else {}
++        proposals = value.get('proposals', 0)
++        best = value.get('best_feasible_mic', previous['initialization_best_mic'])
++        complete = value.get('status') == 'complete'
++        old_metrics = previous['phase_metrics']['acquisition']
++        record = dict(task=task, status=value.get('status', 'queued'),
++            rounds=value.get('rounds', 0), proposals=proposals,
++            fresh_evaluations=value.get('fresh_evaluations', 0),
++            new_best_mic=best, previous_mic_at_same_proposals=at(old_curve, proposals),
++            previous_final_mic=previous['best_feasible_mic'],
++            matched_mic_reduction=at(old_curve, proposals)-best,
++            wall_seconds=value.get('wall_seconds', 0.),
++            previous_wall_seconds=previous['wall_seconds'],
++            acquisition_fresh=value.get('acquisition_fresh', 0),
++            fresh_feasible_acquisition=value.get('fresh_feasible_acquisition', 0),
++            previous_fresh_feasible_rate=old_metrics['fresh_feasible_rate'],
++            update_attempts=value.get('retrain_schedule', {}).get('attempts', 0))
++        record['new_fresh_feasible_rate'] = (record['fresh_feasible_acquisition']/record['acquisition_fresh']
++                                             if record['acquisition_fresh'] else None)
++        if complete:
++            assert proposals == cfg['proposals'] or value['fresh_evaluations'] == cfg['fresh_budget']
++            assert value['identity']['task'] == task
++            new_curve = curve(value)
++            assert abs(new_curve[-1][1]-best) < 1e-8
++            metrics = value['phase_metrics']['acquisition']
++            assert record['fresh_feasible_acquisition'] == metrics['fresh_feasible']
++            curves[task] = dict(previous=old_curve, new=new_curve)
++            record.update(updates_accepted=sum(e['accepted'] for e in value['adaptation_events']),
++                          updates_rolled_back=sum(not e['accepted'] for e in value['adaptation_events']))
++        records.append(record)
++    done = [r for r in records if r['status'] == 'complete']
++    summary = dict(status='complete' if len(done) == len(records) else 'running',
++        updated_at=time.time(), completed_tasks=len(done), total_tasks=len(records),
++        baseline=str(baseline), tasks=records, comparison_budget='matching acquisition proposals',
++        single_seed=True)
++    if done:
++        summary['completed_task_comparison'] = dict(tasks=[r['task'] for r in done],
++            mean_new_mic=statistics.mean(r['new_best_mic'] for r in done),
++            mean_previous_mic=statistics.mean(r['previous_final_mic'] for r in done),
++            wins=sum(r['previous_final_mic']-r['new_best_mic'] > 1e-8 for r in done),
++            losses=sum(r['previous_final_mic']-r['new_best_mic'] < -1e-8 for r in done),
++            ties=sum(abs(r['previous_final_mic']-r['new_best_mic']) <= 1e-8 for r in done))
++    write(ROOT/'summary.json', summary)
++    fields = list(records[0])+[k for k in ('updates_accepted', 'updates_rolled_back') if k not in records[0]]
++    tmp = ROOT/'task_results.csv.tmp'
++    with tmp.open('w', newline='') as stream:
++        writer = csv.DictWriter(stream, fieldnames=fields)
++        writer.writeheader()
++        writer.writerows(records)
++    tmp.replace(ROOT/'task_results.csv')
++    table = '\n'.join(f"| {r['task']} | {r['status']} | {r['proposals']} | {r['new_best_mic']:.4f} | "
++                      f"{r['previous_mic_at_same_proposals']:.4f} | {r['matched_mic_reduction']:+.4f} |"
++                      for r in records)
++    text = f'''# Same-ten peptide FSBO rerun
+ 
+-Same ten held-out peptide tasks, seed1, initialization100, batch50 and proposal/fresh caps4000.
++Completed: {len(done)}/{len(records)} tasks. Same initial100, seed1, batch50,
++4000 acquisition proposals and 4000 shared fresh-evaluation cap. Lower MIC is better.
++Positive reduction means the new search has a lower MIC at the same proposal count.
+ 
+-| Method | Mean final MIC (µM, lower is better) |
+-| --- | ---: |
++| Task | Status | Proposals | New MIC | Previous MIC at same budget | MIC reduction |
++| --- | --- | ---: | ---: | ---: | ---: |
+ {table}
+ 
+-![Convergence](comparison.png)
++Baseline: {baseline}
+ 
+-Earlier comparison trajectories come from {PREVIOUS_CURVES} and use the same proposal cap.
+-This run reuses the previous offline VAE/FSBO assets. Accepted updates pass the
+-new fixed-target no-worsening gate and original source gate; rejected updates
+-restore the VAE exactly. See task_results.csv for per-task updates, MIC and runtime.
+-Runtime is descriptive: previous experiment used A800, current experiment uses
+-A16 with shared workloads. Ten tasks and one optimizer seed do not establish
+-general significance. No future test observations enter validation.
+-''')
+-    write(ROOT/'report_status.json',dict(status='complete',tasks=len(tasks)))
++`summary.json` and `task_results.csv` include fresh acquisition feasibility,
++runtime, and retraining counts. Completed-task averages cover only the tasks
++that have finished. The controller refreshes this report while workers run.
++Runtime comparisons use shared A16 GPUs with different concurrent workloads.
++This is one seed on ten previously examined tasks.
++'''
++    if len(done) == len(records):
++        import matplotlib
++        matplotlib.use('Agg')
++        import matplotlib.pyplot as plt
++        fig, ax = plt.subplots(figsize=(9, 5.5))
++        for name, label in (('previous', 'Previous rollback FSBO'), ('new', 'New feasible search')):
++            x = list(range(0, cfg['proposals']+1, 50))
++            y = [statistics.mean(at(curves[t][name], p) for t in cfg['tasks']) for p in x]
++            ax.plot(x, y, label=label)
++        ax.set(xlabel='Acquisition proposals (initial100 excluded)',
++               ylabel='Mean best feasible MIC (µM, lower is better)',
++               title='Same ten peptides, seed1')
++        ax.legend()
++        ax.grid(alpha=.2)
++        fig.tight_layout()
++        for ext in ('png', 'pdf', 'svg'):
++            fig.savefig(ROOT/f'comparison.{ext}', dpi=180)
++        plt.close(fig)
++        text += '\n![Matched-budget comparison](comparison.png)\n'
++    tmp = ROOT/'RESULTS.md.tmp'
++    tmp.write_text(text)
++    tmp.replace(ROOT/'RESULTS.md')
++    write(ROOT/'report_status.json', dict(status=summary['status'], completed_tasks=len(done),
++                                         updated_at=summary['updated_at']))
+ 
+ 
+-if __name__=='__main__':main()
++if __name__ == '__main__':
++    main()

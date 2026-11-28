@@ -9,6 +9,25 @@ class DecisionTests(unittest.TestCase):
   args.update(kw);return r.classify(**args)
  def test_healthy_does_not_restart(self):self.assertEqual(self.decide(),'healthy')
  def test_remote_worker_loss_recovers(self):self.assertEqual(self.decide(worker_count=20),'recover')
+ def idle_worker(self):
+  return dict(alive=False,record=dict(pid=50,launch_id='40:orpo_batch10:1:123',stage='orpo_batch10',at=100),status=dict(pid=50,status='idle',stage='orpo_batch10',at=110))
+ def test_normal_queue_exit_does_not_restart_remaining_workers(self):
+  workers=[dict(alive=True),self.idle_worker()]
+  expected=r.expected_active_workers(workers,dict(pid=40),'orpo_batch10')
+  self.assertEqual(expected,1)
+  self.assertEqual(self.decide(worker_count=1,expected_count=expected),'healthy')
+ def test_stale_idle_acknowledgement_does_not_hide_worker_loss(self):
+  for field,value in [('pid',49),('status','running'),('stage','warm30'),('at',99)]:
+   with self.subTest(field=field):
+    worker=self.idle_worker();worker['status'][field]=value
+    expected=r.expected_active_workers([worker],dict(pid=40),'orpo_batch10')
+    self.assertEqual(expected,1)
+    self.assertEqual(self.decide(worker_count=0,expected_count=expected),'recover')
+ def test_idle_status_from_previous_controller_is_not_accepted(self):
+  self.assertEqual(r.expected_active_workers([self.idle_worker()],dict(pid=4),'orpo_batch10'),1)
+ def test_live_idle_worker_still_counts_as_active(self):
+  worker=self.idle_worker();worker['alive']=True
+  self.assertEqual(r.expected_active_workers([worker],dict(pid=40),'orpo_batch10'),1)
  def test_dead_environment_recovers(self):self.assertEqual(self.decide(controller_alive=False,services_ok=False,worker_count=0),'recover')
  def test_manual_pause_is_honored_even_after_controller_exits(self):self.assertEqual(self.decide(controller_alive=False,paused=True),'held_manual_pause')
  def test_recovery_owned_pause_resumes_after_failed_drain(self):self.assertEqual(self.decide(controller_alive=False,paused=True,managed_pause=True,worker_count=0),'recover')

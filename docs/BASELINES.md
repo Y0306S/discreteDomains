@@ -42,10 +42,11 @@ an installed environment, or a successful import as a complete baseline run.
   and SQL timeout policies. See the captured
   `/root/reports/query_convergence_four_methods_20261117/{README.md,audit.json}`
   for exact histories and provenance.
-- The **newer BOLT30 + LOLBO** continuation is a different campaign. Its README
-  records a failed feasible-decode canary with zero SQL measurements and a
-  retained `PAUSE` file. Fix/revalidate proposal generation before launch;
-  do not label it as the completed historical LOLBO baseline.
+- The **newer BOLT30 + LOLBO** continuation is a different campaign. The older
+  `query_bolt_lolbo_test200_20261117` canary failed before SQL measurements.
+  `query_bolt30_lolbo_total800_20261123` contains the later canonicalization
+  fix and continuation; `query_bolt_focus_migration_20261127` contains its
+  newer deployment. Keep these identities separate from the historical baseline.
 - The main query method is the VAE80 + rebuilt FSBO campaign documented in
   [EXPERIMENTS.md](EXPERIMENTS.md). Retrieval retains its original encoder.
 - BORA peptide caps 4,000 fresh calls after 100 initialization measurements.

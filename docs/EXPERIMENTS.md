@@ -9,7 +9,8 @@ their different methods/results as interchangeable.
 
 | Version | Original directory | Purpose |
 | --- | --- | --- |
-| Current 20-round/max-two gate | `/root/data/logs/peptide_target_loss_gate_20round_max2_test10_20261119` | Fixed target/source loss gate, 20 stagnant acquisition rounds before an attempt, at most two attempts per task |
+| Feasible-search continuation | `/root/data/logs/peptide_fsbo_feasible_search_20261122` | Later exact-feasibility screening and adaptive decode-yield policy; retains the loss gate and two-attempt cap |
+| 20-round/max-two gate | `/root/data/logs/peptide_target_loss_gate_20round_max2_test10_20261119` | Fixed target/source loss gate, 20 stagnant acquisition rounds before an attempt, at most two attempts per task |
 | First target-loss gate | `/root/data/logs/peptide_target_loss_gate_test10_20261119` | Parent gate implementation and real-checkpoint validation |
 | APEXGo recipe + FSBO | `/root/data/logs/peptide_apexgo_recipe_fsbo_test10_20261118` | Parent offline VAE training, full source800 FSBO rebuild and online evaluation |
 | Source replay/adaptation | `/root/data/logs/peptide_vae_fsbo_source_replay_test10_20261118` and `/root/data/logs/peptide_vae_fsbo_adaptation_test10_20261117` | Earlier adaptation implementations and shared dependencies |
@@ -119,7 +120,28 @@ Data directories under `/dev/shm` are temporary RAM storage, not portable
 database backups. A changed storage layout also changes runtime-comparison
 provenance and must be recorded.
 
-## Shared source and analyses
+## Later query and peptide versions captured on 28 November
+
+These versions supplement the historical entry points above. Hardware allocations
+and recorded pause states describe the source deployment and need new-host validation.
+
+| Campaign | Recorded behavior |
+| --- | --- |
+| `C/query_bolt30_lolbo_total800_20261123` | Saved BOLT30 starts, 77 further batches of ten, 800 total measurements per task; train80 VAE frozen during evaluation, online DKL/GP and Thompson sampling. Includes the canonicalization repair after the older failed canary. |
+| `C/query_bolt_focus_migration_20261127` | Later query deployment; Nov28 operations add Optimizer5, with 30 SQL workers on CPU hosts4/5 and 16 VAE services on A16 GPUs. SemanticOPT intentionally paused during this allocation. |
+| `C/query_continuation_operations_20261124` | Operations and continuation/recovery procedures. |
+| `C/semanticopt_query_400_pilot800_20261123` | Imports the original200 proposals plus49Bao starts; first ten tasks extend to800, other190 to400, with independent journals/leases. No BOLT measurements are substituted. |
+| `C/peptide_rgpe_top80_bootstrap100_test4_20261123` | Separate RGPE screening/bootstrap experiment; use its own policy and saved source-bank identities. |
+| `/root/data/logs/peptide_fsbo_feasible_search_20261122` | Exact global-constraint filtering over5,000 Sobol decodes per acquisition. Decode yield below10% halves length; above50% doubles it, bounded by[0.0078125,1.6], up to three adjustments. Reuses Sobol candidates and feasibility masks. Recenter after an accepted VAE update; source refresh uses recent50+top200. |
+
+Here `C=/root/data/cys/baseline/campaigns`. The feasible-search evaluator retains
+native trust-region length updates but removes restarts. It uses feasible native
+Thompson-sampling candidates first, filling shortages from infeasible candidates;
+do not interpret screening as a guarantee that every proposal is feasible. Its
+`code/pipeline.py` manages the ten-task rerun. Preserve its private evaluator/policy
+alongside the earlier target-loss-gated implementation.
+
+## Shared source and analyses (continued)
 
 `/root/data/cys/llmoptimizer_benchmark/tools` contains the FSBO subprocess,
 peptide local BO, transfer, RGPE, query encoder services, training builders and

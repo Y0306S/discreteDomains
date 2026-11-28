@@ -1,7 +1,7 @@
 # discreteDomains
 
 Code and server migration kit for the **peptide** and **query-plan** experiments,
-captured from the working server on 21 November 2026.
+captured from the working server and refreshed on 28 November 2026.
 
 The repository includes locally modified experiment implementations, training
 and evaluation scripts, SQL workloads, configuration, environment exports,
@@ -15,6 +15,7 @@ plan. **A Git clone alone does not contain those experiment inputs.**
 | --- | --- |
 | Server migration steps | [docs/MIGRATION.md](docs/MIGRATION.md) |
 | Experiment versions and commands | [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md) |
+| Final models, method mapping and Hugging Face transfer | [docs/MODELS.md](docs/MODELS.md) |
 | Peptide initialization: 100 feasible measured samples per task | [docs/PEPTIDE_INITIALIZATION.md](docs/PEPTIDE_INITIALIZATION.md) |
 | Baseline methods, environments, payloads and acceptance gates | [docs/BASELINES.md](docs/BASELINES.md) |
 | Python/CUDA/PostgreSQL environments | [environments/README.md](environments/README.md) |
@@ -30,8 +31,10 @@ This preserves the path assumptions and checksum identities in existing runs.
 Work from the restored copy when running experiments; do not run controllers
 directly from the Git snapshot.
 
-The main peptide version is
+The target-loss-gated peptide version is
 `/root/data/logs/peptide_target_loss_gate_20round_max2_test10_20261119`.
+The newer feasibility-search version is
+`/root/data/logs/peptide_fsbo_feasible_search_20261122`; both are preserved.
 The main query version is
 `/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117`.
 Their parent experiments, ORPO/RL preparation, warm-start training, baseline

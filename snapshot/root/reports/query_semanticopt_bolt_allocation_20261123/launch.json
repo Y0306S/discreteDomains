@@ -1,0 +1,62 @@
+{
+  "verified_at": "2026-11-23T22:34:35.596063+08:00",
+  "status": "launched",
+  "semanticopt": {
+    "root": "/root/data/cys/baseline/campaigns/semanticopt_query_400_pilot800_20261123",
+    "status": {
+      "at": 1795444467.2012775,
+      "status": "running",
+      "completed_tasks": 0,
+      "total_tasks": 200,
+      "evaluations": 40031,
+      "retained_evaluations": 40000,
+      "new_evaluations": 31,
+      "new_evaluation_target": 44000,
+      "live_worker_slots": 20,
+      "llm_replicas": 20,
+      "failures": [],
+      "elapsed_seconds": 557.6733868122101
+    }
+  },
+  "bolt": {
+    "root": "/root/data/cys/baseline/campaigns/query_bolt30_lolbo_total800_20261123",
+    "status": {
+      "at": 1795444471.51675,
+      "status": "running",
+      "completed_tasks": 0,
+      "total_tasks": 200,
+      "evaluations": 6243,
+      "warm_evaluations": 6000,
+      "new_evaluations": 243,
+      "new_evaluation_target": 154000,
+      "live_worker_slots": 7,
+      "vae_replicas": 8,
+      "canary_passed": true,
+      "failures": [],
+      "elapsed_seconds": 1036.8764617443085
+    }
+  },
+  "allocation": {
+    "semanticopt_task_workers": 20,
+    "semanticopt_private_databases": 20,
+    "semanticopt_llm_replicas": 20,
+    "bolt_task_workers": 7,
+    "bolt_vae_replicas": 8,
+    "bolt_eighth_worker": "Not admitted; initial seven-worker allocation retained pending sustained resource measurements."
+  },
+  "budgets": {
+    "semanticopt_default_proposals": 400,
+    "semanticopt_pilot_proposals": 800,
+    "batch_size": 10,
+    "bolt_warm_observations": 30,
+    "bolt_new_evaluations_per_query": 770,
+    "bolt_total_evaluations_per_query": 800
+  },
+  "validation": [
+    "Original 200-record prefixes retained for all 200 SemanticOPT checkpoints; 49 Bao initial observations and RNG copied.",
+    "20 model replicas verified against the exact SemanticOPT adapter; full 15360 input envelope retained.",
+    "BOLT ten-plan canary committed SQL evaluations with valid unique canonical plans and no accepted decoder fallback.",
+    "Old hybrid recovery and services retired; private databases checked idle before handoff.",
+    "SemanticOPT and BOLT both have new committed SQL measurements and no worker failures."
+  ]
+}

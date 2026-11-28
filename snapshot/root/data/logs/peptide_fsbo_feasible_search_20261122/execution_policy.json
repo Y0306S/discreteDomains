@@ -1,0 +1,56 @@
+{
+  "host": "LLMOptimizer3",
+  "gpu_memory_fraction": 0.4,
+  "threads_per_worker": 2,
+  "workers": [
+    {
+      "slot": 0,
+      "gpu": 4,
+      "cpus": [
+        34,
+        35
+      ]
+    },
+    {
+      "slot": 1,
+      "gpu": 6,
+      "cpus": [
+        36,
+        37
+      ]
+    },
+    {
+      "slot": 2,
+      "gpu": 10,
+      "cpus": [
+        38,
+        39
+      ]
+    },
+    {
+      "slot": 3,
+      "gpu": 13,
+      "cpus": [
+        40,
+        41
+      ]
+    }
+  ],
+  "task_order": [
+    "pep_999",
+    "pep_117",
+    "pep_219",
+    "pep_221",
+    "pep_575",
+    "pep_673",
+    "pep_921",
+    "pep_925",
+    "pep_967",
+    "pep_980"
+  ],
+  "comparison_baseline": "/root/data/logs/peptide_target_loss_gate_20round_max2_test10_20261119",
+  "status_interval_seconds": 60,
+  "comparison": "same ten tasks, initialization100, seed1, batch50, proposal/fresh caps4000; new feasible search versus previous rollback run",
+  "retries": 0,
+  "other_workloads_preserved": true
+}

@@ -1,0 +1,44 @@
+{
+  "status": "proposed_not_deployed",
+  "cohort": "source800 development; heldout200 excluded",
+  "production_policy_changed": false,
+  "local_modes": {
+    "2": {
+      "local_edits": 2,
+      "selected_start_length": 0.2,
+      "controlled_edit_cap_ablation_length": 0.175
+    },
+    "3": {
+      "local_edits": 3,
+      "selected_start_length": 0.175,
+      "controlled_edit_cap_ablation_length": 0.175
+    }
+  },
+  "reference_rule": "Levenshtein<=floor(reference_length/4), plus original sequence rules",
+  "center_policy": {
+    "maximum": 4,
+    "include": [
+      "best measured feasible",
+      "reference",
+      "diverse among top32 measured feasible"
+    ]
+  },
+  "candidate_pipeline": [
+    "decode bounded pool",
+    "exact reference+syntax check",
+    "optional local edit check",
+    "deduplicate against observed and current pool",
+    "encode actual accepted sequences with current VAE",
+    "FSBO canonical feature transform",
+    "objective acquisition ranking",
+    "score selected candidates with MIC oracle",
+    "account actual calls and short batches"
+  ],
+  "future_multicenter_allocation": {
+    "local": 0.8,
+    "global_feasible_exploration": 0.2,
+    "status": "pilot starting choice, not calibrated optimum"
+  },
+  "training": "hold VAE/source-FSBO frozen first to isolate search; separate later online ablation",
+  "required_next_validation": "matched-seed sequential BO on source development, then locked target evaluation with the10already examined targets reported separately; audit remaining190for prior policy-development exposure; not completed here"
+}

@@ -1,0 +1,99 @@
+{
+  "generated_at": "2026-11-25T23:08:54.323896+08:00",
+  "completed_queries": 30,
+  "tasks": [
+    "CEB_10A49",
+    "CEB_10A65",
+    "CEB_11A100",
+    "CEB_11A101",
+    "CEB_11A11",
+    "CEB_11A121",
+    "CEB_11A122",
+    "CEB_11A123",
+    "CEB_11A140",
+    "CEB_11A26",
+    "CEB_11A44",
+    "CEB_11A5",
+    "CEB_11A6",
+    "CEB_11A60",
+    "CEB_11A7",
+    "CEB_11A81",
+    "CEB_11A90",
+    "CEB_11B112",
+    "CEB_11B147",
+    "CEB_11B160",
+    "CEB_11B163",
+    "CEB_11B177",
+    "CEB_11B206",
+    "CEB_11B207",
+    "CEB_11B208",
+    "CEB_11B24",
+    "CEB_11B31",
+    "CEB_11B54",
+    "CEB_11B63",
+    "CEB_11B76"
+  ],
+  "total_queries": 200,
+  "total_evaluations_per_query": 800,
+  "shared_warm_evaluations_per_query": 30,
+  "shared_warm_summed_best_seconds": 106.26883823948447,
+  "methods": {
+    "LLM + FSBO": {
+      "at_30": {
+        "summed_best_runtime_seconds": 106.26883823948447,
+        "normalized_summed_runtime": 1.0
+      },
+      "at_400": {
+        "summed_best_runtime_seconds": 74.94246306084096,
+        "normalized_summed_runtime": 0.7052157932878944
+      },
+      "at_800": {
+        "summed_best_runtime_seconds": 73.2999460529536,
+        "normalized_summed_runtime": 0.6897595500928212
+      }
+    },
+    "BOLT / LOLBO": {
+      "at_30": {
+        "summed_best_runtime_seconds": 106.26883823948447,
+        "normalized_summed_runtime": 1.0
+      },
+      "at_400": {
+        "summed_best_runtime_seconds": 92.02860006492119,
+        "normalized_summed_runtime": 0.8659979876464644
+      },
+      "at_800": {
+        "summed_best_runtime_seconds": 80.53986797435209,
+        "normalized_summed_runtime": 0.757887912473925
+      }
+    }
+  },
+  "paired": {
+    "at_400": {
+      "our_wins": 25,
+      "bolt_wins": 3,
+      "ties": 2,
+      "summed_runtime_reduction_percent": 18.566116394280563,
+      "summed_runtime_speedup": 1.2279900647275108,
+      "geometric_mean_our_over_bolt": 0.8108029985760185,
+      "median_our_over_bolt": 0.8293610418752484
+    },
+    "at_800": {
+      "our_wins": 23,
+      "bolt_wins": 6,
+      "ties": 1,
+      "summed_runtime_reduction_percent": 8.989239867768395,
+      "summed_runtime_speedup": 1.0987711766686459,
+      "geometric_mean_our_over_bolt": 0.8538160570882501,
+      "median_our_over_bolt": 0.8633165588875926
+    }
+  },
+  "notes": [
+    "Cohort fixed by BOLT completion at snapshot time; it is not a random sample of all 200 queries.",
+    "Both methods use identical 30 saved warm measurements and 770 further counted evaluations per query.",
+    "Only uncensored measured runtimes improve incumbents; timeouts remain counted slots.",
+    "Sum query incumbents first, then divide by the shared sum of best warm30 runtimes; lower is better.",
+    "Current BOLT continuation runs the LOLBO optimizer. Historical standalone LOLBO is a separate experiment.",
+    "SQL execution dates, host contention and storage conditions can differ; one saved run per method, no uncertainty bands.",
+    "Running campaign journals are read only; no unfinished query is extrapolated."
+  ]
+}

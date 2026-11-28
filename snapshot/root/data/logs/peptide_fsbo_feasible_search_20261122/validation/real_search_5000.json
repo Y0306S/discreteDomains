@@ -1,0 +1,81 @@
+{
+  "passed": true,
+  "checks": {
+    "full_pool_decoded": true,
+    "bounded_decoder_batches": true,
+    "at_most_three_adjustments": true,
+    "length_within_limits": true,
+    "exact_batch50": true,
+    "feasible_priority": true,
+    "retained_decodes": true,
+    "valid_peptides": true,
+    "no_oracle_constructed": true
+  },
+  "task": "pep_117",
+  "candidates": 5000,
+  "search": {
+    "adjustments": 2,
+    "probes": [
+      {
+        "length": 0.8,
+        "feasible_rate": 0.0
+      },
+      {
+        "length": 0.4,
+        "feasible_rate": 0.0048
+      },
+      {
+        "length": 0.2,
+        "feasible_rate": 0.2142
+      }
+    ],
+    "length": 0.2,
+    "feasible_rate": 0.2142,
+    "decoded_candidates": 15000
+  },
+  "selection": {
+    "feasible_selected": 50,
+    "infeasible_fill": 0
+  },
+  "target_fit": {
+    "adaptation_steps": 16,
+    "optimizer_updates": 16,
+    "likelihood_evaluations": 17,
+    "best_step": 16,
+    "best_loss": -0.35790663957595825,
+    "initial_loss": -0.14116942882537842,
+    "last_loss": -0.35790663957595825,
+    "restored_loss": -0.35790663957595825,
+    "stop_reason": "maximum_updates",
+    "stale_evaluations": 0,
+    "patience": 16,
+    "min_delta": 0.0001,
+    "maximum_updates": 16,
+    "likelihood": "cholesky",
+    "likelihood_policy": "deterministic_seeded_likelihood",
+    "probe_seed": 1,
+    "trace_samples": 10,
+    "cholesky_threshold": 800,
+    "joint_feature_and_gp": true,
+    "seconds": 1.5118678398430347
+  },
+  "gpu": "NVIDIA A800-SXM4-80GB",
+  "gpu_peak_bytes": 298008064,
+  "seconds": 70.08039180003107,
+  "oracle_calls": 0,
+  "scope": "real retained offline VAE/FSBO; 16-update target fit for integration only; no online training",
+  "implementation_sha256": {
+    "common.py": "18ed441ddcaa680ffedd73ba6735591fe51c4075f860fa00fa6b4f6976d39cdf",
+    "evaluate.py": "184fe0741276a87ce234421cfa9bf501a9d748a14d1a6437a8d6a0d1514292ed",
+    "fsbo_search_policy.py": "ae56d88c7418180aa76b6c9b056fcce19055b57a02a64883b3ddcd68f41c860a",
+    "offline.py": "d49905fc15dea58c0ebd04c627d0808b8befabaf578239c842951e86cd5d01bc",
+    "reconstruction.py": "fcd929ee744d5110d19426cc94f2bff5fcdd3bc7c2e2229deee58222ba09aae8",
+    "retrain_schedule.py": "764e811da84512c3a0bc2e4d6d4871cda945d61bef31622a896ca4b41246d8e1",
+    "source_meta.py": "f8d60c6c7125c1b79573713401b30ec4d1d6d6a0baf571c54dac5582c8504876",
+    "target_gate.py": "758eb006be86d1b8b3552cdbb090fefd795ef2469d2ff76d0e935c710804cd65",
+    "test_fsbo_search_policy.py": "4c1d582577822f891731b118b08b1e79a9962ee72e9df2bf0d7be47ecca4c86c",
+    "test_retrain_schedule.py": "a7a50adb2b38bc61b39bd4b5f875f503a6f3b4a950d14944861bb8505270e3f0",
+    "test_target_gate.py": "414a3ddd4259be33c9ab1442a086d021a9cc020ecc7c6b4aa497772bae3cae0b",
+    "validate_search.py": "0258fbffc556e9b783b2774d4ae034a1cf8c9c00f37461a3c502111d579a844b"
+  }
+}

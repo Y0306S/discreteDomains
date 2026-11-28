@@ -1,0 +1,120 @@
+{
+  "generated_at": "2026-11-26T10:14:40.587589+08:00",
+  "completed_queries": 42,
+  "tasks": [
+    "CEB_10A49",
+    "CEB_10A65",
+    "CEB_11A100",
+    "CEB_11A101",
+    "CEB_11A11",
+    "CEB_11A121",
+    "CEB_11A122",
+    "CEB_11A123",
+    "CEB_11A140",
+    "CEB_11A26",
+    "CEB_11A44",
+    "CEB_11A5",
+    "CEB_11A6",
+    "CEB_11A60",
+    "CEB_11A7",
+    "CEB_11A81",
+    "CEB_11A90",
+    "CEB_11B112",
+    "CEB_11B147",
+    "CEB_11B160",
+    "CEB_11B163",
+    "CEB_11B177",
+    "CEB_11B206",
+    "CEB_11B207",
+    "CEB_11B208",
+    "CEB_11B23",
+    "CEB_11B24",
+    "CEB_11B31",
+    "CEB_11B54",
+    "CEB_11B63",
+    "CEB_11B76",
+    "CEB_11B80",
+    "CEB_11B90",
+    "CEB_11B91",
+    "CEB_1A1020",
+    "CEB_1A1075",
+    "CEB_1A1206",
+    "CEB_1A1232",
+    "CEB_1A1252",
+    "CEB_1A1476",
+    "CEB_1A1533",
+    "CEB_1A2179"
+  ],
+  "total_queries": 200,
+  "total_evaluations_per_query": 800,
+  "shared_warm_evaluations_per_query": 30,
+  "shared_warm_summed_best_seconds": 138.50342660665046,
+  "summed_bao49_reference_seconds": 172.92244406999998,
+  "methods": {
+    "LLM + FSBO": {
+      "at_30": {
+        "summed_best_runtime_seconds": 138.50342660665046,
+        "normalized_summed_runtime": 0.8009569107789356,
+        "mean_normalized_score": 0.9431226925570894
+      },
+      "at_400": {
+        "summed_best_runtime_seconds": 101.54274673014879,
+        "normalized_summed_runtime": 0.5872155420671924,
+        "mean_normalized_score": 0.9914258774502271
+      },
+      "at_800": {
+        "summed_best_runtime_seconds": 98.77737304754555,
+        "normalized_summed_runtime": 0.5712235538815303,
+        "mean_normalized_score": 0.9945189365428942
+      }
+    },
+    "BOLT / LOLBO": {
+      "at_30": {
+        "summed_best_runtime_seconds": 138.50342660665046,
+        "normalized_summed_runtime": 0.8009569107789356,
+        "mean_normalized_score": 0.9431226925570894
+      },
+      "at_400": {
+        "summed_best_runtime_seconds": 121.33125205885153,
+        "normalized_summed_runtime": 0.7016512674880766,
+        "mean_normalized_score": 0.9677786841569258
+      },
+      "at_800": {
+        "summed_best_runtime_seconds": 109.35983562422916,
+        "normalized_summed_runtime": 0.6324212927499433,
+        "mean_normalized_score": 0.9824671227790409
+      }
+    }
+  },
+  "paired": {
+    "at_400": {
+      "our_wins": 33,
+      "bolt_wins": 5,
+      "ties": 4,
+      "summed_runtime_reduction_percent": 16.309487451019102,
+      "summed_runtime_speedup": 1.1948785705126823,
+      "geometric_mean_our_over_bolt": 0.8315751097185001,
+      "median_our_over_bolt": 0.8474039319506727
+    },
+    "at_800": {
+      "our_wins": 32,
+      "bolt_wins": 8,
+      "ties": 2,
+      "summed_runtime_reduction_percent": 9.676735993867036,
+      "summed_runtime_speedup": 1.1071344808045243,
+      "geometric_mean_our_over_bolt": 0.8603025094492366,
+      "median_our_over_bolt": 0.8791152303628923
+    }
+  },
+  "notes": [
+    "Cohort fixed by BOLT completion at snapshot time; it is not a random sample of all 200 queries.",
+    "Both methods use identical 30 saved warm measurements and 770 further counted evaluations per query.",
+    "Only uncensored measured runtimes improve incumbents; timeouts remain counted slots.",
+    "Normalized summed runtime: sum query incumbents first, then divide by the shared sum of Bao49 best runtimes for these same queries; lower is better. This matches the reference convention of the previous completed-method plots.",
+    "Mean normalized score: pool uncensored runtimes from both methods through 800 slots within each query, discard the slowest floor(20%) only to set the upper normalization bound, use the pooled minimum as the lower bound, clip (upper-incumbent)/(upper-lower) to [0,1], then average equally across queries. Bounds are retrospective, fixed across the curve and specific to these two methods.",
+    "Paper-style summed aggregation is used with an explicit Bao49 denominator; the paper does not specify its exact normalization denominator.",
+    "Current BOLT continuation runs the LOLBO optimizer. Historical standalone LOLBO is a separate experiment.",
+    "SQL execution dates, host contention and storage conditions can differ; one saved run per method, no uncertainty bands.",
+    "Running campaign journals are read only; no unfinished query is extrapolated."
+  ]
+}

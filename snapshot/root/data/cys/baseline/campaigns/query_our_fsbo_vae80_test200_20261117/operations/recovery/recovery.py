@@ -153,6 +153,21 @@ def error_allowed(text,traceback=''):
  if text=="TimeoutError('timed out')" and '/tools/query_vae_client.py' in traceback:return True
  return any(s in text for s in ['RemoteDisconnected','ConnectionResetError','ConnectionRefusedError','ConnectionTimeout','QueryInfrastructureRetryExhausted','UnresolvedMeasurement','URLError','Service process stopped','Remote transport is down','Remote worker startup failed'])
 
+def expected_active_workers(workers,controller,stage):
+ # Workers exit normally after scanning the task queue. Only trust an idle
+ # acknowledgement from this controller's exact worker launch; stale status
+ # must not conceal a crashed or never-started evaluator.
+ expected=len(workers)
+ for worker in workers:
+  record=worker.get('record',{});state=worker.get('status',{})
+  if (not worker['alive'] and controller.get('pid') is not None
+      and str(record.get('launch_id','')).startswith(str(controller['pid'])+':')
+      and record.get('pid') is not None and state.get('pid')==record['pid']
+      and state.get('status')=='idle' and state.get('stage')==record.get('stage')==stage
+      and state.get('at',0)>=record.get('at',float('inf'))):
+   expected-=1
+ return expected
+
 def classify(controller_alive,status,paused,errors,services_ok,worker_count,expected_count,now,managed_pause=False):
  if status.get('status')=='complete':return 'complete'
  if errors and any(not error_allowed(e.get('error',''),e.get('traceback','')) for e in errors):return 'held_unknown_error'
@@ -247,8 +262,9 @@ def run_tick():
  managed_pause=load(OPS/'recovery_pause.json',{})
  pause=ROOT/'PAUSE'
  managed_pause=managed_pause.get('pause_inode')==pause.stat().st_ino if pause.exists() else False
- decision=classify(process_matches(controller),status,(ROOT/'PAUSE').exists(),relevant_errors,services_ok,alive_workers,len(workers),now,bool(managed_pause))
- base=dict(at=now,result=decision,counted_measurements=status.get('counted_measurements'),live_workers=alive_workers,expected_workers=len(workers),monitor=monitor,service_error=service_error)
+ expected_workers=expected_active_workers(workers,controller,status.get('stage'))
+ decision=classify(process_matches(controller),status,(ROOT/'PAUSE').exists(),relevant_errors,services_ok,alive_workers,expected_workers,now,bool(managed_pause))
+ base=dict(at=now,result=decision,counted_measurements=status.get('counted_measurements'),live_workers=alive_workers,expected_workers=expected_workers,allocated_workers=len(workers),monitor=monitor,service_error=service_error)
  if decision!='recover':return base
  verify_pins()
  history=load(OPS/'failure_budget.json',dict(failures=0,progress=-1))

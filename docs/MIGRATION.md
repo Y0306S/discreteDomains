@@ -173,8 +173,10 @@ are not part of this repository.
 
 ## GitHub publication
 
-The intended repository is `Y0306S/discreteDomains`, private by default. The
-server needs an authenticated GitHub session to create it and push:
+The existing repository is **public**: `Y0306S/discreteDomains`. Publication
+preserves its existing visibility. New Hugging Face model repositories use
+private visibility; see [MODELS.md](MODELS.md). The server needs an authenticated
+GitHub session to push:
 
 ```bash
 gh auth login --hostname github.com --git-protocol https --web

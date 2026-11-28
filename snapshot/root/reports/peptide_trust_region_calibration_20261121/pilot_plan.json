@@ -1,0 +1,69 @@
+{
+  "status": "isolated_proposal_not_deployed",
+  "reference_constraint": "Levenshtein(sequence,reference) <= floor(reference_length/4)",
+  "local_constraint": "Levenshtein(sequence,feasible_center) <= 2",
+  "count_indels": true,
+  "initial_latent_length": 0.15,
+  "pilot_latent_length_min": 0.1,
+  "pilot_latent_length_max": 0.2,
+  "screen_before_MIC": true,
+  "preserve_latent_sequence_alignment": true,
+  "deduplicate_against_observed_and_batch": true,
+  "recenter_centers": "multiple already measured feasible centers, plus reference; no future or comparator solutions",
+  "resampling": "bounded and logged; report incomplete batches rather than score infeasible or duplicate replacements",
+  "accounting": [
+    "all decoder draws",
+    "sequence-rule rejects",
+    "reference/local rejects",
+    "cache/duplicate hits",
+    "new accepted candidates",
+    "physical MIC calls",
+    "wall_seconds"
+  ],
+  "scope": "Provisional next pilot, not proof of optimal radius or production default.",
+  "pilot": {
+    "tasks": "same fixed10source development tasks from calibration",
+    "optimizer_seeds": [
+      1,
+      2,
+      3
+    ],
+    "initialization": 100,
+    "maximum_new_MIC_calls_per_task_arm_seed": 500,
+    "batch_size": 50,
+    "arms": [
+      {
+        "name": "current_control",
+        "latent_length": 0.8,
+        "hard_local_filter": false
+      },
+      {
+        "name": "conservative_one_edit",
+        "latent_length": 0.15,
+        "hard_local_filter": true,
+        "local_edits": 1
+      },
+      {
+        "name": "conservative_two_edits",
+        "latent_length": 0.15,
+        "hard_local_filter": true,
+        "local_edits": 2
+      },
+      {
+        "name": "wider_two_edits",
+        "latent_length": 0.2,
+        "hard_local_filter": true,
+        "local_edits": 2
+      }
+    ],
+    "maximum_total_new_MIC_calls": 60000,
+    "models": "same adapted checkpoint; VAE and source FSBO prior held fixed across arms to isolate search policy; native target fitting retained",
+    "metrics": [
+      "feasible best MIC vs physical call budget",
+      "distinct feasible novel candidates",
+      "decoder draws and wall per accepted candidate",
+      "task-paired seed-aware differences"
+    ],
+    "test_policy": "Freeze settings after development pilot, then run untouched held-out tasks. pep999 used only as an inspected diagnostic."
+  }
+}

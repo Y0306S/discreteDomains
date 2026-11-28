@@ -1,0 +1,57 @@
+{
+  "at": 1794933518.6342878,
+  "status": "paused_canary_failed",
+  "service_health": {
+    "domain": "ceb_query_runtime",
+    "gpu": 5,
+    "pid": 5956,
+    "cpu": 63,
+    "checkpoint_sha256": "eebbe1ee70209aec6b8236d3c01d43c0d3591e52f9bbc23e311c610712e0204d",
+    "representation": "finetuned_train80_VAE_posterior_mean_64",
+    "retrieval_checkpoint_sha256": "83a4942701bffaaf8311887e530e3157b6843134e52e9f53d59f957c24aebab1",
+    "encoder_device": "cuda:0",
+    "float32_matmul_precision": "highest",
+    "requests": 212,
+    "errors": 0,
+    "oracle_calls": 0,
+    "started": 1794931371.243694,
+    "operations": {
+      "decode": {
+        "calls": 212,
+        "queue_seconds": 3.9477945249527693,
+        "execution_seconds": 437.5654249433428
+      }
+    },
+    "acquisition_wrapper": null,
+    "allocated_mib": 55.45703125,
+    "peak_mib": 58.81103515625,
+    "status": "ready"
+  },
+  "journal": {
+    "integrity": "ok",
+    "rows": 30,
+    "rounds": 0,
+    "measurement_entries": 0,
+    "proposal_status": "started"
+  },
+  "canary": {
+    "passed": false,
+    "task": "CEB_10A32",
+    "latent_attempts": 200,
+    "accepted_plans": 2,
+    "required_plans": 10,
+    "error": "RuntimeError('Could only decode 2/10 unique feasible plans')",
+    "duration_seconds": 394.0110523700714
+  },
+  "campaign_launched": false,
+  "configuration": {
+    "host": "LLMOptimizer3",
+    "gpu": 5,
+    "cpu": 63,
+    "port": 21900,
+    "allocator_fraction": 0.02,
+    "endpoint_environment": {
+      "QUERY_LOLBO_VAE_ENDPOINTS": "http://127.0.0.1:21900"
+    }
+  }
+}

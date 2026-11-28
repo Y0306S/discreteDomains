@@ -1,0 +1,90 @@
+{
+  "at": "2026-11-23T02:25:51.955322+00:00",
+  "cause": "Recovery expected all 37 allocated workers alive after surplus workers had exited normally with current-launch idle acknowledgements.",
+  "incident_before": {
+    "live_workers": 24,
+    "expected_workers": 37,
+    "errors": [],
+    "service_error": null
+  },
+  "fix": "Exclude verified idle exits from the expected active worker count, matching controller launch, worker PID, stage, and acknowledgement timestamp.",
+  "validation": {
+    "recovery_tests_passed": 34,
+    "incident_reclassified": "healthy",
+    "experiment_code_pins": "unchanged",
+    "local_workers_alive": 6,
+    "local_expected_active_workers": 6,
+    "local_databases_ready": 10,
+    "local_unrecorded_workers": []
+  },
+  "status": {
+    "stages": {
+      "warm30": {
+        "complete_tasks": 200,
+        "started_tasks": 200,
+        "measurements": 6000,
+        "generation_attempts_or_optimization_attempts": 9526
+      },
+      "orpo_batch10": {
+        "complete_tasks": 177,
+        "started_tasks": 200,
+        "measurements": 149489,
+        "generation_attempts_or_optimization_attempts": 149489
+      }
+    },
+    "total_rounds": 80,
+    "batch_size": 10,
+    "evaluations_per_task": 800,
+    "total_tasks": 200,
+    "measurement_target": 160000,
+    "counted_measurements": 155489,
+    "paused": false,
+    "rl_enabled": false,
+    "at": 1795400733.3481097,
+    "status": "running",
+    "stage": "orpo_batch10",
+    "worker_launchers": [
+      76609,
+      76610,
+      76611,
+      76612,
+      76613,
+      76614,
+      76615,
+      76665,
+      76694,
+      77514,
+      77934,
+      77979,
+      78012,
+      78049,
+      78073,
+      78113,
+      78153,
+      78192,
+      78230,
+      78274,
+      78320,
+      78419,
+      78483
+    ],
+    "worker_count": 23,
+    "worker_hosts": {
+      "LLMOptimizer2": 6,
+      "LLMOptimizer4": 17,
+      "LLMOptimizer3": 0
+    },
+    "resources_sha256": "81fde459b88ecdba87fb0cef1ef3f198474e6f5bf8a1fdcc13e3fe028231fe91"
+  },
+  "full_health_tick": {
+    "at": 1795400501.890826,
+    "result": "healthy",
+    "counted_measurements": 155409,
+    "live_workers": 23,
+    "expected_workers": 23,
+    "allocated_workers": 37,
+    "monitor": "alive",
+    "service_error": null,
+    "campaign": "/root/data/cys/baseline/campaigns/query_our_fsbo_vae80_test200_20261117"
+  }
+}

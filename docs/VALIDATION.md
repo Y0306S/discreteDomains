@@ -1,4 +1,33 @@
-# Validation on 21 November 2026
+# Migration validation
+
+## Refresh on 28 November 2026
+
+- All 32,596 source/configuration/workload hashes matched the refreshed inventory,
+  including ten required entry points. Fourteen Python environment exports and
+  the PostgreSQL specification were present. Baseline coverage checks passed.
+- Peptide initialization validation passed for 120,000 stored entries: 100 unique
+  feasible sequences per task, the 800/200 split, hashes and pool alignment.
+- Gitleaks scanned 219.4 MB of the refreshed repository and reported zero findings.
+- Three CPU migration tests passed: RGPE payload/metadata round trip, corrupted
+  payload detection, preview without writes, destination-conflict rejection and
+  path-traversal rejection. No Hugging Face credentials or network were used.
+- Selected ordinary model files were SHA256-hashed on this host. Source-row
+  digests for RGPE are checked against actual bytes as each task is exported.
+- Thirty completed peptide online checkpoints were exported to final model
+  parameters on CPU. Every exported parameter tensor/scalar matched its original
+  checkpoint after reload. Histories, RNG and trust-region resume state were
+  excluded from those exports and remain separate scientific-state artifacts.
+- The new migration Python files compiled and the publication shell helper
+  passed syntax validation. No production experiment files were modified.
+
+Hugging Face publication requires the user's namespace/authentication and has
+not been performed. RGPE export progress is recorded on shared storage; only a
+completed bundle has `payload-manifest.json`. A full upload checks every expected
+catalog bundle before starting and writes receipts only after remote verification.
+No clean-server experiment or hardware integration has been validated by these
+packaging checks.
+
+## Original validation on 21 November 2026
 
 The following checks ran against the migration copy on the original server:
 

@@ -1,0 +1,147 @@
+{
+  "tasks": [
+    "pep_117",
+    "pep_219",
+    "pep_221",
+    "pep_575",
+    "pep_673",
+    "pep_921",
+    "pep_925",
+    "pep_967",
+    "pep_980",
+    "pep_999"
+  ],
+  "new_mean_mic": 10.459176468849183,
+  "comparisons": [
+    {
+      "method": "Original frozen FSBO",
+      "mean_mic": 28.405395698547363,
+      "new_wins": 10,
+      "new_losses": 0,
+      "ties": 0,
+      "new_mean_reduction_percent": 63.178909458444686,
+      "fresh_evaluations": 37861.0
+    },
+    {
+      "method": "Online VAE + FSBO",
+      "mean_mic": 28.951193404197692,
+      "new_wins": 10,
+      "new_losses": 0,
+      "ties": 0,
+      "new_mean_reduction_percent": 63.873073130958794,
+      "fresh_evaluations": 38684.0
+    },
+    {
+      "method": "SemanticOPT with fallback",
+      "mean_mic": 14.28379213809967,
+      "new_wins": 8,
+      "new_losses": 2,
+      "ties": 0,
+      "new_mean_reduction_percent": 26.775912392682844,
+      "fresh_evaluations": 40000.0
+    },
+    {
+      "method": "Online VAE + FSBO + rollback (20 rounds, max2)",
+      "mean_mic": 27.153909039497375,
+      "new_wins": 10,
+      "new_losses": 0,
+      "ties": 0,
+      "new_mean_reduction_percent": 61.481875579550874,
+      "fresh_evaluations": 38685.0
+    }
+  ],
+  "per_task": [
+    {
+      "task": "pep_117",
+      "new_fsbo_mic": 2.0311074256896973,
+      "semanticopt_mic": 2.6606929302215576,
+      "winner": "New FSBO",
+      "new_fresh": 148,
+      "semanticopt_fresh": 4000.0
+    },
+    {
+      "task": "pep_219",
+      "new_fsbo_mic": 2.110452890396118,
+      "semanticopt_mic": 6.26360559463501,
+      "winner": "New FSBO",
+      "new_fresh": 220,
+      "semanticopt_fresh": 4000.0
+    },
+    {
+      "task": "pep_221",
+      "new_fsbo_mic": 4.971540451049805,
+      "semanticopt_mic": 4.045162200927734,
+      "winner": "SemanticOPT",
+      "new_fresh": 125,
+      "semanticopt_fresh": 4000.0
+    },
+    {
+      "task": "pep_575",
+      "new_fsbo_mic": 3.9817018508911133,
+      "semanticopt_mic": 15.123472213745117,
+      "winner": "New FSBO",
+      "new_fresh": 285,
+      "semanticopt_fresh": 4000.0
+    },
+    {
+      "task": "pep_673",
+      "new_fsbo_mic": 11.265167236328125,
+      "semanticopt_mic": 21.667917251586914,
+      "winner": "New FSBO",
+      "new_fresh": 143,
+      "semanticopt_fresh": 4000.0
+    },
+    {
+      "task": "pep_921",
+      "new_fsbo_mic": 9.062039375305176,
+      "semanticopt_mic": 11.004670143127441,
+      "winner": "New FSBO",
+      "new_fresh": 140,
+      "semanticopt_fresh": 4000.0
+    },
+    {
+      "task": "pep_925",
+      "new_fsbo_mic": 11.092668533325195,
+      "semanticopt_mic": 16.02018165588379,
+      "winner": "New FSBO",
+      "new_fresh": 202,
+      "semanticopt_fresh": 4000.0
+    },
+    {
+      "task": "pep_967",
+      "new_fsbo_mic": 37.46296691894531,
+      "semanticopt_mic": 33.9040412902832,
+      "winner": "SemanticOPT",
+      "new_fresh": 53,
+      "semanticopt_fresh": 4000.0
+    },
+    {
+      "task": "pep_980",
+      "new_fsbo_mic": 1.6270079612731934,
+      "semanticopt_mic": 2.5730628967285156,
+      "winner": "New FSBO",
+      "new_fresh": 254,
+      "semanticopt_fresh": 4000.0
+    },
+    {
+      "task": "pep_999",
+      "new_fsbo_mic": 20.987112045288086,
+      "semanticopt_mic": 29.575115203857422,
+      "winner": "New FSBO",
+      "new_fresh": 223,
+      "semanticopt_fresh": 4000.0
+    }
+  ],
+  "limitations": [
+    "Same ten tasks, shared initial100 and4000proposal/fresh ceilings; actual fresh counts differ",
+    "FSBO seed1; SemanticOPT seed42; one trajectory per task/method",
+    "SemanticOPT includes random fallback: prior audit reports78.3% of scored proposals",
+    "MIC is APEX predicted micromolar; lower is better",
+    "Previously examined ten-task cohort; no claim of generalization to remaining tasks"
+  ],
+  "sources": [
+    "/root/data/logs/peptide_target_loss_gate_20round_max2_test10_20261119/capped_convergence.csv",
+    "/root/data/logs/peptide_target_loss_gate_20round_max2_test10_20261119/semanticopt_comparison.csv",
+    "/root/data/logs/peptide_fsbo_feasible_search_20261122/summary.json"
+  ]
+}
